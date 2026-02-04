@@ -14,7 +14,7 @@ A production-ready Helius RPC showcase and clonable template for Solana develope
 - **Interactive RPC Demos** - Test Helius RPC methods with your own inputs and see real mainnet results
 - **Copy-Paste Code** - Every demo includes TypeScript and cURL code examples ready for your project
 - **Production Architecture** - Modular, deletable features with proper API key protection
-- **Wallet Integration** - Phantom wallet support for signing transactions
+- **Wallet Integration** - [Phantom Connect](https://phantom.com/portal) with social login (Google, Apple) and extension support
 - **Modern Stack** - Next.js 16, React 19, @solana/kit 2.x, Tailwind CSS 4
 - **Dark Mode** - Full light/dark theme support
 - **SEO Ready** - JSON-LD structured data, OG images, and sitemap generation
@@ -145,7 +145,7 @@ import { serverFetchAsset } from '@/features/get-asset';
 | **RPC Provider** | [Helius SDK 2.x](https://docs.helius.dev) |
 | **Styling** | [Tailwind CSS 4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) |
 | **Data Fetching** | [SWR 2.x](https://swr.vercel.app) |
-| **Wallet** | [@solana/connector](https://github.com/anza-xyz/wallet-standard) (Phantom) |
+| **Wallet** | [@phantom/react-sdk](https://www.npmjs.com/package/@phantom/react-sdk) (Phantom Connect) |
 | **Code Highlighting** | [Shiki](https://shiki.style) |
 | **Language** | [TypeScript 5.x](https://typescriptlang.org) |
 

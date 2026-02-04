@@ -9,7 +9,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     <PhantomProvider
       config={{
         providers: ['google', 'apple', 'injected'],
-        appId: 'e0380c88-f74a-4b74-baa4-1176f1feea45',
+        appId: process.env.NEXT_PUBLIC_PHANTOM_APP_ID || '',
         addressTypes: [AddressType.solana],
       }}
       theme={darkTheme}
