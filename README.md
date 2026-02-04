@@ -1,0 +1,285 @@
+# Solana dApp Example
+
+A production-ready Helius RPC showcase and clonable template for Solana developers. Live demos of core RPC methods with interactive inputs, copy-paste code blocks, and real mainnet data.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16+-black?logo=next.js)](https://nextjs.org)
+[![Solana](https://img.shields.io/badge/Solana-Kit_2.x-9945FF?logo=solana)](https://solana.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+## Features
+
+- **Interactive RPC Demos** - Test Helius RPC methods with your own inputs and see real mainnet results
+- **Copy-Paste Code** - Every demo includes TypeScript and cURL code examples ready for your project
+- **Production Architecture** - Modular, deletable features with proper API key protection
+- **Wallet Integration** - Phantom wallet support for signing transactions
+- **Modern Stack** - Next.js 16, React 19, @solana/kit 2.x, Tailwind CSS 4
+- **Dark Mode** - Full light/dark theme support
+- **SEO Ready** - JSON-LD structured data, OG images, and sitemap generation
+
+## RPC Methods Demonstrated
+
+| Method | Description | Route |
+|--------|-------------|-------|
+| **Get Balances** | Fetch SOL, all tokens, or specific SPL token balances | `/get-balances/*` |
+| **Get Asset** | Single asset metadata (NFT, fungible, compressed NFT) | `/get-assets/*` |
+| **List Wallet Assets** | Enumerate all assets owned by a wallet | `/list-wallet-assets/*` |
+| **Get Transactions** | Transaction history with filtering and pagination | `/get-transactions/*` |
+| **Program Info** | Inspect programs, IDLs, and upgrade authority | `/program-info` |
+| **Validator Staking** | View validators and simulate stake transactions | `/validator-staking` |
+| **Archival Blocks** | Access historical block data by slot | `/archival-blocks` |
+| **Laserstream** | Real-time block streaming (requires paid plan) | `/laserstream` |
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+ (20+ recommended)
+- pnpm 9+
+- [Helius API key](https://dashboard.helius.dev/signup) (free tier available)
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/your-org/frontend-boilerplate.git
+cd frontend-boilerplate
+
+# Install dependencies
+pnpm install
+
+# Configure environment variables
+cp .env.example .env.local
+```
+
+Add your Helius API key to `.env.local`:
+
+```bash
+HELIUS_API_KEY=your_api_key_here
+```
+
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `HELIUS_API_KEY` | Yes | Your Helius API key for RPC access |
+| `LASERSTREAM_API_KEY` | No | Laserstream key for real-time streaming (Professional plan) |
+| `NEXT_PUBLIC_BASE_URL` | No | Base URL for OG image generation |
+
+> **Security:** API keys are server-side only. They're accessed through the `/api/rpc` proxy - never exposed to the client.
+
+## Architecture
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (methods)/          # Grouped routes for RPC demos
+│   │   ├── get-balances/   # Balance fetching demos
+│   │   ├── get-assets/     # Asset metadata demos
+│   │   ├── get-transactions/
+│   │   └── ...
+│   └── api/                # Server-side API routes
+│       └── rpc/            # RPC proxy (protects API keys)
+├── features/               # Self-contained feature modules
+│   ├── get-balance/        # Balance queries
+│   ├── get-asset/          # Single asset lookup
+│   ├── get-assets-by-owner/# Wallet asset enumeration
+│   ├── get-transactions/   # Transaction history
+│   ├── validator-staking/  # Validator & staking
+│   ├── program-info/       # Program inspection
+│   ├── archival-blocks/    # Historical blocks
+│   ├── laserstream/        # Real-time streaming
+│   └── demo-framework/     # Shared demo UI components
+├── shared/                 # Shared utilities
+│   ├── ui/                 # ~26 reusable UI components
+│   ├── lib/                # Core libraries (helius-client)
+│   └── hooks/              # Shared React hooks
+├── providers/              # React context providers
+└── types/                  # Global TypeScript declarations
+```
+
+### Atomic Features
+
+Each feature in `src/features/` is **self-contained and deletable**. Delete any feature folder and the app still builds. Features only import from `shared/`, never from each other.
+
+Feature structure:
+
+```
+feature-name/
+├── components/      # Feature UI components
+├── hooks/           # Feature-specific hooks
+├── lib/             # Feature utilities & fetch functions
+├── types.d.ts       # Feature types
+└── index.ts         # Barrel export (public API)
+```
+
+### Client vs Server
+
+Features export both client and server fetch functions:
+
+```typescript
+// Client-side (uses /api/rpc proxy)
+import { fetchAsset } from '@/features/get-asset';
+
+// Server-side (direct Helius SDK)
+import { serverFetchAsset } from '@/features/get-asset';
+```
+
+## Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Framework** | [Next.js 16](https://nextjs.org) (App Router, Turbopack, RSC) |
+| **React** | [React 19](https://react.dev) |
+| **Solana SDK** | [@solana/kit 2.x](https://github.com/anza-xyz/solana-web3.js) |
+| **RPC Provider** | [Helius SDK 2.x](https://docs.helius.dev) |
+| **Styling** | [Tailwind CSS 4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) |
+| **Data Fetching** | [SWR 2.x](https://swr.vercel.app) |
+| **Wallet** | [@solana/connector](https://github.com/anza-xyz/wallet-standard) (Phantom) |
+| **Code Highlighting** | [Shiki](https://shiki.style) |
+| **Language** | [TypeScript 5.x](https://typescriptlang.org) |
+
+## Code Examples
+
+### Fetching an Asset
+
+```typescript
+import { useAsset } from '@/features/get-asset';
+
+function AssetDisplay({ mint }: { mint: string }) {
+  const { data: asset, isLoading, error } = useAsset(mint);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      <h2>{asset.content.metadata.name}</h2>
+      <img src={asset.content.files[0]?.uri} alt={asset.content.metadata.name} />
+    </div>
+  );
+}
+```
+
+### Getting Wallet Balances
+
+```typescript
+import { useAllBalances } from '@/features/get-balance';
+
+function WalletBalances({ address }: { address: string }) {
+  const { data, isLoading } = useAllBalances(address);
+
+  return (
+    <ul>
+      <li>SOL: {data?.nativeBalance.lamports}</li>
+      {data?.tokens.map(token => (
+        <li key={token.mint}>{token.symbol}: {token.amount}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+### Server-Side Data Fetching
+
+```typescript
+// app/asset/[id]/page.tsx
+import { serverFetchAsset } from '@/features/get-asset';
+
+export default async function AssetPage({ params }: { params: { id: string } }) {
+  const asset = await serverFetchAsset(params.id);
+
+  return <AssetDetails asset={asset} />;
+}
+```
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server (Turbopack) |
+| `pnpm build` | Production build |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm lint:fix` | Fix ESLint errors |
+| `pnpm format` | Format with Prettier |
+| `pnpm format:check` | Check formatting |
+| `ANALYZE=true pnpm build` | Build with bundle analyzer |
+
+## Deployment
+
+### Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-org/frontend-boilerplate&env=HELIUS_API_KEY&envDescription=Your%20Helius%20API%20key%20for%20RPC%20access&envLink=https://dashboard.helius.dev/signup)
+
+1. Click the button above or import the repo in Vercel
+2. Add `HELIUS_API_KEY` environment variable
+3. Deploy
+
+### Other Platforms
+
+The app is a standard Next.js application. Deploy to any platform that supports Next.js:
+
+```bash
+pnpm build
+pnpm start
+```
+
+## Project Structure Highlights
+
+### API Routes
+
+- `/api/rpc` - Main RPC proxy (protects API keys)
+- `/api/helius/enhanced` - Enhanced API proxy
+- `/api/laserstream` - WebSocket proxy for real-time updates
+- `/api/laserstream/status` - Laserstream configuration status
+
+### Shared UI Components
+
+The `src/shared/ui/` directory contains ~26 reusable components:
+
+- **Navigation:** Header, SubNav, Breadcrumb
+- **Content:** PageContainer, PageHeader, CodeTabs, InfoBox
+- **Input:** Input, FormField, Button
+- **Display:** AddressDisplay, ErrorDisplay
+- **Wallet:** ConnectButton, WalletDropdown
+
+### SEO & Metadata
+
+- JSON-LD structured data on all pages
+- Dynamic OG images per route
+- Sitemap and robots.txt generation
+- PWA manifest with icons
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
+
+- Architecture decisions
+- Feature module structure
+- Code style conventions
+- Pull request process
+
+## Resources
+
+- [Helius Documentation](https://docs.helius.dev) - RPC methods and APIs
+- [Solana Kit Documentation](https://github.com/anza-xyz/solana-web3.js) - Modern Solana SDK
+- [Next.js Documentation](https://nextjs.org/docs) - Framework docs
+- [Tailwind CSS](https://tailwindcss.com/docs) - Styling reference
+
+## License
+
+MIT - see [LICENSE](LICENSE) for details.
+
+---
+
+Built with [Helius](https://helius.dev) | Powered by [Solana](https://solana.com)
