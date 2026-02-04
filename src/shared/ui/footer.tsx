@@ -203,7 +203,7 @@ export function Footer() {
                     )}
                   >
                     {link.name}
-                    <span className="ml-1 text-xs opacity-60">· {link.description}</span>
+                    <span className="ml-1 text-xs text-muted-foreground">· {link.description}</span>
                     <svg
                       className="ml-1 inline-block size-3 opacity-50"
                       fill="none"
@@ -231,7 +231,7 @@ export function Footer() {
             'border-black/[0.08] dark:border-border/50'
           )}
         >
-          <p className="text-xs text-muted-foreground/70">
+          <p className="text-xs text-muted-foreground">
             &copy; 2025 Helius. All rights reserved.
           </p>
         </div>
