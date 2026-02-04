@@ -2,8 +2,7 @@
 // Source: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
 import type { MetadataRoute } from 'next';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerplate.vercel.app';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerplate.vercel.app';
 
 // All routes that should be indexed
 const routes = [

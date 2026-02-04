@@ -18,7 +18,13 @@ export function AddressDisplay({
   suffixLength = 4,
   className = '',
   showCopy = false,
-}: { address: string; prefixLength?: number; suffixLength?: number; className?: string; showCopy?: boolean }) {
+}: {
+  address: string;
+  prefixLength?: number;
+  suffixLength?: number;
+  className?: string;
+  showCopy?: boolean;
+}) {
   const truncated = truncateAddress(address, prefixLength, suffixLength);
 
   const handleCopy = async () => {

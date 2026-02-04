@@ -12,7 +12,9 @@ import { Button } from '@/shared/ui/button';
 
 export function InteractivePaginatedTransactions({
   defaultAddress = '',
-}: { defaultAddress?: string }) {
+}: {
+  defaultAddress?: string;
+}) {
   const [address, setAddress] = useState(defaultAddress);
   const [submitted, setSubmitted] = useState(!!defaultAddress);
 

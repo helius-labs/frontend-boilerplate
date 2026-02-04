@@ -1,7 +1,7 @@
 // Laserstream SSE Proxy - keeps API key server-side
 // Establishes WebSocket to Helius and streams slot updates via SSE
-import { env } from '@/shared/config/env';
 import WebSocket from 'ws';
+import { env } from '@/shared/config/env';
 
 const LASERSTREAM_WSS = 'wss://atlas-mainnet.helius-rpc.com';
 

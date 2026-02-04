@@ -12,7 +12,9 @@ import { Button } from '@/shared/ui/button';
 
 export function InteractiveRecentTransactions({
   defaultAddress = '',
-}: { defaultAddress?: string }) {
+}: {
+  defaultAddress?: string;
+}) {
   const [address, setAddress] = useState(defaultAddress);
   const [submitted, setSubmitted] = useState(!!defaultAddress);
   const { data, isLoading, error, mutate } = useRecentTransactions(

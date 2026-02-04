@@ -24,7 +24,9 @@ export function BlockStream({ blocks }: BlockStreamProps) {
           className={cn(
             'flex items-center justify-between p-3 rounded-lg',
             'transition-colors duration-300',
-            index === 0 ? 'bg-primary/10 border border-primary/20' : 'bg-muted/50 border border-border'
+            index === 0
+              ? 'bg-primary/10 border border-primary/20'
+              : 'bg-muted/50 border border-border'
           )}
         >
           <div className="flex items-center gap-4">

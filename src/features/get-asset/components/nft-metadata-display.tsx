@@ -20,12 +20,7 @@ export function NftMetadataDisplay({ asset, className }: NftMetadataDisplayProps
         {/* Image */}
         {imageUrl && (
           <div className="relative w-full md:w-48 h-48 rounded-lg overflow-hidden bg-muted shrink-0">
-            <Image
-              src={imageUrl}
-              alt={metadata?.name || 'NFT'}
-              fill
-              className="object-cover"
-            />
+            <Image src={imageUrl} alt={metadata?.name || 'NFT'} fill className="object-cover" />
           </div>
         )}
 

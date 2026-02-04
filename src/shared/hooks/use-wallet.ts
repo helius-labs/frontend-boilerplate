@@ -1,29 +1,26 @@
 // Wallet connection hook wrapper
-// Provides simplified interface over ConnectorKit's hooks
+// Provides simplified interface over Phantom SDK's hooks
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-  type WalletConnectorId,
-  useConnectWallet,
-  useWallet as useConnectorWallet,
-  useDisconnectWallet,
-  useWalletConnectors,
-} from '@solana/connector/react';
+  AddressType,
+  useAccounts,
+  useConnect,
+  useDisconnect,
+  useDiscoveredWallets,
+  useModal,
+  usePhantom,
+} from '@phantom/react-sdk';
 
-// Re-export the WalletConnectorId type for consumers
-export type { WalletConnectorId };
-
-// Key for storing connection state in sessionStorage
-const WALLET_CONNECTED_KEY = 'wallet-was-connected';
+// WalletConnectorId is now just a string (wallet ID)
+export type WalletConnectorId = string;
 
 /**
  * Hook for wallet connection state and actions.
- * Wraps ConnectorKit's hooks with a simpler interface.
+ * Wraps Phantom SDK's hooks with a simpler interface.
  *
- * Tracks reconnection state to prevent UI flicker on page navigation.
- * When a user was previously connected, shows loading state while
- * auto-connect resolves instead of flashing connect buttons.
+ * Auto-connect is handled by the SDK configuration.
  *
  * @example
  * const { isConnected, address, connect, disconnect, connectors } = useWallet();
@@ -38,76 +35,53 @@ const WALLET_CONNECTED_KEY = 'wallet-was-connected';
  * }
  */
 export function useWallet(): WalletState {
-  const { isConnected, isConnecting, account } = useConnectorWallet();
-  const connectorList = useWalletConnectors();
-  const { connect: connectWallet } = useConnectWallet();
-  const { disconnect: disconnectWallet } = useDisconnectWallet();
+  const { isConnected, isLoading } = usePhantom();
+  const { connect: connectWallet, isConnecting } = useConnect();
+  const { disconnect: disconnectWallet } = useDisconnect();
+  const { open: openModal } = useModal();
+  const accounts = useAccounts();
+  const { wallets: discoveredWallets } = useDiscoveredWallets();
 
-  // Track if we're waiting for auto-reconnect
-  const [isReconnecting, setIsReconnecting] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // Use ref to track latest isConnected for timeout callback
-  const isConnectedRef = useRef(isConnected);
-
-  // Keep ref in sync with latest isConnected value
-  useEffect(() => {
-    isConnectedRef.current = isConnected;
-  }, [isConnected]);
-
-  // On mount, check if we were previously connected
+  // Track mount state for SSR hydration
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: single mount-time render for SSR hydration
     setMounted(true);
-    const wasConnected = sessionStorage.getItem(WALLET_CONNECTED_KEY) === 'true';
-    if (wasConnected) {
-      setIsReconnecting(true);
-    }
   }, []);
 
-  // Update sessionStorage and reconnecting state when connection changes
-  useEffect(() => {
-    if (!mounted) return;
+  // Get Solana address from accounts
+  const solanaAccount = accounts?.find((a) => a.addressType === AddressType.solana);
+  const address = solanaAccount?.address ?? null;
 
-    if (isConnected) {
-      sessionStorage.setItem(WALLET_CONNECTED_KEY, 'true');
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional: sync state with external connection status
-      setIsReconnecting(false);
-    }
-  }, [isConnected, mounted]);
+  // Map discovered wallets to connector format
+  const connectors = (discoveredWallets ?? []).map((wallet) => ({
+    id: wallet.id,
+    name: wallet.name,
+    icon: wallet.icon,
+    ready: true,
+  }));
 
-  // Handle timeout for reconnection - uses ref to check latest state
-  useEffect(() => {
-    if (!mounted || !isReconnecting) return;
-
-    const timeout = setTimeout(() => {
-      // Check ref for current value, not stale closure
-      if (!isConnectedRef.current) {
-        sessionStorage.removeItem(WALLET_CONNECTED_KEY);
-        setIsReconnecting(false);
-      }
-    }, 2500); // Give auto-connect more time
-
-    return () => clearTimeout(timeout);
-  }, [mounted, isReconnecting]);
+  // Show reconnecting state while SDK is loading and we expect a connection
+  const isReconnecting = isLoading && mounted;
 
   return {
-    connectors: connectorList.map((c) => ({
-      id: c.id,
-      name: c.name,
-      icon: c.icon,
-      ready: c.ready ?? false,
-    })),
+    connectors,
     connect: async (connectorId: WalletConnectorId) => {
-      await connectWallet(connectorId);
+      // For injected wallets, connect directly with walletId
+      // For modal-based connection (no specific wallet), open the modal
+      if (connectorId) {
+        await connectWallet({ provider: 'injected', walletId: connectorId });
+      } else {
+        openModal();
+      }
     },
     disconnect: async () => {
-      sessionStorage.removeItem(WALLET_CONNECTED_KEY);
       await disconnectWallet();
     },
     isConnected,
     isConnecting,
     isReconnecting: isReconnecting && !isConnected,
-    address: account ?? null,
+    address,
   };
 }

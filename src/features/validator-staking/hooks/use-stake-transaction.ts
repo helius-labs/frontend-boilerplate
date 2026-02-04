@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useRef, useState } from 'react';
+import { useSolana } from '@phantom/react-sdk';
 import { Transaction } from '@solana/web3.js';
 import {
   STAKE_ACCOUNT_RENT_EXEMPTION,
@@ -8,30 +9,9 @@ import {
   buildStakeTransaction,
   validateStakeAmount,
 } from '../lib/build-stake-transaction';
-import {
-  formatTransactionPreview,
-  simulateStakeTransaction,
-} from '../lib/simulate-stake';
+import { formatTransactionPreview, simulateStakeTransaction } from '../lib/simulate-stake';
 
 type StakeStep = 'input' | 'preview' | 'signing' | 'confirming' | 'success' | 'error';
-
-// Phantom provider type
-interface PhantomProvider {
-  isPhantom: boolean;
-  signAndSendTransaction: (
-    transaction: Transaction,
-    options?: { skipPreflight?: boolean }
-  ) => Promise<{ signature: string }>;
-}
-
-// Extend window for Phantom
-declare global {
-  interface Window {
-    phantom?: {
-      solana?: PhantomProvider;
-    };
-  }
-}
 
 interface UseStakeTransactionOptions {
   walletAddress: string | null;
@@ -42,6 +22,9 @@ interface UseStakeTransactionOptions {
 
 export function useStakeTransaction(options: UseStakeTransactionOptions) {
   const { walletAddress, walletBalance, onSuccess, onError } = options;
+
+  // Phantom SDK Solana provider
+  const { solana, isAvailable } = useSolana();
 
   const [step, setStep] = useState<StakeStep>('input');
   const [selectedValidator, setSelectedValidator] = useState<ValidatorInfo | null>(null);
@@ -152,9 +135,8 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
       return null;
     }
 
-    // Get Phantom provider
-    const provider = window.phantom?.solana;
-    if (!provider?.isPhantom) {
+    // Check Phantom SDK availability
+    if (!isAvailable || !solana) {
       setError({
         code: 'NETWORK_ERROR',
         message: 'Phantom wallet not found. Please install Phantom.',
@@ -170,11 +152,8 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
       // Deserialize the transaction (it already has stake account signature)
       const transaction = Transaction.from(builtTransactionRef.current);
 
-      // Sign and send via Phantom
-      // Phantom will add the wallet signature and submit
-      const { signature } = await provider.signAndSendTransaction(transaction, {
-        skipPreflight: false,
-      });
+      // Sign and send via Phantom SDK
+      const { signature } = await solana.signAndSendTransaction(transaction);
 
       // Success!
       setTransactionSignature(signature);
@@ -204,7 +183,7 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
 
       return null;
     }
-  }, [onSuccess, onError]);
+  }, [isAvailable, solana, onSuccess, onError]);
 
   // Handle successful transaction
   const handleSuccess = useCallback(

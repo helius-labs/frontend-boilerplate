@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Providers } from '@/providers';
-import {
-  JsonLdMultiple,
-  getOrganizationJsonLd,
-  getWebSiteJsonLd,
-} from '@/shared/lib/json-ld';
+import { JsonLdMultiple, getOrganizationJsonLd, getWebSiteJsonLd } from '@/shared/lib/json-ld';
 import { LayoutShell } from '@/shared/ui/layout-shell';
 import { ThemeProvider } from '@/shared/ui/theme-provider';
 import './globals.css';

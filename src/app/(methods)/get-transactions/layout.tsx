@@ -13,8 +13,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: 'How to Get Transaction History on Solana',
-    description:
-      'Working code to fetch and filter transaction history with Helius Enhanced API.',
+    description: 'Working code to fetch and filter transaction history with Helius Enhanced API.',
     type: 'website',
     siteName: 'Solana dApp Example',
   },

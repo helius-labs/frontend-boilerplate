@@ -5,13 +5,7 @@ import type { FAQItem } from '@/shared/lib/json-ld';
  * FAQ section using native details/summary for accessible, no-JS collapsible Q&A.
  * Uses the same FAQItem type as JSON-LD schema for consistency.
  */
-export function FAQ({
-  items,
-  className,
-}: {
-  items: FAQItem[];
-  className?: string;
-}) {
+export function FAQ({ items, className }: { items: FAQItem[]; className?: string }) {
   return (
     <section className={cn('space-y-3', className)}>
       <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useWallet } from '@/shared/hooks/use-wallet';
 import { cn } from '@/lib/utils';
+import { useWallet } from '@/shared/hooks/use-wallet';
 import { Button } from '@/shared/ui/button';
 import { SUGGESTED_MIN_STAKE } from '../lib/build-stake-transaction';
 

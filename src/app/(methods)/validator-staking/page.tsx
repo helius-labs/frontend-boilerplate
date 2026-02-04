@@ -57,118 +57,119 @@ export default function ValidatorStakingPage() {
     <>
       <JsonLdMultiple schemas={[techArticleSchema, createBreadcrumbSchema(BREADCRUMB)]} />
       <PageContainer className="space-y-8">
-      <Breadcrumb />
+        <Breadcrumb />
 
-      <PageHeader
-        title="How to stake SOL programmatically"
-        description="Fetch validators, build stake transactions, and sign with Phantom. Copy the code below to add staking to your own app."
-        className="mb-0"
-      />
+        <PageHeader
+          title="How to stake SOL programmatically"
+          description="Fetch validators, build stake transactions, and sign with Phantom. Copy the code below to add staking to your own app."
+          className="mb-0"
+        />
 
-      <WarningBanner title="Real Transactions">
-        This demo submits real transactions to Solana mainnet. Staked SOL will be delegated to your
-        chosen validator. Make sure you understand the warmup and cooldown periods before staking.
-      </WarningBanner>
+        <WarningBanner title="Real Transactions">
+          This demo submits real transactions to Solana mainnet. Staked SOL will be delegated to
+          your chosen validator. Make sure you understand the warmup and cooldown periods before
+          staking.
+        </WarningBanner>
 
-      {/* Main demo */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Interactive Demo</h2>
-        <Suspense fallback={<DemoSkeleton />}>
-          <ValidatorStakingDemo />
-        </Suspense>
-      </section>
+        {/* Main demo */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold">Interactive Demo</h2>
+          <Suspense fallback={<DemoSkeleton />}>
+            <ValidatorStakingDemo />
+          </Suspense>
+        </section>
 
-      {/* Code examples */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Copy the code</h2>
-        <p className="text-muted-foreground text-sm">
-          These snippets show exactly how to implement staking. Paste them into your project.
-        </p>
-
-        {/* Validator List */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-medium">1. Fetch Validator List</h3>
-          <p className="text-sm text-muted-foreground">
-            Use the Stakewiz API to fetch validators with names, images, APY estimates, and more.
+        {/* Code examples */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold">Copy the code</h2>
+          <p className="text-muted-foreground text-sm">
+            These snippets show exactly how to implement staking. Paste them into your project.
           </p>
-          <CodeTabsClient code={VALIDATOR_STAKING_CODE_EXAMPLES['validator-list']} />
-        </div>
 
-        {/* Stake SOL */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-medium">2. Stake SOL to Validator</h3>
-          <p className="text-sm text-muted-foreground">
-            Build and submit a stake delegation transaction using @solana-program/stake.
-          </p>
-          <CodeTabsClient code={VALIDATOR_STAKING_CODE_EXAMPLES['stake-sol']} />
-        </div>
+          {/* Validator List */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">1. Fetch Validator List</h3>
+            <p className="text-sm text-muted-foreground">
+              Use the Stakewiz API to fetch validators with names, images, APY estimates, and more.
+            </p>
+            <CodeTabsClient code={VALIDATOR_STAKING_CODE_EXAMPLES['validator-list']} />
+          </div>
 
-        {/* Simulate Transaction */}
-        <div className="space-y-2">
-          <h3 className="text-lg font-medium">3. Simulate Before Signing</h3>
-          <p className="text-sm text-muted-foreground">
-            Always simulate transactions before signing to catch errors and estimate fees.
-          </p>
-          <CodeTabsClient code={VALIDATOR_STAKING_CODE_EXAMPLES['simulate-transaction']} />
-        </div>
-      </section>
+          {/* Stake SOL */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">2. Stake SOL to Validator</h3>
+            <p className="text-sm text-muted-foreground">
+              Build and submit a stake delegation transaction using @solana-program/stake.
+            </p>
+            <CodeTabsClient code={VALIDATOR_STAKING_CODE_EXAMPLES['stake-sol']} />
+          </div>
 
-      {/* Staking info */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">About Solana Staking</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">Warmup Period</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              When you stake SOL, it takes 1-2 epochs (~2-4 days) for your stake to become active
-              and start earning rewards.
+          {/* Simulate Transaction */}
+          <div className="space-y-2">
+            <h3 className="text-lg font-medium">3. Simulate Before Signing</h3>
+            <p className="text-sm text-muted-foreground">
+              Always simulate transactions before signing to catch errors and estimate fees.
             </p>
+            <CodeTabsClient code={VALIDATOR_STAKING_CODE_EXAMPLES['simulate-transaction']} />
           </div>
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">Cooldown Period</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              When you unstake, your SOL is locked for another 1-2 epochs before you can withdraw
-              it.
-            </p>
-          </div>
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">Commission</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Validators take a percentage of rewards as commission. Lower commission means more
-              rewards for you.
-            </p>
-          </div>
-          <div className="p-4 border rounded-lg">
-            <p className="font-medium">Delinquent Validators</p>
-            <p className="text-sm text-muted-foreground mt-1">
-              Validators that miss votes are marked delinquent. Staking to them may result in
-              reduced rewards.
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Documentation links */}
-      <LearnMoreBox>
-        <li>
-          <ExternalLink href="https://stakewiz.com">Stakewiz Validator API</ExternalLink>
-        </li>
-        <li>
-          <ExternalLink href="https://solana.com/docs/rpc/http/sendtransaction">
-            Solana sendTransaction RPC Reference
-          </ExternalLink>
-        </li>
-        <li>
-          <ExternalLink href="https://solana.com/docs/core/tokens#staking">
-            Solana Staking Documentation
-          </ExternalLink>
-        </li>
-        <li>
-          <ExternalLink href="https://docs.phantom.app/developer-guides/provider-api">
-            Phantom Wallet Provider API
-          </ExternalLink>
-        </li>
-      </LearnMoreBox>
+        {/* Staking info */}
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold">About Solana Staking</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="p-4 border rounded-lg">
+              <p className="font-medium">Warmup Period</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                When you stake SOL, it takes 1-2 epochs (~2-4 days) for your stake to become active
+                and start earning rewards.
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg">
+              <p className="font-medium">Cooldown Period</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                When you unstake, your SOL is locked for another 1-2 epochs before you can withdraw
+                it.
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg">
+              <p className="font-medium">Commission</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Validators take a percentage of rewards as commission. Lower commission means more
+                rewards for you.
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg">
+              <p className="font-medium">Delinquent Validators</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                Validators that miss votes are marked delinquent. Staking to them may result in
+                reduced rewards.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Documentation links */}
+        <LearnMoreBox>
+          <li>
+            <ExternalLink href="https://stakewiz.com">Stakewiz Validator API</ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://solana.com/docs/rpc/http/sendtransaction">
+              Solana sendTransaction RPC Reference
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://solana.com/docs/core/tokens#staking">
+              Solana Staking Documentation
+            </ExternalLink>
+          </li>
+          <li>
+            <ExternalLink href="https://docs.phantom.app/developer-guides/provider-api">
+              Phantom Wallet Provider API
+            </ExternalLink>
+          </li>
+        </LearnMoreBox>
       </PageContainer>
     </>
   );

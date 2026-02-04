@@ -1,7 +1,7 @@
 'use client';
 
-import { X } from 'lucide-react';
 import Image from 'next/image';
+import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { useValidatorDetails } from '../hooks/use-validators';

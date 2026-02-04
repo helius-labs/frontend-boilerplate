@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useWallet } from '@/shared/hooks/use-wallet';
 import { cn } from '@/lib/utils';
+import { useWallet } from '@/shared/hooks/use-wallet';
 import { Button } from '@/shared/ui/button';
 import { useStakeTransaction } from '../hooks/use-stake-transaction';
 import { StakeForm } from './stake-form';

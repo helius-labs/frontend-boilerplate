@@ -17,13 +17,7 @@ export function ErrorDisplay({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        'p-4 rounded-lg',
-        'bg-destructive/10 border border-destructive',
-        className
-      )}
-    >
+    <div className={cn('p-4 rounded-lg', 'bg-destructive/10 border border-destructive', className)}>
       <p className="font-medium text-destructive">{title}</p>
       <p className="text-sm text-destructive/80">{message}</p>
       {onRetry && (

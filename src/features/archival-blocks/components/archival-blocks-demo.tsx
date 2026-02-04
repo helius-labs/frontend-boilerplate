@@ -11,7 +11,11 @@ export function ArchivalBlocksDemo({ defaultSlot = 0 }: ArchivalBlocksDemoProps)
   const [slotInput, setSlotInput] = useState(defaultSlot.toString());
   const [submittedSlot, setSubmittedSlot] = useState<number | null>(defaultSlot);
 
-  const { data: block, error, isLoading } = useBlock({
+  const {
+    data: block,
+    error,
+    isLoading,
+  } = useBlock({
     slot: submittedSlot,
     enabled: submittedSlot !== null,
   });

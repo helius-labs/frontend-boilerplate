@@ -21,7 +21,8 @@ const linkVariants = cva(
   }
 );
 
-type LinkProps = React.ComponentPropsWithoutRef<typeof NextLink> & VariantProps<typeof linkVariants>;
+type LinkProps = React.ComponentPropsWithoutRef<typeof NextLink> &
+  VariantProps<typeof linkVariants>;
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ className, variant, scroll = true, ...props }, ref) => {
@@ -42,7 +43,8 @@ Link.displayName = 'Link';
  * Automatically adds target="_blank" and rel="noopener noreferrer".
  * Shows external link icon for default variant (not unstyled).
  */
-type ExternalLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & VariantProps<typeof linkVariants>;
+type ExternalLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> &
+  VariantProps<typeof linkVariants>;
 
 const ExternalLink = forwardRef<HTMLAnchorElement, ExternalLinkProps>(
   ({ className, variant, children, ...props }, ref) => {

@@ -231,9 +231,7 @@ export function Footer() {
             'border-black/[0.08] dark:border-border/50'
           )}
         >
-          <p className="text-xs text-muted-foreground">
-            &copy; 2025 Helius. All rights reserved.
-          </p>
+          <p className="text-xs text-muted-foreground">&copy; 2025 Helius. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,6 +1,14 @@
 import { cn } from '@/lib/utils';
 
-export function InfoBox({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
+export function InfoBox({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <div
       className={cn(

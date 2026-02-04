@@ -1,7 +1,7 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { useValidators } from '../hooks/use-validators';

@@ -11,7 +11,10 @@ const DEFAULT_USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 export function InteractiveTokenBalance({
   defaultWalletAddress = '',
   defaultMintAddress = DEFAULT_USDC_MINT,
-}: { defaultWalletAddress?: string; defaultMintAddress?: string }) {
+}: {
+  defaultWalletAddress?: string;
+  defaultMintAddress?: string;
+}) {
   const [walletAddress, setWalletAddress] = useState(defaultWalletAddress);
   const [mintAddress, setMintAddress] = useState(defaultMintAddress);
   const [submitted, setSubmitted] = useState(!!defaultWalletAddress);

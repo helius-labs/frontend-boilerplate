@@ -24,7 +24,9 @@ const TRANSACTION_TYPES: FilterableTransactionType[] = [
 
 export function InteractiveFilteredTransactions({
   defaultAddress = '',
-}: { defaultAddress?: string }) {
+}: {
+  defaultAddress?: string;
+}) {
   const [address, setAddress] = useState(defaultAddress);
   const [selectedType, setSelectedType] = useState<FilterableTransactionType>('TRANSFER');
   const [shouldFetch, setShouldFetch] = useState(!!defaultAddress);

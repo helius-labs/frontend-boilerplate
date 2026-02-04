@@ -78,7 +78,8 @@ export default function SolOnlyPage() {
 
   const codeExampleSchema = createCodeExampleSchema({
     name: 'Get SOL Balance with Helius SDK',
-    description: 'TypeScript code example showing how to fetch native SOL balance using the Helius SDK and getBalance RPC method.',
+    description:
+      'TypeScript code example showing how to fetch native SOL balance using the Helius SDK and getBalance RPC method.',
     programmingLanguage: 'TypeScript',
     codeText: CODE_EXAMPLES['sol-only'].typescript,
     url: `${BASE_URL}/get-balances/sol-only`,

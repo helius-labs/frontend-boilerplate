@@ -12,7 +12,7 @@ const pathLabels: Record<string, string> = {
   'get-transactions': 'Get Transactions',
   'program-info': 'Program Info',
   'validator-staking': 'Validator Staking',
-  'laserstream': 'Laserstream',
+  laserstream: 'Laserstream',
   'archival-blocks': 'Historical Blocks',
   // get-balances sub-pages
   'sol-only': 'SOL Balance',

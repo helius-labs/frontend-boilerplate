@@ -1,7 +1,7 @@
 // Types for shared hooks
 
 interface ConnectorInfo {
-  id: import('@solana/connector/react').WalletConnectorId;
+  id: string;
   name: string;
   icon?: string;
   ready: boolean;
@@ -9,7 +9,7 @@ interface ConnectorInfo {
 
 interface WalletState {
   connectors: ConnectorInfo[];
-  connect: (connectorId: import('@solana/connector/react').WalletConnectorId) => Promise<void>;
+  connect: (connectorId: string) => Promise<void>;
   disconnect: () => Promise<void>;
   isConnected: boolean;
   isConnecting: boolean;

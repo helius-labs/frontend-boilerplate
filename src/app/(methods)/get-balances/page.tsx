@@ -1,10 +1,6 @@
 // Get Balance Overview Page
 // Links to sub-pages for each use case
-import {
-  BASE_URL,
-  JsonLd,
-  createWebPageSchema,
-} from '@/shared/lib/json-ld';
+import { BASE_URL, JsonLd, createWebPageSchema } from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { InfoBox } from '@/shared/ui/info-box';
 import { LearnMoreBox } from '@/shared/ui/learn-more-box';
@@ -31,86 +27,88 @@ export default function GetBalancePage() {
     <>
       <JsonLd data={jsonLdData} />
       <PageContainer>
-      <Breadcrumb />
-      <SubNav items={GET_BALANCE_NAV_ITEMS} />
+        <Breadcrumb />
+        <SubNav items={GET_BALANCE_NAV_ITEMS} />
 
-      <PageHeader
-        title="How to get wallet balances on Solana"
-        description="Fetch SOL balance, all token holdings, or check a specific token. Copy the code snippets below to use in your own project."
-      />
+        <PageHeader
+          title="How to get wallet balances on Solana"
+          description="Fetch SOL balance, all token holdings, or check a specific token. Copy the code snippets below to use in your own project."
+        />
 
-      {/* Overview section */}
-      <MethodComparison
-        title="Which method should I use?"
-        description="Choose the right approach based on what you need. Each method below includes working code you can copy directly into your project."
-        items={[
-          {
-            title: 'Just SOL balance',
-            description: (
-              <>
-                Use <code className="bg-muted px-1 rounded">getBalance</code> for the fastest way to
-                check native SOL. Returns lamports which you divide by 1e9.
-              </>
-            ),
-          },
-          {
-            title: 'All tokens + SOL',
-            description: (
-              <>
-                Use <code className="bg-muted px-1 rounded">getAssetsByOwner</code> with{' '}
-                <code className="bg-muted px-1 rounded">showNativeBalance</code> to get everything
-                in one call with metadata and prices.
-              </>
-            ),
-          },
-          {
-            title: 'One specific token',
-            description: (
-              <>
-                Use <code className="bg-muted px-1 rounded">getTokenAccounts</code> filtered by mint
-                to check USDC, USDT, or any SPL token balance efficiently.
-              </>
-            ),
-          },
-        ]}
-      />
+        {/* Overview section */}
+        <MethodComparison
+          title="Which method should I use?"
+          description="Choose the right approach based on what you need. Each method below includes working code you can copy directly into your project."
+          items={[
+            {
+              title: 'Just SOL balance',
+              description: (
+                <>
+                  Use <code className="bg-muted px-1 rounded">getBalance</code> for the fastest way
+                  to check native SOL. Returns lamports which you divide by 1e9.
+                </>
+              ),
+            },
+            {
+              title: 'All tokens + SOL',
+              description: (
+                <>
+                  Use <code className="bg-muted px-1 rounded">getAssetsByOwner</code> with{' '}
+                  <code className="bg-muted px-1 rounded">showNativeBalance</code> to get everything
+                  in one call with metadata and prices.
+                </>
+              ),
+            },
+            {
+              title: 'One specific token',
+              description: (
+                <>
+                  Use <code className="bg-muted px-1 rounded">getTokenAccounts</code> filtered by
+                  mint to check USDC, USDT, or any SPL token balance efficiently.
+                </>
+              ),
+            },
+          ]}
+        />
 
-      {/* API notes */}
-      <InfoBox title="API Notes">
-        <ul className="list-disc list-outside ml-5 space-y-2">
+        {/* API notes */}
+        <InfoBox title="API Notes">
+          <ul className="list-disc list-outside ml-5 space-y-2">
+            <li>
+              <strong>getBalance:</strong> Standard RPC method. Returns lamports (1 SOL = 1 billion
+              lamports). Divide by <code className="text-xs bg-muted px-1 rounded">1e9</code> for
+              SOL.
+            </li>
+            <li>
+              <strong>getAssetsByOwner:</strong> DAS API returns all tokens with metadata. Enable{' '}
+              <code className="text-xs bg-muted px-1 rounded">showNativeBalance: true</code> for
+              SOL.
+            </li>
+            <li>
+              <strong>getTokenAccounts:</strong> DAS API filtered by mint address. Best for checking
+              specific token holdings without fetching all assets.
+            </li>
+          </ul>
+        </InfoBox>
+
+        {/* Documentation links */}
+        <LearnMoreBox>
           <li>
-            <strong>getBalance:</strong> Standard RPC method. Returns lamports (1 SOL = 1 billion
-            lamports). Divide by <code className="text-xs bg-muted px-1 rounded">1e9</code> for SOL.
+            <ExternalLink href="https://www.helius.dev/docs/rpc/guides/getbalance">
+              Helius getBalance Guide
+            </ExternalLink>
           </li>
           <li>
-            <strong>getAssetsByOwner:</strong> DAS API returns all tokens with metadata. Enable{' '}
-            <code className="text-xs bg-muted px-1 rounded">showNativeBalance: true</code> for SOL.
+            <ExternalLink href="https://www.helius.dev/docs/api-reference/das/getassetsbyowner">
+              getAssetsByOwner API Reference
+            </ExternalLink>
           </li>
           <li>
-            <strong>getTokenAccounts:</strong> DAS API filtered by mint address. Best for checking
-            specific token holdings without fetching all assets.
+            <ExternalLink href="https://www.helius.dev/docs/api-reference/das/gettokenaccounts">
+              getTokenAccounts API Reference
+            </ExternalLink>
           </li>
-        </ul>
-      </InfoBox>
-
-      {/* Documentation links */}
-      <LearnMoreBox>
-        <li>
-          <ExternalLink href="https://www.helius.dev/docs/rpc/guides/getbalance">
-            Helius getBalance Guide
-          </ExternalLink>
-        </li>
-        <li>
-          <ExternalLink href="https://www.helius.dev/docs/api-reference/das/getassetsbyowner">
-            getAssetsByOwner API Reference
-          </ExternalLink>
-        </li>
-        <li>
-          <ExternalLink href="https://www.helius.dev/docs/api-reference/das/gettokenaccounts">
-            getTokenAccounts API Reference
-          </ExternalLink>
-        </li>
-      </LearnMoreBox>
+        </LearnMoreBox>
       </PageContainer>
     </>
   );

@@ -30,7 +30,8 @@ const iconPaths: Record<string, string> = {
     'M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z M2 12h2 M20 12h2 M6 6L4.5 4.5 M17.5 4.5L16 6 M6 18l-1.5 1.5 M17.5 19.5L16 18 M12 2v2 M12 20v2',
   layers:
     'M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.91a1 1 0 0 0 0-1.83z M2 16.5l10 4.5 10-4.5 M2 12l10 4.5L22 12',
-  'circle-dot': 'M12 12m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0 M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0',
+  'circle-dot':
+    'M12 12m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0 M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0',
   'file-image':
     'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M10 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M8 20l2.5-3 1.5 2 2.5-3 3.5 4',
   'badge-dollar-sign':
@@ -43,7 +44,8 @@ const iconPaths: Record<string, string> = {
     'M16.5 9.4l-9-5.19 M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z M3.27 6.96L12 12.01l8.73-5.05 M12 22.08V12',
   clock: 'M12 12m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0 M12 6v6l4 2',
   filter: 'M22 3H2l8 9.46V19l4 2v-8.54z',
-  'book-open': 'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+  'book-open':
+    'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
 };
 
 // Helius logo as inline SVG component
@@ -128,59 +130,157 @@ function HeliusLogo() {
         fill="#E84125"
       />
       <defs>
-        <linearGradient id="h1" x1="41.87" y1="12.36" x2="74.63" y2="12.36" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h1"
+          x1="41.87"
+          y1="12.36"
+          x2="74.63"
+          y2="12.36"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h2" x1="9.62" y1="36.45" x2="40.75" y2="36.45" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h2"
+          x1="9.62"
+          y1="36.45"
+          x2="40.75"
+          y2="36.45"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h3" x1="-0.92" y1="69.26" x2="28.99" y2="69.26" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h3"
+          x1="-0.92"
+          y1="69.26"
+          x2="28.99"
+          y2="69.26"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h4" x1="29.47" y1="100.94" x2="58.95" y2="100.94" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h4"
+          x1="29.47"
+          y1="100.94"
+          x2="58.95"
+          y2="100.94"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h5" x1="59.08" y1="100.98" x2="88.95" y2="100.98" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h5"
+          x1="59.08"
+          y1="100.98"
+          x2="88.95"
+          y2="100.98"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h6" x1="88.34" y1="69.15" x2="119.03" y2="69.15" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h6"
+          x1="88.34"
+          y1="69.15"
+          x2="119.03"
+          y2="69.15"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h7" x1="75.93" y1="36.49" x2="107.46" y2="36.49" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h7"
+          x1="75.93"
+          y1="36.49"
+          x2="107.46"
+          y2="36.49"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h8" x1="64.1" y1="108.68" x2="56.33" y2="122.15" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h8"
+          x1="64.1"
+          y1="108.68"
+          x2="56.33"
+          y2="122.15"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h9" x1="101.13" y1="87.55" x2="106.81" y2="102.03" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h9"
+          x1="101.13"
+          y1="87.55"
+          x2="106.81"
+          y2="102.03"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h10" x1="105.92" y1="45.84" x2="120.78" y2="50.42" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h10"
+          x1="105.92"
+          y1="45.84"
+          x2="120.78"
+          y2="50.42"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h11" x1="76.81" y1="15.94" x2="89.66" y2="7.17" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h11"
+          x1="76.81"
+          y1="15.94"
+          x2="89.66"
+          y2="7.17"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h12" x1="33.72" y1="19.98" x2="34.88" y2="4.47" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h12"
+          x1="33.72"
+          y1="19.98"
+          x2="34.88"
+          y2="4.47"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h13" x1="11.66" y1="54.78" x2="0.26" y2="44.2" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h13"
+          x1="11.66"
+          y1="54.78"
+          x2="0.26"
+          y2="44.2"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
-        <linearGradient id="h14" x1="25.39" y1="94.71" x2="10.01" y2="97.03" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="h14"
+          x1="25.39"
+          y1="94.71"
+          x2="10.01"
+          y2="97.03"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop stopColor="#E35930" />
           <stop offset="1" stopColor="#E84125" />
         </linearGradient>
@@ -222,7 +322,14 @@ function SolanaLogo() {
         fill="white"
       />
       <defs>
-        <linearGradient id="solGrad" x1="10.81" y1="98.29" x2="98.89" y2="-1.01" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="solGrad"
+          x1="10.81"
+          y1="98.29"
+          x2="98.89"
+          y2="-1.01"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop offset="0.08" stopColor="#9945FF" />
           <stop offset="0.3" stopColor="#8752F3" />
           <stop offset="0.5" stopColor="#5497D5" />
@@ -236,7 +343,15 @@ function SolanaLogo() {
 }
 
 // Icon component that renders SVG path
-function Icon({ name, size = 56, color = 'rgba(255,255,255,0.7)' }: { name: string; size?: number; color?: string }) {
+function Icon({
+  name,
+  size = 56,
+  color = 'rgba(255,255,255,0.7)',
+}: {
+  name: string;
+  size?: number;
+  color?: string;
+}) {
   const path = iconPaths[name] || iconPaths.code;
   return (
     <svg
@@ -263,7 +378,14 @@ function SolanaLogoMark() {
         fill="url(#solMarkGrad)"
       />
       <defs>
-        <linearGradient id="solMarkGrad" x1="8.52558" y1="90.0973" x2="88.9933" y2="-3.01622" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="solMarkGrad"
+          x1="8.52558"
+          y1="90.0973"
+          x2="88.9933"
+          y2="-3.01622"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop offset="0.08" stopColor="#9945FF" />
           <stop offset="0.3" stopColor="#8752F3" />
           <stop offset="0.5" stopColor="#5497D5" />

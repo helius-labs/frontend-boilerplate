@@ -27,8 +27,8 @@ export function LaserstreamDemo({ className }: LaserstreamDemoProps) {
         <div className="rounded-md bg-amber-500/10 border border-amber-500/20 p-4 mb-4">
           <p className="text-sm text-amber-600 dark:text-amber-400">
             <strong>Note:</strong> Laserstream requires a paid Helius Professional plan. Configure{' '}
-            <code className="bg-muted px-1 py-0.5 rounded text-xs">LASERSTREAM_API_KEY</code>{' '}
-            in your environment to enable this demo.
+            <code className="bg-muted px-1 py-0.5 rounded text-xs">LASERSTREAM_API_KEY</code> in
+            your environment to enable this demo.
           </p>
         </div>
 

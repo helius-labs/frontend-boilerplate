@@ -35,9 +35,7 @@ export function BlockDisplay({ block, slot, isLoading, error }: BlockDisplayProp
     );
   }
 
-  const blockTime = block.blockTime
-    ? new Date(block.blockTime * 1000).toLocaleString()
-    : 'Unknown';
+  const blockTime = block.blockTime ? new Date(block.blockTime * 1000).toLocaleString() : 'Unknown';
 
   return (
     <div className="space-y-6">
@@ -65,10 +63,7 @@ export function BlockDisplay({ block, slot, isLoading, error }: BlockDisplayProp
         <InfoCard label="Blockhash" value={block.blockhash} mono truncate />
         <InfoCard label="Previous Blockhash" value={block.previousBlockhash} mono truncate />
         <InfoCard label="Parent Slot" value={block.parentSlot.toLocaleString()} />
-        <InfoCard
-          label="Block Height"
-          value={block.blockHeight?.toLocaleString() ?? 'N/A'}
-        />
+        <InfoCard label="Block Height" value={block.blockHeight?.toLocaleString() ?? 'N/A'} />
         <InfoCard label="Transactions" value={(block.transactions?.length ?? 0).toLocaleString()} />
         <InfoCard label="Rewards" value={(block.rewards?.length ?? 0).toLocaleString()} />
       </div>
@@ -78,8 +73,8 @@ export function BlockDisplay({ block, slot, isLoading, error }: BlockDisplayProp
         <div className="p-4 bg-solana-purple/10 border border-solana-purple/20 rounded-lg">
           <p className="font-medium text-solana-purple">Genesis Block</p>
           <p className="text-sm text-muted-foreground mt-1">
-            This is the very first block of the Solana blockchain, created at network launch.
-            It contains the initial validator setup and system configuration.
+            This is the very first block of the Solana blockchain, created at network launch. It
+            contains the initial validator setup and system configuration.
           </p>
         </div>
       )}
@@ -131,11 +126,7 @@ function InfoCard({
     <div className="p-3 bg-muted/50 rounded-lg">
       <p className="text-xs text-muted-foreground mb-1">{label}</p>
       <p
-        className={cn(
-          'text-sm font-medium',
-          mono && 'font-mono',
-          truncate && 'truncate'
-        )}
+        className={cn('text-sm font-medium', mono && 'font-mono', truncate && 'truncate')}
         title={truncate ? value : undefined}
       >
         {value}

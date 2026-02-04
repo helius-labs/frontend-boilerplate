@@ -8,7 +8,9 @@ import { Button } from '@/shared/ui/button';
 
 export function InteractiveFungibleToken({
   defaultMintAddress = '',
-}: { defaultMintAddress?: string }) {
+}: {
+  defaultMintAddress?: string;
+}) {
   const [mintAddress, setMintAddress] = useState(defaultMintAddress);
   const [submitted, setSubmitted] = useState(!!defaultMintAddress);
   const { data, isLoading, error } = useAsset({
