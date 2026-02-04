@@ -75,7 +75,7 @@ export function Header({ className }: { className?: string }) {
 
           {/* GitHub link */}
           <Link
-            href="https://github.com"
+            href="https://github.com/helius-labs/frontend-boilerplate"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
