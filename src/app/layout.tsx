@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Providers } from '@/providers';
 import { JsonLdMultiple, getOrganizationJsonLd, getWebSiteJsonLd } from '@/shared/lib/json-ld';
 import { LayoutShell } from '@/shared/ui/layout-shell';
@@ -56,6 +57,7 @@ export default function RootLayout({
           </Providers>
         </ThemeProvider>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
