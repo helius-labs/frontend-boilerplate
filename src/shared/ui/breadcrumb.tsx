@@ -6,12 +6,15 @@ import { usePathname } from 'next/navigation';
 // Map paths to readable labels
 const pathLabels: Record<string, string> = {
   methods: 'Methods',
+  'phantom-connect': 'Phantom Connect',
+  integration: 'Integration',
+  'connection-types': 'Connection Types',
+  'wallet-interactions': 'Wallet Interactions',
   'get-balances': 'Get Balances',
   'get-assets': 'Get Assets',
   'list-wallet-assets': 'List Wallet Assets',
   'get-transactions': 'Get Transactions',
   'program-info': 'Program Info',
-  'validator-staking': 'Validator Staking',
   laserstream: 'Laserstream',
   'archival-blocks': 'Historical Blocks',
   // get-balances sub-pages

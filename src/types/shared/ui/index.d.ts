@@ -1,7 +1,7 @@
 // Types for shared UI components
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'solana' | 'outline' | 'ghost' | 'header' | 'destructive' | null;
+  variant?: 'default' | 'solana' | 'outline' | 'ghost' | 'link' | 'header' | 'destructive' | null;
   size?: 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm' | null;
   asChild?: boolean;
   className?: string;

@@ -6,26 +6,46 @@ import { useEffect, useState } from 'react';
 import {
   AddressType,
   useAccounts,
+  useConnect,
   useDisconnect,
+  useDiscoveredWallets,
+  useModal,
   usePhantom,
 } from '@phantom/react-sdk';
+
+/** Connector ID for a discovered wallet */
+export type WalletConnectorId = string;
+
+/** Wallet connector info */
+export interface WalletConnector {
+  id: WalletConnectorId;
+  name: string;
+  icon?: string;
+  ready: boolean;
+}
 
 /**
  * Hook for wallet connection state and actions.
  * Wraps Phantom SDK's hooks with a simpler interface.
  *
- * Auto-connect is handled by the SDK configuration.
- * Use the ConnectButton component or useModal().open() to connect.
- *
  * @example
- * const { isConnected, address, disconnect } = useWallet();
- * if (isConnected) {
- *   console.log(`Connected: ${address}`);
+ * const { isConnected, address, connect, disconnect, connectors } = useWallet();
+ *
+ * // Connect via modal (shows all options)
+ * await connect();
+ *
+ * // Connect to a specific wallet
+ * const phantom = connectors.find(c => c.name.includes('Phantom'));
+ * if (phantom?.ready) {
+ *   await connect(phantom.id);
  * }
  */
 export function useWallet(): WalletState {
   const { isConnected, isLoading, isConnecting } = usePhantom();
   const { disconnect: disconnectWallet } = useDisconnect();
+  const { connect: connectWallet } = useConnect();
+  const { open: openModal } = useModal();
+  const { wallets: discoveredWallets } = useDiscoveredWallets();
   const accounts = useAccounts();
 
   const [mounted, setMounted] = useState(false);
@@ -43,7 +63,41 @@ export function useWallet(): WalletState {
   // Show reconnecting state while SDK is loading and we expect a connection
   const isReconnecting = isLoading && mounted;
 
+  // Map discovered wallets to connector format
+  const connectors: WalletConnector[] = (discoveredWallets ?? []).map((wallet) => ({
+    id: wallet.id,
+    name: wallet.name,
+    icon: wallet.icon,
+    ready: true,
+  }));
+
   return {
+    connectors,
+    connect: async (connectorId?: WalletConnectorId) => {
+      // For modal-based connection (no specific wallet), open the modal
+      if (!connectorId) {
+        openModal();
+        return;
+      }
+
+      // Find the wallet to check if it's Phantom
+      const wallet = connectors.find((w) => w.id === connectorId);
+      const isPhantom = wallet?.name.toLowerCase().includes('phantom');
+
+      // Phantom connects via its injected provider, other wallets need walletId
+      if (isPhantom) {
+        // Connect directly to Phantom extension
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window.phantom is injected by browser extension
+        const phantom = (window as any).phantom?.solana;
+        if (phantom?.isPhantom) {
+          await phantom.connect();
+        } else {
+          openModal(); // Fallback to modal if extension not found
+        }
+      } else {
+        await connectWallet({ provider: 'injected', walletId: connectorId });
+      }
+    },
     disconnect: async () => {
       await disconnectWallet();
     },

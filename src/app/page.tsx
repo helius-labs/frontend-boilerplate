@@ -9,15 +9,16 @@ import { ExternalLink, Link } from '@/shared/ui/link';
 
 // Method data for both rendering and JSON-LD
 const METHODS = [
+  // FIRST - Phantom Connect (joint venture priority)
+  {
+    href: '/phantom-connect',
+    title: 'How to integrate a Wallet Connector',
+    description: 'Integrate Phantom Connect, handle social logins, sign transactions',
+  },
   {
     href: '/get-balances',
     title: 'How to get wallet balance',
     description: 'Fetch SOL balance, all tokens, or a specific SPL token for any address',
-  },
-  {
-    href: '/get-assets',
-    title: 'How to get NFT metadata',
-    description: 'Look up images, attributes, prices for NFTs, tokens, and cNFTs',
   },
   {
     href: '/list-wallet-assets',
@@ -30,14 +31,14 @@ const METHODS = [
     description: 'Fetch recent activity, filter by type, or paginate full history',
   },
   {
+    href: '/get-assets',
+    title: 'How to get NFT metadata',
+    description: 'Look up images, attributes, prices for NFTs, tokens, and cNFTs',
+  },
+  {
     href: '/program-info',
     title: 'How to inspect a program',
     description: 'Check upgrade authority, fetch IDL, view program metadata',
-  },
-  {
-    href: '/validator-staking',
-    title: 'How to stake SOL',
-    description: 'Fetch validators, build stake transactions, sign with Phantom',
   },
   {
     href: '/laserstream',

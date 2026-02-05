@@ -107,11 +107,12 @@ export function WalletDropdown({ className = '' }: { className?: string }) {
             <p className="text-xs text-muted-foreground mb-1">Wallet address</p>
             <div className="flex items-start gap-2">
               <p className="font-mono text-xs break-all flex-1">{address}</p>
-              <button
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={handleCopy}
                 className={cn(
-                  'shrink-0 p-1 rounded transition-colors',
-                  'hover:bg-muted',
+                  'size-6 shrink-0',
                   copied ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'
                 )}
                 aria-label={copied ? 'Copied' : 'Copy address'}
@@ -141,7 +142,7 @@ export function WalletDropdown({ className = '' }: { className?: string }) {
                     />
                   </svg>
                 )}
-              </button>
+              </Button>
             </div>
           </div>
 

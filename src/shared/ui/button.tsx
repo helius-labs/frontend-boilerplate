@@ -24,6 +24,8 @@ const buttonVariants = cva(
           'hover:bg-accent hover:text-accent-foreground'
         ),
         ghost: cn('hover:bg-accent hover:text-accent-foreground'),
+        // Link-style button (transparent, looks like a text link)
+        link: cn('text-primary hover:underline'),
         // Header-style button (works on both light and dark backgrounds)
         header: cn(
           'border border-white/20 bg-white/10 text-white',

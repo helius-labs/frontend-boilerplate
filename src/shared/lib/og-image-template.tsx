@@ -46,6 +46,11 @@ const iconPaths: Record<string, string> = {
   filter: 'M22 3H2l8 9.46V19l4 2v-8.54z',
   'book-open':
     'M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z',
+  link: 'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71 M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71',
+  'hand-coins':
+    'M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17 M7 21l1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9 M2 16l6 6 M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 16 4a2.78 2.78 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z',
+  // Phantom wallet icon paths - rendered as a custom SVG
+  phantom: 'phantom-custom',
 };
 
 // Helius logo as inline SVG component
@@ -369,6 +374,15 @@ function Icon({
   );
 }
 
+// Phantom wallet icon
+function PhantomIcon({ size = 56 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 593 493" fill="#AB9FF2">
+      <path d="M70.0546 493C145.604 493 202.38 427.297 236.263 375.378C232.142 386.865 229.852 398.351 229.852 409.378C229.852 439.703 247.252 461.297 281.592 461.297C328.753 461.297 379.119 419.946 405.218 375.378C403.386 381.811 402.471 387.784 402.471 393.297C402.471 414.432 414.375 427.757 438.643 427.757C515.108 427.757 592.03 292.216 592.03 173.676C592.03 81.3243 545.327 0 428.112 0C222.069 0 0 251.784 0 414.432C0 478.297 34.3405 493 70.0546 493ZM357.141 163.568C357.141 140.595 369.962 124.514 388.734 124.514C407.049 124.514 419.87 140.595 419.87 163.568C419.87 186.541 407.049 203.081 388.734 203.081C369.962 203.081 357.141 186.541 357.141 163.568ZM455.126 163.568C455.126 140.595 467.947 124.514 486.719 124.514C505.034 124.514 517.855 140.595 517.855 163.568C517.855 186.541 505.034 203.081 486.719 203.081C467.947 203.081 455.126 186.541 455.126 163.568Z" />
+    </svg>
+  );
+}
+
 // Solana logo mark (the gradient S icon)
 function SolanaLogoMark() {
   return (
@@ -458,7 +472,13 @@ export function createOgImage({ title, description, icon = 'code' }: OgImageOpti
             backgroundColor: 'rgba(153, 69, 255, 0.2)',
           }}
         >
-          {icon === 'solana' ? <SolanaLogoMark /> : <Icon name={icon} size={56} color="#9945FF" />}
+          {icon === 'solana' ? (
+            <SolanaLogoMark />
+          ) : icon === 'phantom' ? (
+            <PhantomIcon size={56} />
+          ) : (
+            <Icon name={icon} size={56} color="#9945FF" />
+          )}
         </div>
 
         {/* Title */}

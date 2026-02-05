@@ -23,8 +23,11 @@ const routes = [
   'get-transactions/recent',
   'get-transactions/paginated',
   'get-transactions/by-type',
+  'phantom-connect',
+  'phantom-connect/integration',
+  'phantom-connect/connection-types',
+  'phantom-connect/wallet-interactions',
   'program-info',
-  'validator-staking',
   'laserstream',
   'archival-blocks',
 ] as const;
