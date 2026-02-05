@@ -9,6 +9,6 @@ export default async function Image() {
   return createOgImage({
     title: 'Wallet Interactions',
     description: 'Sign messages and send transactions with Phantom',
-    icon: 'hand-coins',
+    icon: 'layers',
   });
 }
