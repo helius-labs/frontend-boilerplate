@@ -80,23 +80,8 @@ export function useWallet(): WalletState {
         return;
       }
 
-      // Find the wallet to check if it's Phantom
-      const wallet = connectors.find((w) => w.id === connectorId);
-      const isPhantom = wallet?.name.toLowerCase().includes('phantom');
-
-      // Phantom connects via its injected provider, other wallets need walletId
-      if (isPhantom) {
-        // Connect directly to Phantom extension
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- window.phantom is injected by browser extension
-        const phantom = (window as any).phantom?.solana;
-        if (phantom?.isPhantom) {
-          await phantom.connect();
-        } else {
-          openModal(); // Fallback to modal if extension not found
-        }
-      } else {
-        await connectWallet({ provider: 'injected', walletId: connectorId });
-      }
+      // Connect via the SDK for all wallets - this ensures state is properly tracked
+      await connectWallet({ provider: 'injected', walletId: connectorId });
     },
     disconnect: async () => {
       await disconnectWallet();
