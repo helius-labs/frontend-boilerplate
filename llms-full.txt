@@ -38,9 +38,9 @@ This is a production-ready Next.js application demonstrating how to build Solana
 | React | React 19.x | With React Compiler |
 | Language | TypeScript 5.x | Strict mode |
 | Styling | Tailwind CSS 4.x | With tailwind-merge |
-| Solana SDK | @solana/kit 5.x | Modern, tree-shakeable (NOT web3.js 1.x) |
+| Solana SDK | @solana/kit 6.x | Modern, tree-shakeable (NOT web3.js 1.x) |
 | RPC Provider | Helius SDK 2.x | Enhanced APIs + standard RPC |
-| Wallet | @solana-program/connectorkit | Phantom Connect integration |
+| Wallet | @phantom/react-sdk | Phantom Connect with social login |
 | Data Fetching | SWR 2.x | With deduplication |
 | UI Components | shadcn/ui | Radix primitives + Tailwind |
 | Icons | Lucide React | Consistent icon set |
@@ -355,8 +355,8 @@ const response = await fetch('/api/helius/enhanced', {
 
 ```json
 {
-  "@solana/kit": "^5.5.1",
-  "@solana-program/connectorkit": "latest",
+  "@solana/kit": "^6.0.0",
+  "@phantom/react-sdk": "^1.0.0",
   "helius-sdk": "^2.1.0",
   "swr": "^2.4.0",
   "next": "^16.1.6",

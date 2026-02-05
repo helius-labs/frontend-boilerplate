@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { Providers } from '@/providers';
 import { JsonLdMultiple, getOrganizationJsonLd, getWebSiteJsonLd } from '@/shared/lib/json-ld';
 import { LayoutShell } from '@/shared/ui/layout-shell';
@@ -54,6 +55,7 @@ export default function RootLayout({
             <LayoutShell>{children}</LayoutShell>
           </Providers>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );

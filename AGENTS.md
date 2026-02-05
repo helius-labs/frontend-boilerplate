@@ -146,9 +146,9 @@ LASERSTREAM_API_KEY=xxx # Optional - Real-time streaming (paid)
 
 | Purpose | Library | Notes |
 |---------|---------|-------|
-| Solana SDK | @solana/kit | Modern, tree-shakeable (NOT web3.js 1.x) |
+| Solana SDK | @solana/kit 6.x | Modern, tree-shakeable (NOT web3.js 1.x) |
 | RPC | Helius SDK | Use HeliusClient directly |
-| Wallet | @solana-program/connectorkit | Phantom Connect integration |
+| Wallet | @phantom/react-sdk | Phantom Connect with social login |
 | Data fetching | SWR | With 5-10s dedupingInterval |
 | UI components | shadcn/ui | Radix primitives + Tailwind |
 | Class composition | clsx + tailwind-merge | Via cn() utility |

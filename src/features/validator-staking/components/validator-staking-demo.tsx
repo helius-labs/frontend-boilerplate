@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useWallet } from '@/shared/hooks/use-wallet';
 import { Button } from '@/shared/ui/button';
+import { ConnectButton } from '@/shared/ui/connect-button';
 import { useStakeTransaction } from '../hooks/use-stake-transaction';
 import { StakeForm } from './stake-form';
 import { TransactionPreview } from './transaction-preview';
@@ -11,7 +12,7 @@ import { ValidatorDetails } from './validator-details';
 import { ValidatorList } from './validator-list';
 
 export function ValidatorStakingDemo() {
-  const { address, isConnected, connect, connectors } = useWallet();
+  const { address, isConnected } = useWallet();
 
   const [step, setStep] = useState<DemoStep>('list');
   const [selectedValidator, setSelectedValidator] = useState<ValidatorInfo | null>(null);
@@ -99,19 +100,13 @@ export function ValidatorStakingDemo() {
 
   // Not connected state
   if (!isConnected) {
-    const phantomConnector = connectors.find((c) => c.name.toLowerCase().includes('phantom'));
-
     return (
       <div className={cn('p-8 text-center rounded-lg', 'border bg-muted/50')}>
         <p className="text-lg font-medium">Connect Wallet to Stake</p>
         <p className="text-muted-foreground mt-2">
-          Connect your Phantom wallet to view validators and stake SOL.
+          Connect your wallet to view validators and stake SOL.
         </p>
-        {phantomConnector?.ready && (
-          <Button onClick={() => connect(phantomConnector.id)} variant="solana" className="mt-4">
-            Connect Phantom
-          </Button>
-        )}
+        <ConnectButton className="mt-4" />
       </div>
     );
   }

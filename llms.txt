@@ -15,9 +15,9 @@ This is a production-ready Next.js application demonstrating how to build Solana
 ## Tech Stack
 
 - **Framework:** Next.js 16+ (App Router, Turbopack, React 19)
-- **Solana SDK:** @solana/kit 5.x (modern, tree-shakeable - NOT @solana/web3.js 1.x)
+- **Solana SDK:** @solana/kit 6.x (modern, tree-shakeable - NOT @solana/web3.js 1.x)
 - **RPC Provider:** Helius SDK 2.x
-- **Wallet:** Phantom Connect via @solana-program/connectorkit
+- **Wallet:** Phantom Connect via @phantom/react-sdk
 - **Styling:** Tailwind CSS 4.x with shadcn/ui components
 - **State:** React Context + SWR for data fetching
 - **Language:** TypeScript 5.x
