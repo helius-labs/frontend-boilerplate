@@ -27,8 +27,8 @@ A production-ready Helius RPC showcase and clonable template for Solana develope
 | **Get Asset** | Single asset metadata (NFT, fungible, compressed NFT) | `/get-assets/*` |
 | **List Wallet Assets** | Enumerate all assets owned by a wallet | `/list-wallet-assets/*` |
 | **Get Transactions** | Transaction history with filtering and pagination | `/get-transactions/*` |
+| **Phantom Connect** | Wallet integration with social login, staking, and signing | `/phantom-connect/*` |
 | **Program Info** | Inspect programs, IDLs, and upgrade authority | `/program-info` |
-| **Validator Staking** | View validators and simulate stake transactions | `/validator-staking` |
 | **Archival Blocks** | Access historical block data by slot | `/archival-blocks` |
 | **Laserstream** | Real-time block streaming (requires paid plan) | `/laserstream` |
 
@@ -95,7 +95,8 @@ src/
 │   ├── get-asset/          # Single asset lookup
 │   ├── get-assets-by-owner/# Wallet asset enumeration
 │   ├── get-transactions/   # Transaction history
-│   ├── validator-staking/  # Validator & staking
+│   ├── phantom-connect/    # Wallet integration & code examples
+│   ├── validator-staking/  # Validator list & staking UI
 │   ├── program-info/       # Program inspection
 │   ├── archival-blocks/    # Historical blocks
 │   ├── laserstream/        # Real-time streaming

@@ -50,8 +50,8 @@ const developerLinks = [
   { name: 'Get Assets', href: '/get-assets' },
   { name: 'List Wallet Assets', href: '/list-wallet-assets' },
   { name: 'Get Transactions', href: '/get-transactions' },
+  { name: 'Phantom Connect', href: '/phantom-connect' },
   { name: 'Program Info', href: '/program-info' },
-  { name: 'Validator Staking', href: '/validator-staking' },
   { name: 'Laserstream', href: '/laserstream' },
   { name: 'Historical Blocks', href: '/archival-blocks' },
 ];

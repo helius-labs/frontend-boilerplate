@@ -4,17 +4,21 @@ export const PHANTOM_CONNECT_CODE_EXAMPLES: Record<string, CodeExample> = {
   // Integration page examples
   'provider-setup': {
     typescript: `// app/layout.tsx or _app.tsx
-import { PhantomProvider } from '@phantom/react-sdk';
+import { AddressType, PhantomProvider, darkTheme } from '@phantom/react-sdk';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <body>
         <PhantomProvider
-          appId="your-app-id" // Optional: get from Phantom developer dashboard
-          chain="solana:mainnet"
-          theme="dark"
-          autoConnect={true}
+          config={{
+            providers: ['google', 'apple', 'injected'], // Social login + wallet-standard
+            appId: process.env.NEXT_PUBLIC_PHANTOM_APP_ID || '',
+            addressTypes: [AddressType.solana],
+          }}
+          theme={darkTheme}
+          appName="My Solana App"
+          appIcon="https://example.com/icon.png" // Optional: your app icon
         >
           {children}
         </PhantomProvider>
@@ -125,8 +129,8 @@ function SocialLoginButtons() {
 
   const handleGoogleLogin = async () => {
     try {
-      // Opens OAuth flow for Google
-      await connect({ strategy: 'google' });
+      // Opens OAuth flow for Google - creates embedded wallet
+      await connect({ provider: 'google' });
     } catch (error) {
       console.error('Google login failed:', error);
     }
@@ -134,8 +138,8 @@ function SocialLoginButtons() {
 
   const handleAppleLogin = async () => {
     try {
-      // Opens OAuth flow for Apple
-      await connect({ strategy: 'apple' });
+      // Opens OAuth flow for Apple - creates embedded wallet
+      await connect({ provider: 'apple' });
     } catch (error) {
       console.error('Apple login failed:', error);
     }
@@ -165,13 +169,17 @@ function SocialLoginButtons() {
   },
 
   'wallet-standard': {
-    typescript: `import { useModal } from '@phantom/react-sdk';
+    typescript: `import { useModal, useDiscoveredWallets } from '@phantom/react-sdk';
 
 // Phantom Connect automatically detects wallet-standard wallets
 // Users can connect with Solflare, Backpack, Exodus, or any compatible wallet
 
 function MultiWalletConnect() {
   const { open } = useModal();
+  const { wallets } = useDiscoveredWallets();
+
+  // wallets contains all detected wallet-standard wallets
+  console.log('Detected wallets:', wallets?.map(w => w.name));
 
   // The modal automatically lists all available wallets
   return (
@@ -181,15 +189,16 @@ function MultiWalletConnect() {
   );
 }
 
-// For advanced control, configure providers in PhantomProvider:
-import { PhantomProvider } from '@phantom/react-sdk';
+// Enable wallet-standard detection via the 'injected' provider:
+import { AddressType, PhantomProvider, darkTheme } from '@phantom/react-sdk';
 
 <PhantomProvider
   config={{
     providers: ['google', 'apple', 'injected'], // Social + wallet-standard
-    appId: 'your-app-id',
-    addressTypes: ['solana'],
+    appId: process.env.NEXT_PUBLIC_PHANTOM_APP_ID || '',
+    addressTypes: [AddressType.solana],
   }}
+  theme={darkTheme}
 >
   {children}
 </PhantomProvider>
@@ -266,25 +275,32 @@ if (phantom?.ready) {
 
   // Wallet interactions page examples
   'sign-message': {
-    typescript: `import { usePhantom } from '@phantom/react-sdk';
+    typescript: `import { useSolana } from '@phantom/react-sdk';
 
-async function signMessage() {
-  const phantom = window.phantom?.solana;
-  if (!phantom) throw new Error('Phantom not found');
+function SignMessageButton() {
+  const { solana, isAvailable } = useSolana();
 
-  const message = 'Sign this message to verify your wallet';
-  const encodedMessage = new TextEncoder().encode(message);
+  const signMessage = async () => {
+    if (!isAvailable || !solana) {
+      throw new Error('Phantom not available');
+    }
 
-  const { signature, publicKey } = await phantom.signMessage(
-    encodedMessage,
-    'utf8'
-  );
+    const message = 'Sign this message to verify your wallet';
+    const encodedMessage = new TextEncoder().encode(message);
 
-  console.log('Signature:', signature);
-  console.log('Signed by:', publicKey.toString());
+    const { signature, publicKey } = await solana.signMessage(
+      encodedMessage,
+      'utf8'
+    );
 
-  // Verify on server with tweetnacl or @solana/web3.js
-  return { signature, publicKey: publicKey.toString() };
+    console.log('Signature:', signature);
+    console.log('Signed by:', publicKey.toString());
+
+    // Verify on server with tweetnacl or @solana/web3.js
+    return { signature, publicKey: publicKey.toString() };
+  };
+
+  return <button onClick={signMessage}>Sign Message</button>;
 }`,
 
     curl: `# Message signing is client-side only
@@ -301,40 +317,48 @@ const isValid = nacl.sign.detached.verify(
   },
 
   'sign-transaction': {
-    typescript: `import {
+    typescript: `import { useSolana } from '@phantom/react-sdk';
+import {
   Connection,
   PublicKey,
   SystemProgram,
   Transaction,
 } from '@solana/web3.js';
 
-async function sendSol(recipientAddress: string, amountSol: number) {
-  const phantom = window.phantom?.solana;
-  if (!phantom) throw new Error('Phantom not found');
+function SendSolButton({ recipient, amount }: { recipient: string; amount: number }) {
+  const { solana, isAvailable } = useSolana();
 
-  const connection = new Connection(
-    'https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY'
-  );
+  const sendSol = async () => {
+    if (!isAvailable || !solana?.publicKey) {
+      throw new Error('Wallet not connected');
+    }
 
-  // Build the transaction
-  const transaction = new Transaction().add(
-    SystemProgram.transfer({
-      fromPubkey: phantom.publicKey!,
-      toPubkey: new PublicKey(recipientAddress),
-      lamports: amountSol * 1e9, // Convert SOL to lamports
-    })
-  );
+    const connection = new Connection(
+      'https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY'
+    );
 
-  // Get recent blockhash
-  const { blockhash } = await connection.getLatestBlockhash();
-  transaction.recentBlockhash = blockhash;
-  transaction.feePayer = phantom.publicKey!;
+    // Build the transaction
+    const transaction = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey: solana.publicKey,
+        toPubkey: new PublicKey(recipient),
+        lamports: amount * 1e9, // Convert SOL to lamports
+      })
+    );
 
-  // Sign and send with Phantom
-  const { signature } = await phantom.signAndSendTransaction(transaction);
+    // Get recent blockhash
+    const { blockhash } = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = blockhash;
+    transaction.feePayer = solana.publicKey;
 
-  console.log('Transaction sent:', signature);
-  return signature;
+    // Sign and send via Phantom SDK
+    const { signature } = await solana.signAndSendTransaction(transaction);
+
+    console.log('Transaction sent:', signature);
+    return signature;
+  };
+
+  return <button onClick={sendSol}>Send {amount} SOL</button>;
 }`,
 
     curl: `# Build transaction on server, sign on client:

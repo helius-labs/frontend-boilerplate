@@ -11,7 +11,7 @@ This is a production-ready Next.js application demonstrating how to build Solana
 ### Features
 
 - 8 interactive RPC method demos with real mainnet data
-- Phantom wallet integration with connection state persistence
+- Phantom Connect wallet integration with social login (Google, Apple) and extension support
 - Copy-paste TypeScript and cURL code examples for all methods
 - Dark/light mode theming with system preference detection
 - Server-side API key protection via proxy routes
@@ -23,8 +23,8 @@ This is a production-ready Next.js application demonstrating how to build Solana
 2. **Get Assets** - Fetch token/NFT metadata by mint address
 3. **List Wallet Assets** - Portfolio view using getAssetsByOwner
 4. **Get Transactions** - Transaction history with filtering
-5. **Program Info** - Lookup program account data and IDL
-6. **Validator Staking** - Real-time validator selection and staking
+5. **Phantom Connect** - Wallet integration, social login, message signing, staking
+6. **Program Info** - Lookup program account data and IDL
 7. **Laserstream** - Real-time block streaming via WebSocket
 8. **Archival Blocks** - Historical block data lookup
 
@@ -63,8 +63,8 @@ frontend-boilerplate/
 │   │   │   ├── get-assets/           # Asset metadata pages
 │   │   │   ├── list-wallet-assets/   # Portfolio view pages
 │   │   │   ├── get-transactions/     # Transaction history pages
+│   │   │   ├── phantom-connect/      # Wallet integration pages
 │   │   │   ├── program-info/         # Program lookup pages
-│   │   │   ├── validator-staking/    # Staking interface pages
 │   │   │   ├── laserstream/          # Real-time streaming page
 │   │   │   └── archival-blocks/      # Block history page
 │   │   ├── api/
@@ -82,8 +82,10 @@ frontend-boilerplate/
 │   │   ├── get-asset/                # Asset feature logic
 │   │   ├── get-assets-by-owner/      # Portfolio feature logic
 │   │   ├── get-transactions/         # Transactions feature logic
+│   │   ├── phantom-connect/          # Wallet integration & code examples
+│   │   ├── validator-staking/        # Validator list & staking UI
 │   │   ├── program-info/             # Program info feature logic
-│   │   ├── validator-staking/        # Staking feature logic
+│   │   ├── archival-blocks/          # Historical block data
 │   │   └── laserstream/              # Streaming feature logic
 │   │
 │   ├── shared/

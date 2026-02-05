@@ -7,7 +7,7 @@
 This is a production-ready Next.js application demonstrating how to build Solana dApps using Helius RPC. It includes:
 
 - 8 interactive RPC method demos with real mainnet data
-- Phantom wallet integration with connection state persistence
+- Phantom Connect wallet integration with social login (Google, Apple) and extension support
 - Copy-paste TypeScript and cURL code examples
 - Dark/light mode theming
 - Server-side API key protection via proxy routes

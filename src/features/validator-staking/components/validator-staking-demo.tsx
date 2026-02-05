@@ -170,7 +170,7 @@ export function ValidatorStakingDemo() {
     case 'success':
       return (
         <div className={cn('p-8 text-center rounded-lg', 'border bg-green-500/10')}>
-          <div className="text-4xl mb-4">Done</div>
+          <div className="text-4xl mb-4">✓</div>
           <h3 className="text-xl font-semibold text-green-600 dark:text-green-400">
             Stake Submitted!
           </h3>
@@ -179,13 +179,20 @@ export function ValidatorStakingDemo() {
             epochs).
           </p>
           {stakeTransaction.transactionSignature && (
-            <p className="text-sm mt-4 font-mono">
-              Signature: {stakeTransaction.transactionSignature.slice(0, 20)}...
-            </p>
+            <a
+              href={`https://orbmarkets.io/tx/${stakeTransaction.transactionSignature}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-4 text-sm font-mono text-primary hover:underline"
+            >
+              View transaction →
+            </a>
           )}
-          <Button onClick={handleReset} variant="solana" className="mt-6 px-6 py-2 rounded-lg">
-            Stake More
-          </Button>
+          <div>
+            <Button onClick={handleReset} variant="solana" className="mt-6 px-6 py-2 rounded-lg">
+              Stake More
+            </Button>
+          </div>
         </div>
       );
 

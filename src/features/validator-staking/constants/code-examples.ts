@@ -29,55 +29,56 @@ curl https://api.stakewiz.com/validator/<VOTE_PUBKEY>`,
   },
 
   'stake-sol': {
-    typescript: `import { Keypair, PublicKey, StakeProgram, Transaction } from '@solana/web3.js';
+    typescript: `import { useSolana } from '@phantom/react-sdk';
+import { Keypair, PublicKey, StakeProgram, Transaction } from '@solana/web3.js';
 
-// Connect to Phantom wallet
-const provider = window.phantom?.solana;
-if (!provider?.isPhantom) throw new Error('Phantom not installed');
+function StakeButton({ validator, amount }: { validator: string; amount: number }) {
+  const { solana, isAvailable } = useSolana();
 
-await provider.connect();
-const walletPubkey = provider.publicKey;
+  const stake = async () => {
+    if (!isAvailable || !solana?.publicKey) {
+      throw new Error('Wallet not connected');
+    }
 
-// Create stake account keypair
-const stakeAccount = Keypair.generate();
-const validatorVotePubkey = new PublicKey('<VALIDATOR_VOTE_PUBKEY>');
-const amountLamports = 1_000_000_000; // 1 SOL
+    const walletPubkey = solana.publicKey;
+    const stakeAccount = Keypair.generate();
+    const validatorVotePubkey = new PublicKey(validator);
+    const amountLamports = amount * 1_000_000_000;
 
-// Get rent exemption and blockhash
-const response = await fetch('/api/rpc', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    method: 'getMinimumBalanceForRentExemption',
-    params: [200] // StakeAccount size
-  })
-});
-const rentExemption = (await response.json()).result;
+    // Get rent exemption (stake accounts need ~0.00228 SOL)
+    const rentExemption = 2282880; // Or fetch via RPC
 
-// Build stake transaction
-const transaction = new Transaction().add(
-  // Create stake account
-  StakeProgram.createAccount({
-    fromPubkey: walletPubkey,
-    stakePubkey: stakeAccount.publicKey,
-    authorized: {
-      staker: walletPubkey,
-      withdrawer: walletPubkey,
-    },
-    lamports: amountLamports + rentExemption,
-  }),
-  // Delegate to validator
-  StakeProgram.delegate({
-    stakePubkey: stakeAccount.publicKey,
-    authorizedPubkey: walletPubkey,
-    votePubkey: validatorVotePubkey,
-  })
-);
+    // Build stake transaction
+    const transaction = new Transaction().add(
+      // Create stake account
+      StakeProgram.createAccount({
+        fromPubkey: walletPubkey,
+        stakePubkey: stakeAccount.publicKey,
+        authorized: {
+          staker: walletPubkey,
+          withdrawer: walletPubkey,
+        },
+        lamports: amountLamports + rentExemption,
+      }),
+      // Delegate to validator
+      StakeProgram.delegate({
+        stakePubkey: stakeAccount.publicKey,
+        authorizedPubkey: walletPubkey,
+        votePubkey: validatorVotePubkey,
+      })
+    );
 
-// Sign with Phantom and stake account keypair
-transaction.partialSign(stakeAccount);
-const { signature } = await provider.signAndSendTransaction(transaction);
-console.log('Staked! Signature:', signature);`,
+    // Sign with stake account keypair first
+    transaction.partialSign(stakeAccount);
+
+    // Sign and send via Phantom SDK
+    const { signature } = await solana.signAndSendTransaction(transaction);
+    console.log('Staked! Signature:', signature);
+    return signature;
+  };
+
+  return <button onClick={stake}>Stake {amount} SOL</button>;
+}`,
 
     curl: `# Staking requires transaction signing via a wallet.
 # Use the Solana CLI for command-line staking:
