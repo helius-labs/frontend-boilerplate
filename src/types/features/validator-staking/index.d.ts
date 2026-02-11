@@ -38,7 +38,6 @@ interface StakeTransactionParams {
 
 interface StakeTransactionResult {
   transaction: Uint8Array;
-  stakeAccountKeypair: import('@solana/web3.js').Keypair;
   stakeAccountAddress: string;
   estimatedRentExemption: bigint;
 }

@@ -30,7 +30,14 @@ curl https://api.stakewiz.com/validator/<VOTE_PUBKEY>`,
 
   'stake-sol': {
     typescript: `import { useSolana } from '@phantom/react-sdk';
-import { Keypair, PublicKey, StakeProgram, Transaction } from '@solana/web3.js';
+import {
+  Connection,
+  PublicKey,
+  StakeProgram,
+  SystemProgram,
+  TransactionMessage,
+  VersionedTransaction,
+} from '@solana/web3.js';
 
 function StakeButton({ validator, amount }: { validator: string; amount: number }) {
   const { solana, isAvailable } = useSolana();
@@ -41,37 +48,53 @@ function StakeButton({ validator, amount }: { validator: string; amount: number 
     }
 
     const walletPubkey = solana.publicKey;
-    const stakeAccount = Keypair.generate();
     const validatorVotePubkey = new PublicKey(validator);
     const amountLamports = amount * 1_000_000_000;
+    const rentExemption = 2282880; // ~0.00228 SOL
 
-    // Get rent exemption (stake accounts need ~0.00228 SOL)
-    const rentExemption = 2282880; // Or fetch via RPC
-
-    // Build stake transaction
-    const transaction = new Transaction().add(
-      // Create stake account
-      StakeProgram.createAccount({
-        fromPubkey: walletPubkey,
-        stakePubkey: stakeAccount.publicKey,
-        authorized: {
-          staker: walletPubkey,
-          withdrawer: walletPubkey,
-        },
-        lamports: amountLamports + rentExemption,
-      }),
-      // Delegate to validator
-      StakeProgram.delegate({
-        stakePubkey: stakeAccount.publicKey,
-        authorizedPubkey: walletPubkey,
-        votePubkey: validatorVotePubkey,
-      })
+    // Derive stake account from wallet + seed (single-signer, no Keypair needed)
+    const seed = \`stake:\${Date.now().toString(36)}\`;
+    const stakeAccountPubkey = await PublicKey.createWithSeed(
+      walletPubkey, seed, StakeProgram.programId
     );
 
-    // Sign with stake account keypair first
-    transaction.partialSign(stakeAccount);
+    const connection = new Connection(
+      'https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY'
+    );
+    const { blockhash } = await connection.getLatestBlockhash();
 
-    // Sign and send via Phantom SDK
+    // Build instructions using createAccountWithSeed (only wallet signs)
+    const instructions = [
+      SystemProgram.createAccountWithSeed({
+        fromPubkey: walletPubkey,
+        newAccountPubkey: stakeAccountPubkey,
+        basePubkey: walletPubkey,
+        seed,
+        lamports: amountLamports + rentExemption,
+        space: 200,
+        programId: StakeProgram.programId,
+      }),
+      StakeProgram.initialize({
+        stakePubkey: stakeAccountPubkey,
+        authorized: { staker: walletPubkey, withdrawer: walletPubkey },
+      }),
+      ...StakeProgram.delegate({
+        stakePubkey: stakeAccountPubkey,
+        authorizedPubkey: walletPubkey,
+        votePubkey: validatorVotePubkey,
+      }).instructions,
+    ];
+
+    // Build VersionedTransaction (required by Phantom Connect SDK)
+    const messageV0 = new TransactionMessage({
+      payerKey: walletPubkey,
+      recentBlockhash: blockhash,
+      instructions,
+    }).compileToV0Message();
+
+    const transaction = new VersionedTransaction(messageV0);
+
+    // Sign and send via Phantom SDK (wallet is only signer)
     const { signature } = await solana.signAndSendTransaction(transaction);
     console.log('Staked! Signature:', signature);
     return signature;

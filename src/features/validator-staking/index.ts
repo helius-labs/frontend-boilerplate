@@ -14,8 +14,6 @@ export {
   validateStakeAmount,
   STAKE_ACCOUNT_RENT_EXEMPTION,
   SUGGESTED_MIN_STAKE,
-  bs58,
-  Keypair,
 } from './lib/build-stake-transaction';
 
 // Simulation

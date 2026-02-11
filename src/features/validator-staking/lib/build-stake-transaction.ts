@@ -1,7 +1,13 @@
 // Build stake delegation transaction (VALD-03)
 // Uses @solana/web3.js StakeProgram for real transaction building
-import { Keypair, PublicKey, StakeProgram, SystemProgram, Transaction } from '@solana/web3.js';
-import bs58 from 'bs58';
+// Uses createAccountWithSeed so only the wallet needs to sign (Phantom Connect compatible)
+import {
+  PublicKey,
+  StakeProgram,
+  SystemProgram,
+  TransactionMessage,
+  VersionedTransaction,
+} from '@solana/web3.js';
 
 // Rent exemption for stake account (constant on Solana)
 // This is the minimum balance required to keep a stake account rent-free
@@ -38,19 +44,34 @@ export function validateStakeAmount(
   };
 }
 
+/**
+ * Generate a unique seed for the stake account.
+ * Uses timestamp + random suffix to avoid collisions.
+ */
+function generateStakeSeed(): string {
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).substring(2, 6);
+  return `stake:${timestamp}${random}`;
+}
+
 export async function buildStakeTransaction(
   params: StakeTransactionParams
 ): Promise<StakeTransactionResult> {
   const { walletAddress, validatorVoteAccount, amountLamports } = params;
 
-  // Generate new stake account keypair
-  // IMPORTANT: Generate fresh keypair for each transaction attempt
-  const stakeAccountKeypair = Keypair.generate();
-  const stakeAccountAddress = stakeAccountKeypair.publicKey.toBase58();
-
-  // Convert addresses to PublicKey
   const walletPubkey = new PublicKey(walletAddress);
   const validatorPubkey = new PublicKey(validatorVoteAccount);
+
+  // Derive stake account address from wallet using a seed
+  // This means only the wallet needs to sign (no separate keypair)
+  // Compatible with Phantom Connect embedded wallets (Google/Apple login)
+  const seed = generateStakeSeed();
+  const stakeAccountPubkey = await PublicKey.createWithSeed(
+    walletPubkey,
+    seed,
+    StakeProgram.programId
+  );
+  const stakeAccountAddress = stakeAccountPubkey.toBase58();
 
   // Get latest blockhash for transaction
   const blockhashResponse = await fetch('/api/rpc', {
@@ -69,65 +90,54 @@ export async function buildStakeTransaction(
     );
   }
 
-  const { blockhash, lastValidBlockHeight } = blockhashData.result.value;
+  const { blockhash } = blockhashData.result.value;
 
   // Total lamports needed = stake amount + rent exemption
   const totalLamports = BigInt(amountLamports) + STAKE_ACCOUNT_RENT_EXEMPTION;
 
-  // Build transaction with 3 instructions
-  const transaction = new Transaction({
-    feePayer: walletPubkey,
-    blockhash,
-    lastValidBlockHeight,
-  });
-
-  // 1. Create stake account (owned by Stake Program)
-  transaction.add(
-    SystemProgram.createAccount({
+  // Build instructions using createAccountWithSeed (single-signer)
+  const instructions = [
+    // 1. Create stake account with seed (only wallet signs)
+    SystemProgram.createAccountWithSeed({
       fromPubkey: walletPubkey,
-      newAccountPubkey: stakeAccountKeypair.publicKey,
+      newAccountPubkey: stakeAccountPubkey,
+      basePubkey: walletPubkey,
+      seed,
       lamports: Number(totalLamports),
       space: 200, // Stake account data size
       programId: StakeProgram.programId,
-    })
-  );
-
-  // 2. Initialize stake account with authorities
-  transaction.add(
+    }),
+    // 2. Initialize stake account with authorities
     StakeProgram.initialize({
-      stakePubkey: stakeAccountKeypair.publicKey,
+      stakePubkey: stakeAccountPubkey,
       authorized: {
         staker: walletPubkey,
         withdrawer: walletPubkey,
       },
-    })
-  );
-
-  // 3. Delegate stake to validator
-  transaction.add(
-    StakeProgram.delegate({
-      stakePubkey: stakeAccountKeypair.publicKey,
+    }),
+    // 3. Delegate stake to validator
+    ...StakeProgram.delegate({
+      stakePubkey: stakeAccountPubkey,
       authorizedPubkey: walletPubkey,
       votePubkey: validatorPubkey,
-    })
-  );
+    }).instructions,
+  ];
 
-  // Partial sign with stake account keypair (wallet will sign later)
-  transaction.partialSign(stakeAccountKeypair);
+  // Build VersionedTransaction (required by Phantom Connect SDK)
+  const messageV0 = new TransactionMessage({
+    payerKey: walletPubkey,
+    recentBlockhash: blockhash,
+    instructions,
+  }).compileToV0Message();
 
-  // Serialize transaction (without wallet signature - wallet will sign)
-  const serializedTx = transaction.serialize({
-    requireAllSignatures: false,
-    verifySignatures: false,
-  });
+  const transaction = new VersionedTransaction(messageV0);
+
+  // No partial signing needed - only the wallet signs this transaction
+  const serializedTx = transaction.serialize();
 
   return {
     transaction: serializedTx,
-    stakeAccountKeypair,
     stakeAccountAddress,
     estimatedRentExemption: STAKE_ACCOUNT_RENT_EXEMPTION,
   };
 }
-
-// Re-export types/utils for other modules
-export { bs58, Keypair };

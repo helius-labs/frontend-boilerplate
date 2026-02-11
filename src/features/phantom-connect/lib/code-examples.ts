@@ -322,7 +322,8 @@ import {
   Connection,
   PublicKey,
   SystemProgram,
-  Transaction,
+  TransactionMessage,
+  VersionedTransaction,
 } from '@solana/web3.js';
 
 function SendSolButton({ recipient, amount }: { recipient: string; amount: number }) {
@@ -337,19 +338,23 @@ function SendSolButton({ recipient, amount }: { recipient: string; amount: numbe
       'https://mainnet.helius-rpc.com/?api-key=YOUR_API_KEY'
     );
 
-    // Build the transaction
-    const transaction = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: solana.publicKey,
-        toPubkey: new PublicKey(recipient),
-        lamports: amount * 1e9, // Convert SOL to lamports
-      })
-    );
-
     // Get recent blockhash
     const { blockhash } = await connection.getLatestBlockhash();
-    transaction.recentBlockhash = blockhash;
-    transaction.feePayer = solana.publicKey;
+
+    // Build VersionedTransaction (required by Phantom Connect SDK)
+    const messageV0 = new TransactionMessage({
+      payerKey: solana.publicKey,
+      recentBlockhash: blockhash,
+      instructions: [
+        SystemProgram.transfer({
+          fromPubkey: solana.publicKey,
+          toPubkey: new PublicKey(recipient),
+          lamports: amount * 1e9, // Convert SOL to lamports
+        }),
+      ],
+    }).compileToV0Message();
+
+    const transaction = new VersionedTransaction(messageV0);
 
     // Sign and send via Phantom SDK
     const { signature } = await solana.signAndSendTransaction(transaction);

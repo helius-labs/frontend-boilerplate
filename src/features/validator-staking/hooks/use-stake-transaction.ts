@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from 'react';
 import { useSolana } from '@phantom/react-sdk';
-import { Transaction } from '@solana/web3.js';
+import { VersionedTransaction } from '@solana/web3.js';
 import {
   STAKE_ACCOUNT_RENT_EXEMPTION,
   SUGGESTED_MIN_STAKE,
@@ -149,8 +149,8 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     setStep('signing');
 
     try {
-      // Deserialize the transaction (it already has stake account signature)
-      const transaction = Transaction.from(builtTransactionRef.current);
+      // Deserialize the versioned transaction (single-signer: wallet only)
+      const transaction = VersionedTransaction.deserialize(builtTransactionRef.current);
 
       // Sign and send via Phantom SDK
       const { signature } = await solana.signAndSendTransaction(transaction);
