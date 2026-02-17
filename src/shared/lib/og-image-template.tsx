@@ -416,6 +416,7 @@ interface OgImageOptions {
   title: string;
   description: string;
   icon?: string;
+  iconColor?: string;
 }
 
 /**
@@ -423,7 +424,9 @@ interface OgImageOptions {
  * Features Helius logo (top-left), Solana logo (top-right),
  * centered icon with title and description.
  */
-export function createOgImage({ title, description, icon = 'code' }: OgImageOptions) {
+export function createOgImage({ title, description, icon = 'code', iconColor }: OgImageOptions) {
+  const color = iconColor || '#E84326';
+  const bgColor = iconColor ? `${iconColor}33` : 'rgba(232, 67, 38, 0.2)';
   return new ImageResponse(
     <div
       style={{
@@ -469,7 +472,7 @@ export function createOgImage({ title, description, icon = 'code' }: OgImageOpti
             width: 100,
             height: 100,
             borderRadius: 24,
-            backgroundColor: 'rgba(153, 69, 255, 0.2)',
+            backgroundColor: bgColor,
           }}
         >
           {icon === 'solana' ? (
@@ -477,7 +480,7 @@ export function createOgImage({ title, description, icon = 'code' }: OgImageOpti
           ) : icon === 'phantom' ? (
             <PhantomIcon size={56} />
           ) : (
-            <Icon name={icon} size={56} color="#9945FF" />
+            <Icon name={icon} size={56} color={color} />
           )}
         </div>
 

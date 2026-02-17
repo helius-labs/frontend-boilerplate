@@ -10,5 +10,6 @@ export default async function Image() {
     title: 'Phantom Connect',
     description: 'Wallet integration with social login support',
     icon: 'phantom',
+    iconColor: '#AB9FF2',
   });
 }
