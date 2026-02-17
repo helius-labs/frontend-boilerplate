@@ -78,7 +78,7 @@ export default function ProgramInfoPage() {
 
         {/* Code examples */}
         <section className="space-y-6 mb-8">
-          <h2 className="text-xl font-semibold">Copy the code</h2>
+          <h2 className="text-xl">Copy the code</h2>
           <p className="text-muted-foreground text-sm">
             These snippets show exactly how to inspect programs. Paste them into your project.
           </p>

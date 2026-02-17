@@ -75,11 +75,8 @@ export default function HomePage() {
                 Copy-Paste Solana Code
               </span>
             </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              How to{' '}
-              <span className="bg-gradient-to-r from-helius-orange-light to-helius-orange bg-clip-text text-transparent">
-                build on Solana
-              </span>
+            <h1 className="text-4xl tracking-tight sm:text-5xl lg:text-6xl">
+              How to build on Solana
               <br />
               with working examples
             </h1>
@@ -129,7 +126,7 @@ export default function HomePage() {
           {/* Features grid */}
           <section className="space-y-8">
             <div className="text-center">
-              <h2 className="text-4xl font-bold">Why builders use this</h2>
+              <h2 className="text-4xl">Why builders use this</h2>
               <p className="text-muted-foreground mt-2">
                 Skip the docs rabbit hole. Get working code in seconds.
               </p>
@@ -171,7 +168,7 @@ export default function HomePage() {
           {/* Method cards */}
           <section id="methods" className="space-y-8 scroll-mt-20 pt-8">
             <div className="text-center">
-              <h2 className="text-4xl font-bold">Find what you need</h2>
+              <h2 className="text-4xl">Find what you need</h2>
               <p className="text-muted-foreground mt-2">
                 Common questions, answered with code. Click to see examples.
               </p>
@@ -187,7 +184,7 @@ export default function HomePage() {
           <section className="text-center pb-12">
             <div className="border-beam inline-block">
               <div className="relative z-10 bg-card/80 backdrop-blur-sm rounded-2xl p-8 md:p-12">
-                <h2 className="text-4xl font-bold mb-3">Why Helius?</h2>
+                <h2 className="text-4xl mb-3">Why Helius?</h2>
                 <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                   Fastest RPCs. DAS API for NFTs. Enhanced transactions. Webhooks. One API key
                   unlocks everything you need for production Solana apps.
@@ -298,7 +295,7 @@ function FeatureCard({
       <div className="mb-4 inline-flex items-center justify-center size-12 rounded-lg bg-helius-orange/20 text-helius-orange">
         {icons[icon]}
       </div>
-      <h3 className="font-semibold mb-2">{title}</h3>
+      <h3 className="mb-2">{title}</h3>
       <p className="text-sm text-muted-foreground">{description}</p>
     </div>
   );
@@ -336,7 +333,7 @@ function MethodCard({
       )}
     >
       <div>
-        <h3 className="text-lg font-semibold text-foreground group-hover:text-helius-orange transition-colors">
+        <h3 className="text-lg text-foreground group-hover:text-helius-orange transition-colors">
           {title}
         </h3>
         <p className="text-sm text-muted-foreground mt-1">{description}</p>

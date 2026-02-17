@@ -27,7 +27,7 @@ export function NftMetadataDisplay({ asset, className }: NftMetadataDisplayProps
         {/* Details */}
         <div className="flex-1 space-y-3">
           <div>
-            <h3 className="text-xl font-semibold">{metadata?.name || 'Unnamed NFT'}</h3>
+            <h3 className="text-xl">{metadata?.name || 'Unnamed NFT'}</h3>
             {collection && (
               <p className="text-sm text-muted-foreground">
                 {collection.collection_metadata?.name || 'Unknown Collection'}

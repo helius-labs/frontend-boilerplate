@@ -8,7 +8,7 @@ import type { FAQItem } from '@/shared/lib/json-ld';
 export function FAQ({ items, className }: { items: FAQItem[]; className?: string }) {
   return (
     <section className={cn('space-y-3', className)}>
-      <h2 className="text-xl font-semibold mb-4">Frequently Asked Questions</h2>
+      <h2 className="text-xl mb-4">Frequently Asked Questions</h2>
       <div className="space-y-2">
         {items.map((item, index) => (
           <details

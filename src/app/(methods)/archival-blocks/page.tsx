@@ -66,7 +66,7 @@ export default function ArchivalBlocksPage() {
 
         {/* Why archival matters */}
         <div className="mb-8 p-4 bg-helius-orange/10 border border-helius-orange/20 rounded-lg">
-          <h2 className="font-semibold mb-2">Why is archival data rare?</h2>
+          <h2 className="mb-2">Why is archival data rare?</h2>
           <p className="text-sm text-muted-foreground">
             Most Solana RPC nodes only store recent data (last few days). Archival nodes store the
             complete blockchain history since genesis, but they require significant storage and are
@@ -84,7 +84,7 @@ export default function ArchivalBlocksPage() {
 
         {/* Code examples */}
         <section className="space-y-6 mb-8">
-          <h2 className="text-xl font-semibold">Copy the code</h2>
+          <h2 className="text-xl">Copy the code</h2>
           <p className="text-muted-foreground text-sm">
             These snippets show how to fetch historical blocks. Paste them into your project.
           </p>

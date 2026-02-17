@@ -171,7 +171,7 @@ export function ValidatorStakingDemo() {
       return (
         <div className={cn('p-8 text-center rounded-lg', 'border bg-green-500/10')}>
           <div className="text-4xl mb-4">✓</div>
-          <h3 className="text-xl font-semibold text-green-600 dark:text-green-400">
+          <h3 className="text-xl text-green-600 dark:text-green-400">
             Stake Submitted!
           </h3>
           <p className="text-muted-foreground mt-2">
@@ -199,7 +199,7 @@ export function ValidatorStakingDemo() {
     case 'error':
       return (
         <div className={cn('p-8 text-center rounded-lg', 'border bg-destructive/10')}>
-          <h3 className="text-xl font-semibold text-destructive">Transaction Failed</h3>
+          <h3 className="text-xl text-destructive">Transaction Failed</h3>
           <p className="text-muted-foreground mt-2">
             {stakeTransaction.error?.message || 'Something went wrong'}
           </p>

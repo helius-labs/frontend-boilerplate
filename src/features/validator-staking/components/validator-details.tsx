@@ -43,7 +43,7 @@ export function ValidatorDetails({ votePubkey, onClose, onStake }: ValidatorDeta
             <div className="size-12 rounded-full bg-muted shrink-0" />
           )}
           <div>
-            <h3 className="text-lg font-semibold">{validator.name || 'Unknown Validator'}</h3>
+            <h3 className="text-lg">{validator.name || 'Unknown Validator'}</h3>
             <p className="text-sm text-muted-foreground font-mono">
               {validator.votePubkey.slice(0, 16)}...
             </p>

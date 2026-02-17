@@ -44,7 +44,7 @@ export function FungibleTokenDisplay({ asset, className }: FungibleTokenDisplayP
         )}
 
         <div className="flex-1">
-          <h3 className="text-xl font-semibold">{metadata?.name || 'Unknown Token'}</h3>
+          <h3 className="text-xl">{metadata?.name || 'Unknown Token'}</h3>
           <p className="text-muted-foreground">{metadata?.symbol || '???'}</p>
         </div>
 

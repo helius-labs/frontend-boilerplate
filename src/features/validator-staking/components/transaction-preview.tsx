@@ -15,7 +15,7 @@ export function TransactionPreview({
     <div className="p-4 md:p-6 bg-card border rounded-lg space-y-6">
       <div className="flex justify-between items-start">
         <div>
-          <h3 className="text-lg font-semibold">Transaction Preview</h3>
+          <h3 className="text-lg">Transaction Preview</h3>
           <p className="text-sm text-muted-foreground">Review before signing</p>
         </div>
         <Button

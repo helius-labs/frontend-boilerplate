@@ -28,7 +28,7 @@ export function CompressedNftDisplay({ asset, className }: CompressedNftDisplayP
         {/* Details */}
         <div className="flex-1 space-y-3">
           <div>
-            <h3 className="text-xl font-semibold">{metadata?.name || 'Unnamed cNFT'}</h3>
+            <h3 className="text-xl">{metadata?.name || 'Unnamed cNFT'}</h3>
             <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500/10 text-blue-500 text-xs font-medium rounded-full mt-1">
               <svg className="size-3" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM5 10a5 5 0 1110 0 5 5 0 01-10 0z" />

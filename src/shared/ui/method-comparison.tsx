@@ -13,7 +13,7 @@ export function MethodComparison({ title, description, items, className }: Metho
         className
       )}
     >
-      <h2 className="text-xl font-semibold mb-4 text-foreground">{title}</h2>
+      <h2 className="text-xl mb-4 text-foreground">{title}</h2>
       {(description || items.length > 0) && (
         <div className="space-y-4 text-muted-foreground">
           {description && <p>{description}</p>}

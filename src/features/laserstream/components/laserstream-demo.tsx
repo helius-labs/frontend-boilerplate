@@ -17,7 +17,7 @@ export function LaserstreamDemo({ className }: LaserstreamDemoProps) {
   if (!isConfigured) {
     return (
       <div className={cn('rounded-lg border border-border p-4 md:p-6 bg-muted/50', className)}>
-        <h3 className="text-lg font-semibold mb-2">Laserstream Demo</h3>
+        <h3 className="text-lg mb-2">Laserstream Demo</h3>
         <p className="text-muted-foreground mb-4">
           Laserstream provides real-time block streaming for high-performance Solana applications
           with sub-50ms latency.
@@ -84,7 +84,7 @@ export function LaserstreamDemo({ className }: LaserstreamDemoProps) {
     <div className={cn('rounded-lg border border-border p-4 md:p-6', className)}>
       {/* Header with status */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold">Laserstream Demo</h3>
+        <h3 className="text-lg">Laserstream Demo</h3>
         <ConnectionStatus status={status} />
       </div>
 

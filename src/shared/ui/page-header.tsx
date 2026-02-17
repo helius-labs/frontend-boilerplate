@@ -15,7 +15,7 @@ export function PageHeader({
 }) {
   return (
     <div className={cn('mb-8', className)}>
-      <h1 className="text-3xl font-bold mb-2">{title}</h1>
+      <h1 className="text-3xl mb-2">{title}</h1>
       <p className="text-muted-foreground">{description}</p>
     </div>
   );

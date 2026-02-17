@@ -53,7 +53,7 @@ export function BlockDisplay({ block, slot, isLoading, error }: BlockDisplayProp
           </svg>
         </div>
         <div>
-          <h3 className="font-semibold">Block at Slot {slot.toLocaleString()}</h3>
+          <h3>Block at Slot {slot.toLocaleString()}</h3>
           <p className="text-sm text-muted-foreground">{blockTime}</p>
         </div>
       </div>

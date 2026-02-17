@@ -72,7 +72,7 @@ export default function LaserstreamPage() {
 
         {/* Interactive demo */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold">Interactive Demo</h2>
+          <h2 className="text-xl">Interactive Demo</h2>
           <Suspense fallback={<DemoSkeleton />}>
             <LaserstreamDemo />
           </Suspense>
@@ -80,7 +80,7 @@ export default function LaserstreamPage() {
 
         {/* Code examples */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold">Copy the code</h2>
+          <h2 className="text-xl">Copy the code</h2>
           <p className="text-muted-foreground text-sm">
             These snippets show exactly how to connect and subscribe to Laserstream. Paste them into
             your project.
@@ -116,7 +116,7 @@ export default function LaserstreamPage() {
 
         {/* Use cases */}
         <section className="space-y-4">
-          <h2 className="text-xl font-semibold">When to use Laserstream</h2>
+          <h2 className="text-xl">When to use Laserstream</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="p-4 border rounded-lg">
               <p className="font-medium">Trading Bots</p>

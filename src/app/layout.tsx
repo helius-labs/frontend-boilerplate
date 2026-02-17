@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Providers } from '@/providers';
@@ -16,6 +17,23 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+});
+
+const fontLausanne = localFont({
+  src: [
+    {
+      path: './fonts/TWKLausannePan-450.otf',
+      weight: '450',
+      style: 'normal',
+    },
+    {
+      path: './fonts/TWKLausannePan-500.otf',
+      weight: '500',
+      style: 'normal',
+    },
+  ],
+  display: 'swap',
+  variable: '--font-lausanne',
 });
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerplate.vercel.app';
@@ -44,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${fontLausanne.variable} antialiased`}>
         <JsonLdMultiple schemas={[getWebSiteJsonLd(), getOrganizationJsonLd()]} />
         <ThemeProvider
           attribute="class"

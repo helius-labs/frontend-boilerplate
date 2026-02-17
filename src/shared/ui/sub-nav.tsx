@@ -32,8 +32,8 @@ export function SubNav({ items, className }: SubNavProps) {
               )}
             >
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p className="text-xs font-mono text-muted-foreground mb-1">{item.method}</p>
+                <h3>{item.title}</h3>
+                <p className="text-xs font-mono text-helius-orange-light my-1">{item.method}</p>
                 <p className="text-sm text-muted-foreground">{item.description}</p>
               </div>
               <svg

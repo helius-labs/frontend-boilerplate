@@ -30,7 +30,7 @@ export default function Error({
           'backdrop-blur-xl'
         )}
       >
-        <h1 className="text-2xl font-bold mb-2">An error occurred</h1>
+        <h1 className="text-2xl mb-2">An error occurred</h1>
         <p className="text-muted-foreground mb-6">
           Something went wrong. Please try again or return to the homepage.
         </p>
