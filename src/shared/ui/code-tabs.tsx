@@ -2,6 +2,7 @@
 
 // Client-side code tabs component with copy functionality and syntax highlighting
 import { useMemo, useState } from 'react';
+import { Check, Copy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
 
@@ -12,13 +13,13 @@ function highlightTypeScript(code: string): React.ReactNode[] {
 
   // Regex patterns for different token types
   const patterns = [
-    { type: 'comment', regex: /\/\/[^\n]*/g, color: 'text-zinc-500' },
+    { type: 'comment', regex: /\/\/[^\n]*/g, color: 'text-zinc-400' },
     { type: 'string', regex: /(["'`])(?:(?!\1)[^\\]|\\.)*\1/g, color: 'text-emerald-400' },
     {
       type: 'keyword',
       regex:
         /\b(const|let|var|function|async|await|return|import|from|export|if|else|try|catch|throw|new|class|interface|type|extends|implements)\b/g,
-      color: 'text-purple-400',
+      color: 'text-orange-400',
     },
     {
       type: 'builtin',
@@ -54,7 +55,7 @@ function highlightTypeScript(code: string): React.ReactNode[] {
       tokens.push(...tokenizeLine(beforeComment, patterns, key));
       key += 100;
       tokens.push(
-        <span key={`comment-${key++}`} className="text-zinc-500">
+        <span key={`comment-${key++}`} className="text-zinc-400">
           {comment}
         </span>
       );
@@ -136,10 +137,10 @@ function highlightCurl(code: string): React.ReactNode[] {
     // cURL specific patterns
     const patterns = [
       { regex: /^curl\b/g, color: 'text-yellow-400' },
-      { regex: /\s(-[A-Za-z]|--[a-z-]+)\b/g, color: 'text-purple-400' },
+      { regex: /\s(-[A-Za-z]|--[a-z-]+)\b/g, color: 'text-orange-400' },
       { regex: /(["'])(?:(?!\1)[^\\]|\\.)*\1/g, color: 'text-emerald-400' },
       { regex: /https?:\/\/[^\s'"]+/g, color: 'text-cyan-400' },
-      { regex: /\\\s*$/g, color: 'text-zinc-500' },
+      { regex: /\\\s*$/g, color: 'text-zinc-400' },
     ];
 
     while (remaining.length > 0) {
@@ -210,7 +211,7 @@ export function CodeTabs({ code }: { code: { typescript: string; curl: string } 
             size="sm"
             className={cn(
               lang === 'typescript'
-                ? 'bg-[#3178c6] text-white hover:bg-[#3178c6]/90'
+                ? 'bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90'
                 : 'bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80'
             )}
           >
@@ -221,30 +222,38 @@ export function CodeTabs({ code }: { code: { typescript: string; curl: string } 
             size="sm"
             className={cn(
               lang === 'curl'
-                ? 'bg-[#073551] text-white hover:bg-[#073551]/90'
+                ? 'bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90'
                 : 'bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80'
             )}
           >
             cURL
           </Button>
         </div>
+      </div>
+      <div className="relative">
+        <pre
+          className={cn(
+            'p-4 rounded-lg overflow-x-auto text-sm font-mono leading-relaxed',
+            'bg-zinc-900',
+            'dark:bg-zinc-950'
+          )}
+        >
+          <code>{highlightedCode}</code>
+        </pre>
         <Button
           onClick={handleCopy}
-          size="sm"
-          className="bg-zinc-700 text-zinc-100 hover:bg-zinc-600"
+          size="icon-sm"
+          variant="ghost"
+          className="absolute top-2 right-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700"
+          aria-label={copied ? 'Copied to clipboard' : 'Copy code'}
         >
-          {copied ? 'Copied!' : 'Copy'}
+          {copied ? (
+            <Check className="size-4 text-green-500" />
+          ) : (
+            <Copy className="size-4" />
+          )}
         </Button>
       </div>
-      <pre
-        className={cn(
-          'p-4 rounded-lg overflow-x-auto text-sm font-mono leading-relaxed',
-          'bg-zinc-900',
-          'dark:bg-zinc-950'
-        )}
-      >
-        <code>{highlightedCode}</code>
-      </pre>
     </div>
   );
 }

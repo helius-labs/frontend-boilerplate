@@ -71,13 +71,13 @@ export default function HomePage() {
           {/* Hero section */}
           <section className="text-center space-y-6 pt-12">
             <div className="inline-block">
-              <span className="text-sm font-mono text-solana-purple uppercase tracking-widest">
+              <span className="text-sm font-mono text-helius-orange uppercase tracking-widest">
                 Copy-Paste Solana Code
               </span>
             </div>
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               How to{' '}
-              <span className="bg-gradient-to-r from-solana-purple to-solana-green bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-helius-orange-light to-helius-orange bg-clip-text text-transparent">
                 build on Solana
               </span>
               <br />
@@ -89,7 +89,7 @@ export default function HomePage() {
             </p>
 
             {/* CTA buttons */}
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
+            <div className="flex flex-wrap justify-center gap-3 pt-4">
               <ExternalLink
                 href="https://dashboard.helius.dev/signup"
                 variant="unstyled"
@@ -109,21 +109,12 @@ export default function HomePage() {
               <Link
                 href="#methods"
                 variant="unstyled"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-medium text-gray-900 hover:bg-gray-100 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-8 py-3 text-sm font-medium text-foreground hover:bg-foreground/5 transition-colors"
               >
                 Explore Methods
-                <svg
-                  className="size-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path d="M12 5v14m0 0l-5-5m5 5l5-5" />
-                </svg>
               </Link>
             </div>
-            <p className="text-xs text-muted-foreground/60 pt-2">
+            <p className="text-xs text-muted-foreground/60 pt-1">
               <ExternalLink
                 href="https://dashboard.helius.dev/agents"
                 variant="unstyled"
@@ -178,7 +169,7 @@ export default function HomePage() {
           </section>
 
           {/* Method cards */}
-          <section id="methods" className="space-y-8 scroll-mt-20">
+          <section id="methods" className="space-y-8 scroll-mt-20 pt-8">
             <div className="text-center">
               <h2 className="text-4xl font-bold">Find what you need</h2>
               <p className="text-muted-foreground mt-2">
@@ -304,7 +295,7 @@ function FeatureCard({
         'backdrop-blur-xl'
       )}
     >
-      <div className="mb-4 inline-flex items-center justify-center size-12 rounded-lg bg-solana-purple/20 text-solana-purple">
+      <div className="mb-4 inline-flex items-center justify-center size-12 rounded-lg bg-helius-orange/20 text-helius-orange">
         {icons[icon]}
       </div>
       <h3 className="font-semibold mb-2">{title}</h3>
@@ -345,7 +336,7 @@ function MethodCard({
       )}
     >
       <div>
-        <h3 className="font-mono text-lg font-semibold text-foreground group-hover:text-solana-purple transition-colors">
+        <h3 className="text-lg font-semibold text-foreground group-hover:text-helius-orange transition-colors">
           {title}
         </h3>
         <p className="text-sm text-muted-foreground mt-1">{description}</p>

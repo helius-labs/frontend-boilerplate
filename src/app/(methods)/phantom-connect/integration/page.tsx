@@ -10,6 +10,7 @@ import {
   createFAQSchema,
   createTechArticleSchema,
 } from '@/shared/lib/json-ld';
+import { CopyButton } from '@/features/demo-framework/components/copy-button';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { CodeTabsClient } from '@/shared/ui/code-tabs';
 import { FAQ } from '@/shared/ui/faq';
@@ -120,10 +121,13 @@ export default function IntegrationPage() {
           <p className="text-muted-foreground mb-4">
             Add the Phantom SDK to your project with your preferred package manager.
           </p>
-          <div className="space-y-2">
+          <div className="relative group">
             <pre className="p-4 rounded-lg overflow-x-auto text-sm font-mono leading-relaxed bg-zinc-900 dark:bg-zinc-950 text-zinc-100">
               <code>{`npm install @phantom/react-sdk`}</code>
             </pre>
+            <div className="absolute top-2 right-2">
+              <CopyButton code="npm install @phantom/react-sdk" />
+            </div>
           </div>
         </PageSection>
 

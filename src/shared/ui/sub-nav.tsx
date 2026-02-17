@@ -8,7 +8,7 @@ export function SubNav({ items, className }: SubNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Sub-navigation" className={cn('mb-8', className)}>
+    <nav aria-label="Sub-navigation" className={cn('mb-16', className)}>
       <div className="grid md:grid-cols-3 gap-4">
         {items.map((item) => {
           const isActive = pathname === item.href;
@@ -27,7 +27,7 @@ export function SubNav({ items, className }: SubNavProps) {
                 'border',
                 // Active state
                 isActive
-                  ? 'border-solana-purple bg-solana-purple/5'
+                  ? 'border-helius-orange bg-helius-orange/5'
                   : 'border-border hover:border-primary hover:bg-primary/5'
               )}
             >
@@ -40,7 +40,7 @@ export function SubNav({ items, className }: SubNavProps) {
                 className={cn(
                   'size-5 shrink-0 mt-0.5 transition-colors',
                   isActive
-                    ? 'text-solana-purple'
+                    ? 'text-helius-orange'
                     : 'text-muted-foreground/40 group-hover:text-muted-foreground'
                 )}
                 fill="none"

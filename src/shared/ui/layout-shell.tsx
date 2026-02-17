@@ -9,7 +9,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
       {/* Fixed space background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         {/* Gradient glow at bottom */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(153,69,255,0.25)_0%,rgba(20,241,149,0.1)_30%,transparent_70%)] dark:bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(153,69,255,0.15)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(232,67,38,0.2)_0%,rgba(247,148,29,0.1)_30%,transparent_70%)] dark:bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(232,67,38,0.12)_0%,transparent_70%)]" />
         {/* Stars layer 1 */}
         <div className="stars-layer-1" />
         {/* Stars layer 2 - twinkling */}

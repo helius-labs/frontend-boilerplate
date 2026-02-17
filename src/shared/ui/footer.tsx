@@ -74,7 +74,7 @@ export function Footer() {
     <footer
       className={cn(
         // Layout
-        'w-full border-t backdrop-blur-xl',
+        'w-full border-t backdrop-blur-xl mt-20',
         // Light mode: light glass effect matching cards and header
         'bg-black/[0.03] border-black/[0.08] text-foreground',
         // Dark mode

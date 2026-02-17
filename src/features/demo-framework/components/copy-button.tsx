@@ -28,7 +28,7 @@ export function CopyButton({ code, className }: CopyButtonProps) {
       variant="ghost"
       size="icon-sm"
       onClick={handleCopy}
-      className={cn('opacity-0 group-hover:opacity-100 focus:opacity-100', className)}
+      className={cn(className)}
       aria-label={copied ? 'Copied to clipboard' : 'Copy code'}
     >
       {copied ? (

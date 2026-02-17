@@ -58,19 +58,19 @@ export function LaserstreamDemo({ className }: LaserstreamDemoProps) {
           <h4 className="text-sm font-medium mb-3">What Laserstream offers:</h4>
           <ul className="grid sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
             <li className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-solana-purple" />
+              <span className="size-1.5 rounded-full bg-helius-orange" />
               Sub-50ms block latency
             </li>
             <li className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-solana-purple" />
+              <span className="size-1.5 rounded-full bg-helius-orange" />
               Real-time slot streaming
             </li>
             <li className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-solana-purple" />
+              <span className="size-1.5 rounded-full bg-helius-orange" />
               Account change notifications
             </li>
             <li className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-solana-purple" />
+              <span className="size-1.5 rounded-full bg-helius-orange" />
               Transaction confirmations
             </li>
           </ul>

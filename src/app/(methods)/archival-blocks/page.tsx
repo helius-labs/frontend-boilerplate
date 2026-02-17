@@ -65,7 +65,7 @@ export default function ArchivalBlocksPage() {
         />
 
         {/* Why archival matters */}
-        <div className="mb-8 p-4 bg-solana-purple/10 border border-solana-purple/20 rounded-lg">
+        <div className="mb-8 p-4 bg-helius-orange/10 border border-helius-orange/20 rounded-lg">
           <h2 className="font-semibold mb-2">Why is archival data rare?</h2>
           <p className="text-sm text-muted-foreground">
             Most Solana RPC nodes only store recent data (last few days). Archival nodes store the

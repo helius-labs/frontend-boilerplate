@@ -41,9 +41,9 @@ export function BlockDisplay({ block, slot, isLoading, error }: BlockDisplayProp
     <div className="space-y-6">
       {/* Block header */}
       <div className="flex items-center gap-3">
-        <div className="size-10 rounded-lg bg-solana-purple/20 flex items-center justify-center">
+        <div className="size-10 rounded-lg bg-helius-orange/20 flex items-center justify-center">
           <svg
-            className="size-5 text-solana-purple"
+            className="size-5 text-helius-orange"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -70,8 +70,8 @@ export function BlockDisplay({ block, slot, isLoading, error }: BlockDisplayProp
 
       {/* Genesis block special highlight */}
       {slot === 0 && (
-        <div className="p-4 bg-solana-purple/10 border border-solana-purple/20 rounded-lg">
-          <p className="font-medium text-solana-purple">Genesis Block</p>
+        <div className="p-4 bg-helius-orange/10 border border-helius-orange/20 rounded-lg">
+          <p className="font-medium text-helius-orange">Genesis Block</p>
           <p className="text-sm text-muted-foreground mt-1">
             This is the very first block of the Solana blockchain, created at network launch. It
             contains the initial validator setup and system configuration.

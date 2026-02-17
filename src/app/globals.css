@@ -52,12 +52,13 @@
 
   /* Helius brand colors */
   --color-helius-orange: #e84125;
+  --color-helius-orange-light: #F7941D;
   --color-helius-black: #090909;
   --color-helius-white: #dbdbdb;
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -129,11 +130,16 @@
   * {
     @apply border-border outline-ring/50;
   }
-  /* Note: scroll-behavior: smooth removed from html to fix Next.js navigation scroll issues.
-     Use scroll-smooth class on specific containers for anchor links if needed. */
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
+  }
+  /* Inline code: light orange text */
+  :not(pre) > code {
+    color: var(--color-helius-orange-light);
   }
   /* Hide scrollbar for modern browsers */
   ::-webkit-scrollbar {
@@ -181,8 +187,8 @@
   background: linear-gradient(
     135deg,
     transparent 20%,
-    var(--color-solana-purple) 40%,
-    var(--color-solana-green) 60%,
+    var(--color-helius-orange-light) 40%,
+    var(--color-helius-orange) 60%,
     transparent 80%
   );
   background-size: 200% 200%;
@@ -233,9 +239,9 @@
     from var(--border-angle),
     transparent 0%,
     transparent 40%,
-    var(--color-solana-purple) 45%,
-    var(--color-solana-green) 50%,
-    var(--color-solana-purple) 55%,
+    var(--color-helius-orange-light) 45%,
+    var(--color-helius-orange) 50%,
+    var(--color-helius-orange-light) 55%,
     transparent 60%,
     transparent 100%
   );
@@ -336,8 +342,8 @@
     radial-gradient(1.5px 1.5px at 25% 60%, rgba(255, 255, 255, 0.75), transparent),
     radial-gradient(1.5px 1.5px at 85% 55%, rgba(255, 255, 255, 0.8), transparent),
     radial-gradient(1.5px 1.5px at 55% 80%, rgba(255, 255, 255, 0.7), transparent),
-    radial-gradient(2px 2px at 35% 45%, rgba(153, 69, 255, 0.6), transparent),
-    radial-gradient(2px 2px at 65% 70%, rgba(20, 241, 149, 0.5), transparent),
+    radial-gradient(2px 2px at 35% 45%, rgba(232, 67, 38, 0.6), transparent),
+    radial-gradient(2px 2px at 65% 70%, rgba(247, 148, 29, 0.5), transparent),
     radial-gradient(1.5px 1.5px at 5% 85%, rgba(255, 255, 255, 0.8), transparent),
     radial-gradient(1.5px 1.5px at 95% 90%, rgba(255, 255, 255, 0.75), transparent);
   background-size: 100% 100%;

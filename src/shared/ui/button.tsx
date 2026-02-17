@@ -13,10 +13,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: cn('bg-primary text-primary-foreground', 'hover:bg-primary/90'),
-        // Solana gradient button for CTAs (Sign & Submit, Connect, etc.)
+        // Helius orange button for CTAs (Sign & Submit, Connect, etc.)
         solana: cn(
-          'bg-gradient-to-r from-solana-purple to-solana-green text-white',
-          'hover:shadow-lg hover:shadow-solana-purple/25',
+          'bg-helius-orange text-white',
+          'hover:bg-helius-orange/90 hover:shadow-lg hover:shadow-helius-orange/25',
           'transition-shadow'
         ),
         outline: cn(

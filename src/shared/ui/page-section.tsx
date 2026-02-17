@@ -15,7 +15,7 @@ export function PageSection({
 }) {
   return (
     <section className={cn('border rounded-lg p-4 md:p-6 bg-card', className)}>
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      <h2 className="text-xl font-semibold mb-6 text-helius-orange-light">{title}</h2>
       {children}
     </section>
   );

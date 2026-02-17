@@ -17,7 +17,7 @@ export default function NotFound() {
           'backdrop-blur-xl'
         )}
       >
-        <div className="text-6xl font-bold text-solana-purple mb-2">404</div>
+        <div className="text-6xl font-bold text-helius-orange mb-2">404</div>
         <h1 className="text-2xl font-bold mb-2">Page not found</h1>
         <p className="text-muted-foreground mb-6">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
