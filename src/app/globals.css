@@ -132,10 +132,11 @@
     @apply border-border outline-ring/50;
   }
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-geist-sans), sans-serif;
     overflow-x: hidden;
   }
   /* Headlines use Lausanne */

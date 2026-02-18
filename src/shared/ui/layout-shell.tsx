@@ -1,9 +1,16 @@
 'use client';
 
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Footer } from '@/shared/ui/footer';
 import { Header } from '@/shared/ui/header';
 
 export function LayoutShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return (
     <div className="flex min-h-screen flex-col">
       {/* Fixed space background */}

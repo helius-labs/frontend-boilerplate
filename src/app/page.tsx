@@ -6,6 +6,7 @@ import {
   getWebApplicationJsonLd,
 } from '@/shared/lib/json-ld';
 import { ExternalLink, Link } from '@/shared/ui/link';
+import { SmoothScrollLink } from '@/shared/ui/smooth-scroll-link';
 
 // Method data for both rendering and JSON-LD
 const METHODS = [
@@ -103,13 +104,13 @@ export default function HomePage() {
                   <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </ExternalLink>
-              <Link
+              <SmoothScrollLink
                 href="#methods"
                 variant="unstyled"
                 className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-8 py-3 text-sm font-medium text-foreground hover:bg-foreground/5 transition-colors"
               >
                 Explore Methods
-              </Link>
+              </SmoothScrollLink>
             </div>
             <p className="text-xs text-muted-foreground/60 pt-1">
               <ExternalLink
