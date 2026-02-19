@@ -101,8 +101,8 @@ frontend-boilerplate/
 │   │   └── config/                   # App configuration
 │   │
 │   ├── providers/
-│   │   ├── wallet-provider.tsx       # Wallet context
-│   │   └── theme-provider.tsx        # Theme context
+│   │   ├── index.tsx                 # Combined Providers wrapper
+│   │   └── wallet-provider.tsx       # PhantomProvider config
 │   │
 │   └── types/                        # TypeScript declarations
 │       ├── app/
@@ -114,7 +114,6 @@ frontend-boilerplate/
 ├── .env.example                      # Environment template
 ├── package.json
 ├── tsconfig.json
-├── tailwind.config.ts
 └── next.config.ts
 ```
 

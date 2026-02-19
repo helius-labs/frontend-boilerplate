@@ -44,7 +44,7 @@ A production-ready Helius RPC showcase and clonable template for Solana develope
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/frontend-boilerplate.git
+git clone https://github.com/helius-labs/frontend-boilerplate.git
 cd frontend-boilerplate
 
 # Install dependencies
@@ -221,7 +221,7 @@ export default async function AssetPage({ params }: { params: { id: string } }) 
 
 ### Vercel (Recommended)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-org/frontend-boilerplate&env=HELIUS_API_KEY&envDescription=Your%20Helius%20API%20key%20for%20RPC%20access&envLink=https://dashboard.helius.dev/signup)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/helius-labs/frontend-boilerplate&env=HELIUS_API_KEY&envDescription=Your%20Helius%20API%20key%20for%20RPC%20access&envLink=https://dashboard.helius.dev/signup)
 
 1. Click the button above or import the repo in Vercel
 2. Add `HELIUS_API_KEY` environment variable
