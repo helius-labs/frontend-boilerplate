@@ -37,10 +37,24 @@ interface StakeTransactionParams {
 }
 
 interface StakeTransactionResult {
-  transaction: Uint8Array;
+  initTransaction: Uint8Array;
+  delegateTransaction: Uint8Array;
   stakeAccountAddress: string;
   estimatedRentExemption: bigint;
 }
+
+interface DelegateTransactionParams {
+  walletAddress: string;
+  stakeAccountAddress: string;
+  validatorVoteAccount: string;
+}
+
+type StakeSigningProgress =
+  | 'idle'
+  | 'signing-init'
+  | 'confirming-init'
+  | 'signing-delegate'
+  | 'confirming-delegate';
 
 interface TransactionPreview {
   success: boolean;
@@ -106,6 +120,7 @@ interface TransactionPreviewProps {
   onConfirm: () => void;
   onCancel: () => void;
   isLoading: boolean;
+  signingProgress: StakeSigningProgress;
 }
 
 interface ValidatorListProps {

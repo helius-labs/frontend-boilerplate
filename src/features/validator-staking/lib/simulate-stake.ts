@@ -12,7 +12,7 @@ export async function simulateStakeTransaction(
       body: JSON.stringify({
         method: 'simulateTransaction',
         params: [
-          Buffer.from(serializedTransaction).toString('base64'),
+          btoa(String.fromCharCode(...serializedTransaction)),
           {
             encoding: 'base64',
             commitment: 'confirmed',
@@ -111,15 +111,25 @@ export function calculateTotalCost(
 }
 
 // Format preview for display
+// Accounts for two transactions: init (simulated) + delegate (estimated base fee)
 export function formatTransactionPreview(
   stakeAmountLamports: bigint,
   preview: TransactionPreview
 ): TransactionPreviewDisplay {
   const rentExemption = BigInt(2282880);
 
-  const totalCost = stakeAmountLamports + rentExemption + preview.estimatedFee;
+  // Delegate tx is a single instruction, estimate base fee of 5000 lamports
+  const delegateFeeEstimate = BigInt(5000);
+  const combinedFee = preview.estimatedFee + delegateFeeEstimate;
+
+  const totalCost = stakeAmountLamports + rentExemption + combinedFee;
 
   const warnings: string[] = [];
+
+  // Two-transaction notice
+  warnings.push(
+    'This operation requires signing two transactions: one to create the stake account, and one to delegate.'
+  );
 
   // Add warmup warning
   warnings.push('Staked SOL will be locked for 1-2 epochs (~2-4 days) during warmup.');
@@ -130,7 +140,7 @@ export function formatTransactionPreview(
   return {
     stakeAmount: formatSol(stakeAmountLamports),
     rentExemption: formatSol(rentExemption),
-    estimatedFee: formatSol(preview.estimatedFee),
+    estimatedFee: formatSol(combinedFee),
     totalCost: formatSol(totalCost),
     warnings,
   };

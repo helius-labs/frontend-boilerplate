@@ -11,7 +11,9 @@ export { fetchValidatorDetails, calculateValidatorDetails } from './lib/fetch-va
 // Transaction building
 export {
   buildStakeTransaction,
+  buildDelegateTransaction,
   validateStakeAmount,
+  waitForConfirmation,
   STAKE_ACCOUNT_RENT_EXEMPTION,
   SUGGESTED_MIN_STAKE,
 } from './lib/build-stake-transaction';

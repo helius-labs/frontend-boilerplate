@@ -15,4 +15,5 @@ type AllowedMethod =
   | 'sendTransaction'
   | 'getLatestBlockhash'
   | 'getMinimumBalanceForRentExemption'
+  | 'getSignatureStatuses'
   | 'getBlock';

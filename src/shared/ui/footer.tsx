@@ -123,9 +123,7 @@ export function Footer() {
 
           {/* Developers */}
           <div>
-            <h3 className="text-xs uppercase tracking-wider text-foreground">
-              Code Examples
-            </h3>
+            <h3 className="text-xs uppercase tracking-wider text-foreground">Code Examples</h3>
             <ul className="mt-4 space-y-2">
               {developerLinks.map((link) => (
                 <li key={link.name}>
@@ -146,9 +144,7 @@ export function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="text-xs uppercase tracking-wider text-foreground">
-              Resources
-            </h3>
+            <h3 className="text-xs uppercase tracking-wider text-foreground">Resources</h3>
             <ul className="mt-4 space-y-2">
               {resourceLinks.map((link) => (
                 <li key={link.name}>
@@ -186,9 +182,7 @@ export function Footer() {
 
           {/* Built with Helius */}
           <div>
-            <h3 className="text-xs uppercase tracking-wider text-foreground">
-              Built with Helius
-            </h3>
+            <h3 className="text-xs uppercase tracking-wider text-foreground">Built with Helius</h3>
             <ul className="mt-4 space-y-2">
               {showcaseLinks.map((link) => (
                 <li key={link.name}>

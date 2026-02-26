@@ -49,6 +49,7 @@ const ALLOWED_METHODS = [
   'sendTransaction',
   'getLatestBlockhash',
   'getMinimumBalanceForRentExemption',
+  'getSignatureStatuses',
   // Archival blocks
   'getBlock',
 ] as const;
@@ -139,6 +140,7 @@ function validateMethodParams(method: string, params: unknown[]): void {
     case 'sendTransaction':
     case 'getEpochInfo':
     case 'getMinimumBalanceForRentExemption':
+    case 'getSignatureStatuses':
     case 'getBlock':
       // These methods have optional/complex params - allow through
       break;
@@ -232,6 +234,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<RpcProxyR
       case 'sendTransaction':
       case 'getEpochInfo':
       case 'getMinimumBalanceForRentExemption':
+      case 'getSignatureStatuses':
         // Standard RPC methods go through raw.rpc
         result = await (helius.raw as Record<string, (...args: unknown[]) => Promise<unknown>>)[
           method

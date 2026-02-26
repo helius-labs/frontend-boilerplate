@@ -1,8 +1,16 @@
 'use client';
 
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/ui/button';
+
+const PROGRESS_LABELS: Record<StakeSigningProgress, string> = {
+  idle: 'Sign & Submit',
+  'signing-init': 'Sign transaction 1 of 2...',
+  'confirming-init': 'Confirming stake account creation...',
+  'signing-delegate': 'Sign transaction 2 of 2...',
+  'confirming-delegate': 'Confirming delegation...',
+};
 
 export function TransactionPreview({
   preview,
@@ -10,7 +18,11 @@ export function TransactionPreview({
   onConfirm,
   onCancel,
   isLoading,
+  signingProgress,
 }: TransactionPreviewProps) {
+  const isSigning = signingProgress !== 'idle';
+  const progressLabel = PROGRESS_LABELS[signingProgress];
+
   return (
     <div className="p-4 md:p-6 bg-card border rounded-lg space-y-6">
       <div className="flex justify-between items-start">
@@ -23,7 +35,7 @@ export function TransactionPreview({
           variant="ghost"
           size="sm"
           onClick={onCancel}
-          disabled={isLoading}
+          disabled={isLoading || isSigning}
           className="text-muted-foreground hover:text-foreground"
         >
           Back
@@ -50,7 +62,7 @@ export function TransactionPreview({
           <span>{preview.rentExemption}</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Est. Transaction Fee</span>
+          <span className="text-muted-foreground">Est. Fees (2 transactions)</span>
           <span>{preview.estimatedFee}</span>
         </div>
         <div className="border-t pt-3 flex justify-between">
@@ -58,6 +70,19 @@ export function TransactionPreview({
           <span className="font-bold text-lg">{preview.totalCost}</span>
         </div>
       </div>
+
+      {/* Signing progress */}
+      {isSigning && (
+        <div
+          className={cn(
+            'flex items-center gap-3 p-4 rounded-lg',
+            'bg-primary/5 border border-primary/20'
+          )}
+        >
+          <Loader2 className="size-5 text-primary animate-spin shrink-0" />
+          <p className="text-sm font-medium">{progressLabel}</p>
+        </div>
+      )}
 
       {/* Warnings */}
       <div className="space-y-2">
@@ -89,7 +114,7 @@ export function TransactionPreview({
         <Button
           type="button"
           onClick={onCancel}
-          disabled={isLoading}
+          disabled={isLoading || isSigning}
           variant="outline"
           className="flex-1 py-3 rounded-lg"
         >
@@ -98,11 +123,11 @@ export function TransactionPreview({
         <Button
           type="button"
           onClick={onConfirm}
-          disabled={isLoading}
+          disabled={isLoading || isSigning}
           variant="solana"
           className="flex-1 py-3 rounded-lg"
         >
-          {isLoading ? 'Signing...' : 'Sign & Submit'}
+          {isSigning ? progressLabel : 'Sign & Submit'}
         </Button>
       </div>
     </div>

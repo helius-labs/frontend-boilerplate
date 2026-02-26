@@ -164,6 +164,7 @@ export function ValidatorStakingDemo() {
           onConfirm={handleConfirmStake}
           onCancel={handleBack}
           isLoading={stakeTransaction.step === 'signing'}
+          signingProgress={stakeTransaction.signingProgress}
         />
       );
 
@@ -171,9 +172,7 @@ export function ValidatorStakingDemo() {
       return (
         <div className={cn('p-8 text-center rounded-lg', 'border bg-green-500/10')}>
           <div className="text-4xl mb-4">✓</div>
-          <h3 className="text-xl text-green-600 dark:text-green-400">
-            Stake Submitted!
-          </h3>
+          <h3 className="text-xl text-green-600 dark:text-green-400">Stake Submitted!</h3>
           <p className="text-muted-foreground mt-2">
             Your stake has been delegated. It will become active after the warmup period (1-2
             epochs).
@@ -196,7 +195,11 @@ export function ValidatorStakingDemo() {
         </div>
       );
 
-    case 'error':
+    case 'error': {
+      const canRetryDelegate =
+        stakeTransaction.error?.retryable &&
+        stakeTransaction.error?.message.includes('Delegation failed');
+
       return (
         <div className={cn('p-8 text-center rounded-lg', 'border bg-destructive/10')}>
           <h3 className="text-xl text-destructive">Transaction Failed</h3>
@@ -204,15 +207,29 @@ export function ValidatorStakingDemo() {
             {stakeTransaction.error?.message || 'Something went wrong'}
           </p>
           <div className="flex gap-3 justify-center mt-6">
-            <Button onClick={handleBack} variant="outline" className="px-6 py-2 rounded-lg">
-              Try Again
-            </Button>
+            {canRetryDelegate ? (
+              <Button
+                onClick={async () => {
+                  const result = await stakeTransaction.retryDelegate();
+                  if (result?.signature) setStep('success');
+                }}
+                variant="solana"
+                className="px-6 py-2 rounded-lg"
+              >
+                Retry Delegation
+              </Button>
+            ) : (
+              <Button onClick={handleBack} variant="outline" className="px-6 py-2 rounded-lg">
+                Try Again
+              </Button>
+            )}
             <Button onClick={handleReset} variant="solana" className="px-6 py-2 rounded-lg">
               Start Over
             </Button>
           </div>
         </div>
       );
+    }
 
     default:
       return null;

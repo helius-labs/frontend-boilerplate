@@ -16,7 +16,9 @@ const nextConfig: NextConfig = {
     contentDispositionType: "attachment",
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  turbopack: {},
+  turbopack: {
+    root: __dirname,
+  },
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     return config;

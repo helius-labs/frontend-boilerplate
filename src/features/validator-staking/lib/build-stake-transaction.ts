@@ -1,6 +1,7 @@
-// Build stake delegation transaction (VALD-03)
-// Uses @solana/web3.js StakeProgram for real transaction building
-// Uses createAccountWithSeed so only the wallet needs to sign (Phantom Connect compatible)
+// Build stake delegation transactions (VALD-03)
+// Split into two transactions for Phantom Connect social wallet compatibility:
+// Tx 1: Create stake account + initialize authorities
+// Tx 2: Delegate stake to validator (must contain only the stake operation)
 import {
   PublicKey,
   StakeProgram,
@@ -20,7 +21,7 @@ export function validateStakeAmount(
   amountLamports: bigint,
   walletBalance: bigint
 ): StakeAmountValidation {
-  const totalRequired = amountLamports + STAKE_ACCOUNT_RENT_EXEMPTION + BigInt(5000); // +5000 for fees
+  const totalRequired = amountLamports + STAKE_ACCOUNT_RENT_EXEMPTION + BigInt(10000); // +10000 for 2 tx fees
 
   if (amountLamports < SUGGESTED_MIN_STAKE) {
     return {
@@ -54,6 +55,24 @@ function generateStakeSeed(): string {
   return `stake:${timestamp}${random}`;
 }
 
+async function fetchBlockhash(): Promise<string> {
+  const response = await fetch('/api/rpc', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      method: 'getLatestBlockhash',
+      params: [{ commitment: 'confirmed' }],
+    }),
+  });
+
+  const data = await response.json();
+  if (data.error) {
+    throw new Error(`Failed to get blockhash: ${data.error.message || data.error}`);
+  }
+
+  return data.result.value.blockhash;
+}
+
 export async function buildStakeTransaction(
   params: StakeTransactionParams
 ): Promise<StakeTransactionResult> {
@@ -73,41 +92,22 @@ export async function buildStakeTransaction(
   );
   const stakeAccountAddress = stakeAccountPubkey.toBase58();
 
-  // Get latest blockhash for transaction
-  const blockhashResponse = await fetch('/api/rpc', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      method: 'getLatestBlockhash',
-      params: [{ commitment: 'confirmed' }],
-    }),
-  });
-
-  const blockhashData = await blockhashResponse.json();
-  if (blockhashData.error) {
-    throw new Error(
-      `Failed to get blockhash: ${blockhashData.error.message || blockhashData.error}`
-    );
-  }
-
-  const { blockhash } = blockhashData.result.value;
+  const blockhash = await fetchBlockhash();
 
   // Total lamports needed = stake amount + rent exemption
   const totalLamports = BigInt(amountLamports) + STAKE_ACCOUNT_RENT_EXEMPTION;
 
-  // Build instructions using createAccountWithSeed (single-signer)
-  const instructions = [
-    // 1. Create stake account with seed (only wallet signs)
+  // Transaction 1: Create stake account + initialize authorities
+  const initInstructions = [
     SystemProgram.createAccountWithSeed({
       fromPubkey: walletPubkey,
       newAccountPubkey: stakeAccountPubkey,
       basePubkey: walletPubkey,
       seed,
       lamports: Number(totalLamports),
-      space: 200, // Stake account data size
+      space: 200,
       programId: StakeProgram.programId,
     }),
-    // 2. Initialize stake account with authorities
     StakeProgram.initialize({
       stakePubkey: stakeAccountPubkey,
       authorized: {
@@ -115,7 +115,18 @@ export async function buildStakeTransaction(
         withdrawer: walletPubkey,
       },
     }),
-    // 3. Delegate stake to validator
+  ];
+
+  const initMessage = new TransactionMessage({
+    payerKey: walletPubkey,
+    recentBlockhash: blockhash,
+    instructions: initInstructions,
+  }).compileToV0Message();
+
+  const initTransaction = new VersionedTransaction(initMessage);
+
+  // Transaction 2: Delegate stake to validator (only stake operation)
+  const delegateInstructions = [
     ...StakeProgram.delegate({
       stakePubkey: stakeAccountPubkey,
       authorizedPubkey: walletPubkey,
@@ -123,21 +134,81 @@ export async function buildStakeTransaction(
     }).instructions,
   ];
 
-  // Build VersionedTransaction (required by Phantom Connect SDK)
+  const delegateMessage = new TransactionMessage({
+    payerKey: walletPubkey,
+    recentBlockhash: blockhash,
+    instructions: delegateInstructions,
+  }).compileToV0Message();
+
+  const delegateTransaction = new VersionedTransaction(delegateMessage);
+
+  return {
+    initTransaction: initTransaction.serialize(),
+    delegateTransaction: delegateTransaction.serialize(),
+    stakeAccountAddress,
+    estimatedRentExemption: STAKE_ACCOUNT_RENT_EXEMPTION,
+  };
+}
+
+/**
+ * Build just the delegate transaction with a fresh blockhash.
+ * Used when submitting the second transaction after the init tx confirms.
+ */
+export async function buildDelegateTransaction(
+  params: DelegateTransactionParams
+): Promise<Uint8Array> {
+  const walletPubkey = new PublicKey(params.walletAddress);
+  const stakeAccountPubkey = new PublicKey(params.stakeAccountAddress);
+  const validatorPubkey = new PublicKey(params.validatorVoteAccount);
+
+  const blockhash = await fetchBlockhash();
+
+  const instructions = [
+    ...StakeProgram.delegate({
+      stakePubkey: stakeAccountPubkey,
+      authorizedPubkey: walletPubkey,
+      votePubkey: validatorPubkey,
+    }).instructions,
+  ];
+
   const messageV0 = new TransactionMessage({
     payerKey: walletPubkey,
     recentBlockhash: blockhash,
     instructions,
   }).compileToV0Message();
 
-  const transaction = new VersionedTransaction(messageV0);
+  return new VersionedTransaction(messageV0).serialize();
+}
 
-  // No partial signing needed - only the wallet signs this transaction
-  const serializedTx = transaction.serialize();
+/**
+ * Poll for transaction confirmation.
+ * Returns once the transaction reaches 'confirmed' or 'finalized' status.
+ */
+export async function waitForConfirmation(signature: string, timeout = 30000): Promise<void> {
+  const start = Date.now();
 
-  return {
-    transaction: serializedTx,
-    stakeAccountAddress,
-    estimatedRentExemption: STAKE_ACCOUNT_RENT_EXEMPTION,
-  };
+  while (Date.now() - start < timeout) {
+    const response = await fetch('/api/rpc', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        method: 'getSignatureStatuses',
+        params: [[signature], { searchTransactionHistory: false }],
+      }),
+    });
+
+    const data = await response.json();
+    const status = data.result?.value?.[0];
+
+    if (status?.confirmationStatus === 'confirmed' || status?.confirmationStatus === 'finalized') {
+      if (status.err) {
+        throw new Error(`Transaction failed on-chain: ${JSON.stringify(status.err)}`);
+      }
+      return;
+    }
+
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+
+  throw new Error('Transaction confirmation timed out');
 }

@@ -6,8 +6,10 @@ import { VersionedTransaction } from '@solana/web3.js';
 import {
   STAKE_ACCOUNT_RENT_EXEMPTION,
   SUGGESTED_MIN_STAKE,
+  buildDelegateTransaction,
   buildStakeTransaction,
   validateStakeAmount,
+  waitForConfirmation,
 } from '../lib/build-stake-transaction';
 import { formatTransactionPreview, simulateStakeTransaction } from '../lib/simulate-stake';
 
@@ -33,9 +35,13 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
   const [error, setError] = useState<StakingError | null>(null);
   const [isSimulating, setIsSimulating] = useState(false);
   const [transactionSignature, setTransactionSignature] = useState<string | null>(null);
+  const [signingProgress, setSigningProgress] = useState<StakeSigningProgress>('idle');
 
-  // Store the built transaction for later submission
-  const builtTransactionRef = useRef<Uint8Array | null>(null);
+  // Store init transaction for signing
+  const initTxRef = useRef<Uint8Array | null>(null);
+
+  // Store params needed to rebuild delegate tx with fresh blockhash
+  const delegateParamsRef = useRef<DelegateTransactionParams | null>(null);
 
   // Parse stake amount to lamports
   const stakeAmountLamports = useCallback((): bigint => {
@@ -77,18 +83,25 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     setError(null);
 
     try {
-      // Build transaction
+      // Build both transactions
       const txResult = await buildStakeTransaction({
         walletAddress,
         validatorVoteAccount: selectedValidator.votePubkey,
         amountLamports: lamports,
       });
 
-      // Store the built transaction for later submission
-      builtTransactionRef.current = txResult.transaction;
+      // Store init tx for later signing
+      initTxRef.current = txResult.initTransaction;
 
-      // Simulate transaction
-      const simResult = await simulateStakeTransaction(txResult.transaction, walletAddress);
+      // Store params for rebuilding delegate tx with fresh blockhash
+      delegateParamsRef.current = {
+        walletAddress,
+        stakeAccountAddress: txResult.stakeAccountAddress,
+        validatorVoteAccount: selectedValidator.votePubkey,
+      };
+
+      // Simulate the init transaction
+      const simResult = await simulateStakeTransaction(txResult.initTransaction, walletAddress);
 
       if (!simResult.success) {
         setError({
@@ -123,9 +136,9 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     setStep('signing');
   }, []);
 
-  // Submit transaction via Phantom wallet
+  // Submit both transactions sequentially via Phantom wallet
   const submitTransaction = useCallback(async (): Promise<{ signature: string } | null> => {
-    if (!builtTransactionRef.current) {
+    if (!initTxRef.current || !delegateParamsRef.current) {
       setError({
         code: 'NETWORK_ERROR',
         message: 'No transaction to submit. Please build transaction first.',
@@ -135,7 +148,6 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
       return null;
     }
 
-    // Check Phantom SDK availability
     if (!isAvailable || !solana) {
       setError({
         code: 'NETWORK_ERROR',
@@ -147,31 +159,52 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     }
 
     setStep('signing');
+    let stage: 'init' | 'delegate' = 'init';
 
     try {
-      // Deserialize the versioned transaction (single-signer: wallet only)
-      const transaction = VersionedTransaction.deserialize(builtTransactionRef.current);
+      // Step 1: Sign and send init transaction (create + initialize stake account)
+      setSigningProgress('signing-init');
+      const initTransaction = VersionedTransaction.deserialize(initTxRef.current);
+      const { signature: initSignature } = await solana.signAndSendTransaction(initTransaction);
 
-      // Sign and send via Phantom SDK
-      const { signature } = await solana.signAndSendTransaction(transaction);
+      // Wait for init tx confirmation before sending delegate tx
+      setSigningProgress('confirming-init');
+      await waitForConfirmation(initSignature);
 
-      // Success!
-      setTransactionSignature(signature);
+      // Step 2: Build delegate tx with fresh blockhash and sign
+      stage = 'delegate';
+      setSigningProgress('signing-delegate');
+      const freshDelegateTx = await buildDelegateTransaction(delegateParamsRef.current);
+      const delegateTransaction = VersionedTransaction.deserialize(freshDelegateTx);
+      const { signature: delegateSignature } =
+        await solana.signAndSendTransaction(delegateTransaction);
+
+      // Wait for delegate tx confirmation
+      setSigningProgress('confirming-delegate');
+      await waitForConfirmation(delegateSignature);
+
+      // Both transactions confirmed
+      setSigningProgress('idle');
+      setTransactionSignature(delegateSignature);
       setStep('success');
-      onSuccess?.(signature);
+      onSuccess?.(delegateSignature);
 
-      return { signature };
+      return { signature: delegateSignature };
     } catch (err) {
-      // User rejected or transaction failed
       const message = err instanceof Error ? err.message : 'Transaction failed';
       const isRejection =
         message.toLowerCase().includes('reject') ||
         message.toLowerCase().includes('cancel') ||
         message.toLowerCase().includes('denied');
 
+      setSigningProgress('idle');
       setError({
         code: isRejection ? 'SIGNING_REJECTED' : 'TRANSACTION_FAILED',
-        message: isRejection ? 'Transaction was rejected by user' : message,
+        message: isRejection
+          ? 'Transaction was rejected by user'
+          : stage === 'delegate'
+            ? `Delegation failed: ${message}. The stake account was created but not yet delegated.`
+            : message,
         retryable: !isRejection,
       });
       setStep('error');
@@ -184,6 +217,59 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
       return null;
     }
   }, [isAvailable, solana, onSuccess, onError]);
+
+  // Retry just the delegate transaction (when init succeeded but delegate failed)
+  const retryDelegate = useCallback(async (): Promise<{ signature: string } | null> => {
+    if (!delegateParamsRef.current) {
+      setError({
+        code: 'NETWORK_ERROR',
+        message: 'No delegate params available. Please start over.',
+        retryable: false,
+      });
+      setStep('error');
+      return null;
+    }
+
+    if (!isAvailable || !solana) {
+      setError({
+        code: 'NETWORK_ERROR',
+        message: 'Phantom wallet not found.',
+        retryable: false,
+      });
+      setStep('error');
+      return null;
+    }
+
+    setStep('signing');
+    setError(null);
+
+    try {
+      setSigningProgress('signing-delegate');
+      const freshDelegateTx = await buildDelegateTransaction(delegateParamsRef.current);
+      const delegateTransaction = VersionedTransaction.deserialize(freshDelegateTx);
+      const { signature } = await solana.signAndSendTransaction(delegateTransaction);
+
+      setSigningProgress('confirming-delegate');
+      await waitForConfirmation(signature);
+
+      setSigningProgress('idle');
+      setTransactionSignature(signature);
+      setStep('success');
+      onSuccess?.(signature);
+
+      return { signature };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Delegation failed';
+      setSigningProgress('idle');
+      setError({
+        code: 'TRANSACTION_FAILED',
+        message: `Delegation failed: ${message}`,
+        retryable: true,
+      });
+      setStep('error');
+      return null;
+    }
+  }, [isAvailable, solana, onSuccess]);
 
   // Handle successful transaction
   const handleSuccess = useCallback(
@@ -213,7 +299,9 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     setPreview(null);
     setError(null);
     setTransactionSignature(null);
-    builtTransactionRef.current = null;
+    setSigningProgress('idle');
+    initTxRef.current = null;
+    delegateParamsRef.current = null;
   }, []);
 
   // Go back from preview to input
@@ -233,6 +321,7 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     error,
     isSimulating,
     transactionSignature,
+    signingProgress,
 
     // Computed
     stakeAmountLamports: stakeAmountLamports(),
@@ -245,6 +334,7 @@ export function useStakeTransaction(options: UseStakeTransactionOptions) {
     startStake,
     confirmStake,
     submitTransaction,
+    retryDelegate,
     handleSuccess,
     handleError,
     reset,

@@ -247,11 +247,7 @@ export function CodeTabs({ code }: { code: { typescript: string; curl: string } 
           className="absolute top-2 right-2 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700"
           aria-label={copied ? 'Copied to clipboard' : 'Copy code'}
         >
-          {copied ? (
-            <Check className="size-4 text-green-500" />
-          ) : (
-            <Copy className="size-4" />
-          )}
+          {copied ? <Check className="size-4 text-green-500" /> : <Copy className="size-4" />}
         </Button>
       </div>
     </div>

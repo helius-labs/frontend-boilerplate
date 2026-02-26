@@ -1,6 +1,7 @@
 // Phantom Connect Integration Sub-Page
 import { Metadata } from 'next';
 import { PHANTOM_CONNECT_NAV_ITEMS } from '@/app/(methods)/phantom-connect/nav-items';
+import { CopyButton } from '@/features/demo-framework/components/copy-button';
 import { PHANTOM_CONNECT_CODE_EXAMPLES } from '@/features/phantom-connect';
 import {
   BASE_URL,
@@ -10,7 +11,6 @@ import {
   createFAQSchema,
   createTechArticleSchema,
 } from '@/shared/lib/json-ld';
-import { CopyButton } from '@/features/demo-framework/components/copy-button';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { CodeTabsClient } from '@/shared/ui/code-tabs';
 import { FAQ } from '@/shared/ui/faq';
