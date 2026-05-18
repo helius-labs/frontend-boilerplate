@@ -1,6 +1,11 @@
 // Get Transactions Overview Page
 // Links to sub-pages for each use case
-import { BASE_URL, JsonLd, createWebPageSchema } from '@/shared/lib/json-ld';
+import {
+  BASE_URL,
+  JsonLdMultiple,
+  createFAQSchema,
+  createWebPageSchema,
+} from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { InfoBox } from '@/shared/ui/info-box';
 import { LearnMoreBox } from '@/shared/ui/learn-more-box';
@@ -10,6 +15,14 @@ import { PageContainer } from '@/shared/ui/page-container';
 import { PageHeader } from '@/shared/ui/page-header';
 import { SubNav } from '@/shared/ui/sub-nav';
 import { GET_TRANSACTIONS_NAV_ITEMS } from './nav-items';
+
+const FAQ_ITEMS = [
+  {
+    question: 'Which API should I use?',
+    answer:
+      'Use the Enhanced API for user-facing transaction feeds with human-readable descriptions like "Swapped 10 SOL for USDC" and parsed type classification. Use the RPC method (getTransactionsForAddress) for indexing or analytics with efficient keyset pagination over wallets with thousands of transactions. The Enhanced API classifies transactions into types like TRANSFER, SWAP, NFT_SALE, NFT_MINT, and STAKE_SOL.',
+  },
+];
 
 export default function GetTransactionsPage() {
   const jsonLdData = createWebPageSchema({
@@ -25,7 +38,7 @@ export default function GetTransactionsPage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <JsonLdMultiple schemas={[jsonLdData, createFAQSchema(FAQ_ITEMS)]} />
       <PageContainer>
         <Breadcrumb />
         <SubNav items={GET_TRANSACTIONS_NAV_ITEMS} />

@@ -15,12 +15,9 @@ import type {
   WebSite,
   WithContext,
 } from 'schema-dts';
+import { getPageDates } from './page-dates';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerplate.vercel.app';
-
-// Site-wide content dates. Update SITE_LAST_UPDATED when shipping substantive content changes.
-const SITE_PUBLISHED = '2025-11-01';
-const SITE_LAST_UPDATED = '2026-05-18';
 
 // =============================================================================
 // Type Definitions
@@ -342,6 +339,7 @@ export function createWebPageSchema(options: WebPageOptions): WithContext<WebPag
  * Use JsonLdMultiple to render both on the page.
  */
 export function createTechArticleSchema(options: TechArticleOptions): WithContext<TechArticle> {
+  const dates = getPageDates(options.url);
   const schema: WithContext<TechArticle> = {
     '@context': 'https://schema.org',
     '@type': 'TechArticle',
@@ -349,12 +347,19 @@ export function createTechArticleSchema(options: TechArticleOptions): WithContex
     name: options.name,
     description: options.description,
     url: options.url,
-    datePublished: options.datePublished || SITE_PUBLISHED,
-    dateModified: options.dateModified || SITE_LAST_UPDATED,
+    datePublished: options.datePublished || dates.datePublished,
+    dateModified: options.dateModified || dates.dateModified,
     author: {
-      '@type': 'Organization',
-      name: 'Helius',
-      url: 'https://www.helius.dev',
+      '@type': 'Person',
+      name: 'Linkie Link',
+      jobTitle: 'Senior Software Engineer',
+      url: 'https://linktr.ee/linkielink',
+      sameAs: ['https://x.com/linkielink', 'https://linktr.ee/linkielink'],
+      worksFor: {
+        '@type': 'Organization',
+        name: 'Helius',
+        url: 'https://www.helius.dev',
+      },
     },
     publisher: {
       '@type': 'Organization',

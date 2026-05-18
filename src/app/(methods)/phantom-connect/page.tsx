@@ -1,6 +1,11 @@
 // Phantom Connect Overview Page
 // Links to sub-pages for integration, connection types, and wallet interactions
-import { BASE_URL, JsonLd, createWebPageSchema } from '@/shared/lib/json-ld';
+import {
+  BASE_URL,
+  JsonLdMultiple,
+  createFAQSchema,
+  createWebPageSchema,
+} from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { InfoBox } from '@/shared/ui/info-box';
 import { LearnMoreBox } from '@/shared/ui/learn-more-box';
@@ -10,6 +15,14 @@ import { PageContainer } from '@/shared/ui/page-container';
 import { PageHeader } from '@/shared/ui/page-header';
 import { SubNav } from '@/shared/ui/sub-nav';
 import { PHANTOM_CONNECT_NAV_ITEMS } from './nav-items';
+
+const FAQ_ITEMS = [
+  {
+    question: 'What can you build with Phantom Connect?',
+    answer:
+      'Phantom Connect provides a complete wallet integration solution. You can handle Integration Setup by installing @phantom/react-sdk, wrapping your app with the provider, and configuring connection options. You can support multiple Connection Types including the Phantom extension, mobile app, Google login, Apple login, and other Solana wallets via the wallet standard. You can handle Wallet Interactions to sign transactions, send SOL, stake to validators, and interact with any Solana program using the connected wallet.',
+  },
+];
 
 export default function PhantomConnectPage() {
   const jsonLdData = createWebPageSchema({
@@ -25,7 +38,7 @@ export default function PhantomConnectPage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <JsonLdMultiple schemas={[jsonLdData, createFAQSchema(FAQ_ITEMS)]} />
       <PageContainer>
         <Breadcrumb />
         <SubNav items={PHANTOM_CONNECT_NAV_ITEMS} />

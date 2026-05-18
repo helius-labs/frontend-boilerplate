@@ -1,6 +1,11 @@
 // Get Balance Overview Page
 // Links to sub-pages for each use case
-import { BASE_URL, JsonLd, createWebPageSchema } from '@/shared/lib/json-ld';
+import {
+  BASE_URL,
+  JsonLdMultiple,
+  createFAQSchema,
+  createWebPageSchema,
+} from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { InfoBox } from '@/shared/ui/info-box';
 import { LearnMoreBox } from '@/shared/ui/learn-more-box';
@@ -10,6 +15,14 @@ import { PageContainer } from '@/shared/ui/page-container';
 import { PageHeader } from '@/shared/ui/page-header';
 import { SubNav } from '@/shared/ui/sub-nav';
 import { GET_BALANCE_NAV_ITEMS } from './nav-items';
+
+const FAQ_ITEMS = [
+  {
+    question: 'Which method should I use?',
+    answer:
+      'Choose the right approach based on what you need. Use getBalance for the fastest way to check native SOL (returns lamports which you divide by 1e9). Use getAssetsByOwner with showNativeBalance to get all tokens plus SOL in one call with metadata and prices. Use getTokenAccounts filtered by mint to check a specific SPL token like USDC, USDT, or any other token efficiently.',
+  },
+];
 
 export default function GetBalancePage() {
   const jsonLdData = createWebPageSchema({
@@ -25,7 +38,7 @@ export default function GetBalancePage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <JsonLdMultiple schemas={[jsonLdData, createFAQSchema(FAQ_ITEMS)]} />
       <PageContainer>
         <Breadcrumb />
         <SubNav items={GET_BALANCE_NAV_ITEMS} />

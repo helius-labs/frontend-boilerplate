@@ -1,6 +1,11 @@
 // Get Asset Overview Page
 // Links to sub-pages for each use case
-import { BASE_URL, JsonLd, createWebPageSchema } from '@/shared/lib/json-ld';
+import {
+  BASE_URL,
+  JsonLdMultiple,
+  createFAQSchema,
+  createWebPageSchema,
+} from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { InfoBox } from '@/shared/ui/info-box';
 import { LearnMoreBox } from '@/shared/ui/learn-more-box';
@@ -10,6 +15,14 @@ import { PageContainer } from '@/shared/ui/page-container';
 import { PageHeader } from '@/shared/ui/page-header';
 import { SubNav } from '@/shared/ui/sub-nav';
 import { GET_ASSET_NAV_ITEMS } from './nav-items';
+
+const FAQ_ITEMS = [
+  {
+    question: 'What can I look up?',
+    answer:
+      'The Helius getAsset method returns parsed metadata for any Solana asset. You can fetch NFT metadata (image URL, attributes, collection, royalties, and creators for standard NFTs and pNFTs), fungible token info (supply, decimals, token program, and real-time USD price for tokens like USDC, JUP, or BONK), and compressed NFTs (same metadata as standard NFTs, using the asset ID from the Merkle tree instead of a mint address).',
+  },
+];
 
 export default function GetAssetPage() {
   const jsonLdData = createWebPageSchema({
@@ -25,7 +38,7 @@ export default function GetAssetPage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <JsonLdMultiple schemas={[jsonLdData, createFAQSchema(FAQ_ITEMS)]} />
       <PageContainer>
         <Breadcrumb />
         <SubNav items={GET_ASSET_NAV_ITEMS} />

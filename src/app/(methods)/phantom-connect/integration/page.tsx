@@ -9,6 +9,7 @@ import {
   createBreadcrumbSchema,
   createCodeExampleSchema,
   createFAQSchema,
+  createHowToSchema,
   createTechArticleSchema,
 } from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
@@ -83,6 +84,27 @@ export default function IntegrationPage() {
 
   const faqSchema = createFAQSchema(FAQ_ITEMS);
 
+  const howToSchema = createHowToSchema({
+    name: 'How to Integrate Phantom Connect',
+    description:
+      'Install the Phantom SDK, configure the provider, and start using wallet hooks in a React app.',
+    url: `${BASE_URL}/phantom-connect/integration`,
+    steps: [
+      {
+        name: 'Install the SDK',
+        text: 'Add the Phantom SDK to your project with your preferred package manager.',
+      },
+      {
+        name: 'Configure the Provider',
+        text: 'Wrap your application with PhantomProvider. This enables all wallet hooks throughout your app.',
+      },
+      {
+        name: 'Use Wallet Hooks',
+        text: 'Access wallet state with hooks like usePhantom, useAccounts, and useDisconnect.',
+      },
+    ],
+  });
+
   const codeExampleSchema = createCodeExampleSchema({
     name: 'Phantom Provider Setup',
     description: 'TypeScript code showing how to configure PhantomProvider in a React app.',
@@ -96,6 +118,7 @@ export default function IntegrationPage() {
       <JsonLdMultiple
         schemas={[
           techArticleSchema,
+          howToSchema,
           createBreadcrumbSchema(BREADCRUMB),
           faqSchema,
           codeExampleSchema,

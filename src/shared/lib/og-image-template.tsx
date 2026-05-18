@@ -9,6 +9,29 @@ export const ogImageSize = {
 
 export const ogContentType = 'image/png';
 
+// TWK Lausanne Pan is the brand display face shared with www.helius.dev.
+// Load once per cold start; subsequent renders reuse the cached buffers.
+let lausanneFontsPromise: Promise<
+  Array<{ name: string; data: ArrayBuffer; weight: 400 | 500; style: 'normal' }>
+> | null = null;
+
+function getLausanneFonts() {
+  if (!lausanneFontsPromise) {
+    lausanneFontsPromise = Promise.all([
+      fetch(new URL('../../app/fonts/TWKLausannePan-450.otf', import.meta.url)).then((res) =>
+        res.arrayBuffer()
+      ),
+      fetch(new URL('../../app/fonts/TWKLausannePan-500.otf', import.meta.url)).then((res) =>
+        res.arrayBuffer()
+      ),
+    ]).then(([w450, w500]) => [
+      { name: 'Lausanne', data: w450, weight: 400 as const, style: 'normal' as const },
+      { name: 'Lausanne', data: w500, weight: 500 as const, style: 'normal' as const },
+    ]);
+  }
+  return lausanneFontsPromise;
+}
+
 // Icon SVG paths from Lucide icons
 const iconPaths: Record<string, string> = {
   settings:
@@ -424,9 +447,15 @@ interface OgImageOptions {
  * Features Helius logo (top-left), Solana logo (top-right),
  * centered icon with title and description.
  */
-export function createOgImage({ title, description, icon = 'code', iconColor }: OgImageOptions) {
+export async function createOgImage({
+  title,
+  description,
+  icon = 'code',
+  iconColor,
+}: OgImageOptions) {
   const color = iconColor || '#E84326';
   const bgColor = iconColor ? `${iconColor}33` : 'rgba(232, 67, 38, 0.2)';
+  const fonts = await getLausanneFonts();
   return new ImageResponse(
     <div
       style={{
@@ -436,7 +465,7 @@ export function createOgImage({ title, description, icon = 'code', iconColor }: 
         flexDirection: 'column',
         backgroundColor: '#090909',
         padding: 60,
-        fontFamily: 'Inter, sans-serif',
+        fontFamily: 'Lausanne',
       }}
     >
       {/* Header with logos */}
@@ -489,7 +518,7 @@ export function createOgImage({ title, description, icon = 'code', iconColor }: 
           style={{
             display: 'flex',
             fontSize: 56,
-            fontWeight: 600,
+            fontWeight: 500,
             color: 'white',
             textAlign: 'center',
             lineHeight: 1.2,
@@ -504,6 +533,7 @@ export function createOgImage({ title, description, icon = 'code', iconColor }: 
           style={{
             display: 'flex',
             fontSize: 24,
+            fontWeight: 400,
             color: 'rgba(255,255,255,0.6)',
             textAlign: 'center',
             maxWidth: 700,
@@ -513,6 +543,6 @@ export function createOgImage({ title, description, icon = 'code', iconColor }: 
         </div>
       </div>
     </div>,
-    { ...ogImageSize }
+    { ...ogImageSize, fonts }
   );
 }

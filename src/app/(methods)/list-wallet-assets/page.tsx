@@ -1,6 +1,11 @@
 // Get Assets By Owner Overview Page
 // Links to sub-pages for each use case
-import { BASE_URL, JsonLd, createWebPageSchema } from '@/shared/lib/json-ld';
+import {
+  BASE_URL,
+  JsonLdMultiple,
+  createFAQSchema,
+  createWebPageSchema,
+} from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
 import { InfoBox } from '@/shared/ui/info-box';
 import { LearnMoreBox } from '@/shared/ui/learn-more-box';
@@ -10,6 +15,14 @@ import { PageContainer } from '@/shared/ui/page-container';
 import { PageHeader } from '@/shared/ui/page-header';
 import { SubNav } from '@/shared/ui/sub-nav';
 import { GET_ASSETS_BY_OWNER_NAV_ITEMS } from './nav-items';
+
+const FAQ_ITEMS = [
+  {
+    question: 'How does it work?',
+    answer:
+      'Call getAssetsByOwner with a wallet address to get all assets with parsed metadata, images, and prices. Filter NFTs with the interface parameter (V1_NFT or ProgrammableNFT for standard NFTs, returning images via CDN). Include token holdings by setting showFungible: true for SPL tokens with balances, decimals, and USD prices. Compressed NFTs from DRiP, Helium, and similar are included automatically; check compression.compressed to identify them.',
+  },
+];
 
 export default function GetAssetsByOwnerPage() {
   const jsonLdData = createWebPageSchema({
@@ -25,7 +38,7 @@ export default function GetAssetsByOwnerPage() {
 
   return (
     <>
-      <JsonLd data={jsonLdData} />
+      <JsonLdMultiple schemas={[jsonLdData, createFAQSchema(FAQ_ITEMS)]} />
       <PageContainer>
         <Breadcrumb />
         <SubNav items={GET_ASSETS_BY_OWNER_NAV_ITEMS} />
