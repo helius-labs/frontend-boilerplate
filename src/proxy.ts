@@ -12,7 +12,6 @@
 //   3. Exposes `?mode=agent` on `/` as a shortcut that returns the markdown
 //      mirror without needing an Accept header — useful for crawlers that
 //      cannot set custom headers.
-
 import { NextRequest, NextResponse } from 'next/server';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://demo.helius.dev';
@@ -22,12 +21,17 @@ const LINK_HEADER = [
   `<${BASE_URL}/llms.txt>; rel="describedby"; type="text/plain"`,
   `<${BASE_URL}/llms-full.txt>; rel="alternate"; type="text/plain"; title="Full reference"`,
   `<${BASE_URL}/index.md>; rel="alternate"; type="text/markdown"; title="Markdown mirror"`,
-  `<https://docs.helius.dev/api-reference/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"`,
+  `<${BASE_URL}/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"; title="Demo proxy OpenAPI 3.1"`,
+  `<https://docs.helius.dev/api-reference/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"; title="Helius canonical OpenAPI"`,
   `<https://docs.helius.dev>; rel="service-doc"; type="text/html"`,
   `<${BASE_URL}/.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json"`,
   `<${BASE_URL}/.well-known/agent-card.json>; rel="agent-card"; type="application/json"`,
+  `<${BASE_URL}/.well-known/mcp/server-card.json>; rel="mcp-server-card"; type="application/json"`,
+  `<${BASE_URL}/.well-known/oauth-protected-resource>; rel="oauth-protected-resource"; type="application/json"`,
+  `<${BASE_URL}/.well-known/http-message-signatures-directory>; rel="http-message-signatures-directory"`,
   `<${BASE_URL}/agents.md>; rel="describedby"; type="text/markdown"`,
   `<${BASE_URL}/pricing.md>; rel="payment"; type="text/markdown"`,
+  `<${BASE_URL}/ask>; rel="search"; type="application/ld+json"; title="NLWeb /ask"`,
 ].join(', ');
 
 function acceptsMarkdown(accept: string | null): boolean {
@@ -35,7 +39,10 @@ function acceptsMarkdown(accept: string | null): boolean {
   // Treat as markdown only if text/markdown beats text/html — i.e. it has a
   // higher q-value, OR it appears before text/html with no q-values set.
   const types = accept.split(',').map((entry) => {
-    const [type, ...params] = entry.trim().split(';').map((s) => s.trim());
+    const [type, ...params] = entry
+      .trim()
+      .split(';')
+      .map((s) => s.trim());
     const qParam = params.find((p) => p.startsWith('q='));
     const q = qParam ? Number.parseFloat(qParam.slice(2)) : 1;
     return { type, q: Number.isFinite(q) ? q : 1 };

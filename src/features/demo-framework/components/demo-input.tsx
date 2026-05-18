@@ -16,12 +16,12 @@ export function DemoInput({
   placeholder = 'Enter Solana address...',
   label = 'Address',
   className,
-}: DemoInputProps) {
+  mcpToolName = 'queryByAddress',
+  mcpToolDescription = 'Query Solana on-chain data for a given wallet or mint address.',
+}: DemoInputProps & { mcpToolName?: string; mcpToolDescription?: string }) {
   const { inputValue, setInputValue } = useDemoContext();
   const { address, isConnected } = useWallet();
 
-  // Pre-populate with connected wallet address (DEMO-02)
-  // Only if input is empty (don't override user input)
   useEffect(() => {
     if (isConnected && address && !inputValue) {
       setInputValue(address);
@@ -31,24 +31,35 @@ export function DemoInput({
   const validation = validateSolanaAddress(inputValue);
 
   return (
-    <div className={cn('space-y-2', className)}>
+    <form
+      className={cn('space-y-2', className)}
+      data-mcp-tool={mcpToolName}
+      data-mcp-description={mcpToolDescription}
+      onSubmit={(e) => e.preventDefault()}
+    >
       <label htmlFor="demo-address" className="text-sm font-medium">
         {label}
       </label>
       <Input
         id="demo-address"
+        name="address"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder={placeholder}
         className={cn(validation.error && 'border-destructive focus-visible:ring-destructive')}
         aria-invalid={!!validation.error}
         aria-describedby={validation.error ? 'demo-address-error' : undefined}
+        data-mcp-parameter="address"
+        data-mcp-parameter-type="string"
+        data-mcp-parameter-format="solana-address"
+        data-mcp-parameter-description="Base58-encoded Solana public key (32 bytes). Accepts wallet addresses, mint addresses, and program IDs."
+        data-mcp-parameter-required="true"
       />
       {validation.error && (
         <p id="demo-address-error" className="text-sm text-destructive">
           {validation.error}
         </p>
       )}
-    </div>
+    </form>
   );
 }

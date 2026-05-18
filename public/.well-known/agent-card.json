@@ -10,6 +10,7 @@
     "url": "https://www.helius.dev"
   },
   "documentationUrl": "https://demo.helius.dev/llms-full.txt",
+  "openApiUrl": "https://demo.helius.dev/openapi.json",
   "iconUrl": "https://demo.helius.dev/icon-192.png",
   "preferredTransport": "JSONRPC",
   "defaultInputModes": ["text/plain", "application/json"],

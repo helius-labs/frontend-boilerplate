@@ -34,6 +34,16 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        source: '/openapi.json',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/vnd.oai.openapi+json; charset=utf-8',
+          },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
+      {
         source: '/.well-known/oauth-protected-resource',
         headers: [
           { key: 'Content-Type', value: 'application/json; charset=utf-8' },
@@ -46,6 +56,17 @@ const nextConfig: NextConfig = {
         headers: [
           { key: 'Access-Control-Allow-Origin', value: '*' },
           { key: 'Cache-Control', value: 'public, max-age=3600' },
+        ],
+      },
+      {
+        source: '/.well-known/http-message-signatures-directory',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/http-message-signatures-directory+json; charset=utf-8',
+          },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
         ],
       },
       {

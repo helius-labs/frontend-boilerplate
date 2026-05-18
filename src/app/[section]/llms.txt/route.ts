@@ -1,7 +1,6 @@
 // Per-section llms.txt — a focused summary for a single product area so
 // agents can pull just the slice they need without parsing the full
 // /llms-full.txt. Catches paths like /get-balances/llms.txt.
-
 import { notFound } from 'next/navigation';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://demo.helius.dev';
@@ -20,7 +19,11 @@ const SECTIONS: Record<string, Section> = {
     title: 'How to get wallet balances on Solana',
     summary:
       'Fetch SOL balance, all token holdings, or a specific SPL token for any Solana address. Includes three sub-routes for SOL-only, all tokens, and a specific mint.',
-    subRoutes: ['/get-balances/sol-only', '/get-balances/all-tokens', '/get-balances/specific-token'],
+    subRoutes: [
+      '/get-balances/sol-only',
+      '/get-balances/all-tokens',
+      '/get-balances/specific-token',
+    ],
     related: [
       {
         label: 'getBalance RPC',

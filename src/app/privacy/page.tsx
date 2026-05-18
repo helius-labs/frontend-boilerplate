@@ -52,9 +52,9 @@ export default function PrivacyPage() {
               no user account to create or delete.
             </li>
             <li>
-              <strong>No personally identifying information.</strong> We do not request email,
-              name, address, or payment details. Connecting a Solana wallet only exposes its
-              public address.
+              <strong>No personally identifying information.</strong> We do not request email, name,
+              address, or payment details. Connecting a Solana wallet only exposes its public
+              address.
             </li>
             <li>
               <strong>Wallet public addresses.</strong> Addresses you type into demo inputs or
@@ -80,8 +80,7 @@ export default function PrivacyPage() {
           <h2>What is forwarded to Helius</h2>
           <p>
             All Solana RPC calls go through the server-side proxy at <code>/api/rpc</code>, which
-            forwards the request to Helius mainnet RPC using a server-held API key. Helius
-            receives:
+            forwards the request to Helius mainnet RPC using a server-held API key. Helius receives:
           </p>
           <ul>
             <li>The RPC method name and parameters you submitted</li>
@@ -97,8 +96,8 @@ export default function PrivacyPage() {
           <h2>Third-party services</h2>
           <ul>
             <li>
-              <ExternalLink href="https://www.helius.dev">Helius</ExternalLink> — Solana RPC and
-              DAS API
+              <ExternalLink href="https://www.helius.dev">Helius</ExternalLink> — Solana RPC and DAS
+              API
             </li>
             <li>
               <ExternalLink href="https://vercel.com">Vercel</ExternalLink> — hosting, analytics,
@@ -122,8 +121,7 @@ export default function PrivacyPage() {
           <p>
             The demo welcomes AI crawlers and agent traffic. Robots policy is at{' '}
             <ExternalLink href="/robots.txt">/robots.txt</ExternalLink>, and machine-readable
-            metadata is at{' '}
-            <ExternalLink href="/llms-full.txt">/llms-full.txt</ExternalLink> and{' '}
+            metadata is at <ExternalLink href="/llms-full.txt">/llms-full.txt</ExternalLink> and{' '}
             <ExternalLink href="/.well-known/agent-card.json">
               /.well-known/agent-card.json
             </ExternalLink>
@@ -137,21 +135,19 @@ export default function PrivacyPage() {
           </p>
 
           <h2>Children</h2>
-          <p>
-            The demo is intended for software developers. It is not directed at users under 13.
-          </p>
+          <p>The demo is intended for software developers. It is not directed at users under 13.</p>
 
           <h2>Changes</h2>
           <p>
-            We update this page when the demo changes. The <em>Last updated</em> date above
-            reflects the most recent revision.
+            We update this page when the demo changes. The <em>Last updated</em> date above reflects
+            the most recent revision.
           </p>
 
           <h2>Contact</h2>
           <p>
-            Privacy questions: <ExternalLink href="mailto:privacy@helius.dev">privacy@helius.dev</ExternalLink>
-            . For everything else, see the{' '}
-            <ExternalLink href="/contact">contact page</ExternalLink>.
+            Privacy questions:{' '}
+            <ExternalLink href="mailto:privacy@helius.dev">privacy@helius.dev</ExternalLink>. For
+            everything else, see the <ExternalLink href="/contact">contact page</ExternalLink>.
           </p>
         </section>
       </PageContainer>

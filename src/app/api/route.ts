@@ -10,8 +10,16 @@ export function GET(): NextResponse {
         'Server-side proxies for Helius RPC, Enhanced API, and Laserstream. All endpoints hold the API key server-side; clients do not need credentials when calling this site.',
       version: '1.0.0',
       documentation: 'https://docs.helius.dev',
-      openapi: 'https://docs.helius.dev/api-reference/openapi.json',
+      openapi: {
+        local: 'https://demo.helius.dev/openapi.json',
+        upstream: 'https://docs.helius.dev/api-reference/openapi.json',
+      },
+      agentCard: 'https://demo.helius.dev/.well-known/agent-card.json',
+      mcpServerCard: 'https://demo.helius.dev/.well-known/mcp/server-card.json',
+      nlweb: 'https://demo.helius.dev/ask',
+      sandbox: 'https://demo.helius.dev/sandbox',
       rateLimits: 'https://demo.helius.dev/rate-limits',
+      webhooks: 'https://demo.helius.dev/webhooks',
       endpoints: [
         {
           path: '/api/rpc',

@@ -32,8 +32,8 @@ export default function RateLimitsPage() {
         <section className="max-w-none space-y-6 [&_h2]:text-2xl [&_h2]:mt-8 [&_h2]:mb-2 [&_h3]:text-lg [&_h3]:mt-4 [&_h3]:mb-1 [&_p]:text-sm [&_p]:text-muted-foreground [&_p]:leading-relaxed [&_ul]:text-sm [&_ul]:text-muted-foreground [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_a]:text-helius-orange [&_a]:underline-offset-2 hover:[&_a]:underline [&_code]:bg-muted [&_code]:px-1 [&_code]:rounded [&_code]:text-xs [&_table]:text-sm [&_table]:w-full [&_th]:text-left [&_th]:py-1 [&_th]:px-2 [&_td]:py-1 [&_td]:px-2 [&_tr]:border-b [&_tr]:border-border/30">
           <h2>Demo proxy (this site)</h2>
           <p>
-            The demo&apos;s <code>/api/rpc</code> endpoint applies its own lightweight rate
-            limiting to prevent abuse of the shared API key. Concretely:
+            The demo&apos;s <code>/api/rpc</code> endpoint applies its own lightweight rate limiting
+            to prevent abuse of the shared API key. Concretely:
           </p>
           <ul>
             <li>
@@ -49,15 +49,12 @@ export default function RateLimitsPage() {
             </li>
           </ul>
           <p>
-            These limits exist because the demo uses a single shared Helius API key. For
-            production traffic, clone the boilerplate, generate your own key, and remove the
-            demo-side limiter.
+            These limits exist because the demo uses a single shared Helius API key. For production
+            traffic, clone the boilerplate, generate your own key, and remove the demo-side limiter.
           </p>
 
           <h2>Response headers</h2>
-          <p>
-            The demo forwards Helius rate-limit headers from upstream responses when present:
-          </p>
+          <p>The demo forwards Helius rate-limit headers from upstream responses when present:</p>
           <ul>
             <li>
               <code>x-ratelimit-limit</code> — your tier&apos;s allowed RPS
@@ -116,8 +113,8 @@ export default function RateLimitsPage() {
           </table>
           <p>
             Numbers above may lag the live pricing page. Treat{' '}
-            <ExternalLink href="https://www.helius.dev/pricing">helius.dev/pricing</ExternalLink>{' '}
-            as canonical.
+            <ExternalLink href="https://www.helius.dev/pricing">helius.dev/pricing</ExternalLink> as
+            canonical.
           </p>
 
           <h2>Recommended retry strategy</h2>
@@ -142,7 +139,7 @@ export default function RateLimitsPage() {
             All errors from <code>/api/rpc</code> are JSON-RPC 2.0 shaped:
           </p>
           <pre className="bg-muted/50 border border-border/30 rounded-md p-4 overflow-x-auto text-xs">
-{`{
+            {`{
   "jsonrpc": "2.0",
   "id": "1",
   "error": {

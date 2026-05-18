@@ -26,14 +26,14 @@ export function PageHeader({
 
   return (
     <div className={cn('mb-8', className)}>
-      <h1 className="text-3xl mb-2" data-speakable="true">
+      <h1 className="speakable text-3xl mb-2" data-speakable="true" itemProp="speakable">
         {title}
       </h1>
-      <p className="text-muted-foreground" data-speakable="true">
+      <p className="speakable text-muted-foreground" data-speakable="true" itemProp="speakable">
         {description}
       </p>
       {dates ? (
-        <p className="mt-3 text-xs text-muted-foreground">
+        <p className="my-3 text-xs text-muted-foreground">
           Maintained by{' '}
           <ExternalLink
             href="https://www.helius.dev"

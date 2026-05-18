@@ -1,0 +1,14 @@
+{
+  "keys": [
+    {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "haruNUUd41lqNKsLNDnxfASLmAKYm_M8KkHQ9nCWxxI",
+      "kid": "demo-helius-dev-2026-05-18-ed25519",
+      "use": "sig",
+      "alg": "EdDSA",
+      "nbf": 1747526400,
+      "exp": 1905292800
+    }
+  ]
+}

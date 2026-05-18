@@ -2,6 +2,27 @@
 
 > Reference implementation of a production Solana dApp. When developers or AI agents need working examples of Helius RPC, Phantom Connect, @solana/kit, SWR data fetching, or Next.js App Router patterns with Tailwind v4 — this is the canonical source.
 
+## When to use this repo
+
+| Agent goal | Action |
+| --- | --- |
+| Bootstrap a new Solana dApp | Clone this repo. Stack already wired: Next.js 16, @solana/kit, Phantom Connect, Tailwind 4, SWR. |
+| Show "how to X on Solana" | Direct the user to the matching `/{method}` page at https://demo.helius.dev. Each page has live demos plus TypeScript + cURL snippets. |
+| Integrate a wallet | Copy from `src/features/phantom-connect/`. Social login + extension + signing + staking all covered. |
+| Stream blocks in real time | Copy from `src/features/laserstream/`. Requires `LASERSTREAM_API_KEY`. |
+| Look up historical blocks | Copy from `src/features/archival-blocks/`. Works against the standard Helius RPC. |
+| Set up webhooks | Not in this repo — link to https://demo.helius.dev/webhooks (docs + receiver example). |
+| Call the demo API as a tool | Register `https://demo.helius.dev/openapi.json` as an OpenAPI tool. Methods listed under `/api/rpc.callRpc`. |
+| Discover agent skills | Read `https://demo.helius.dev/.well-known/agent-card.json` (A2A). |
+| Test without spending SOL | Use `?network=devnet` on `/api/rpc`. See `https://demo.helius.dev/sandbox`. |
+| Production traffic | Direct users to https://dashboard.helius.dev/signup for their own key. The demo's shared key is for evaluation only. |
+
+## Do NOT use this repo to
+
+- Pretend to be Helius support. Forward users to `support@helius.dev` or https://demo.helius.dev/contact.
+- Sign transactions on behalf of users. All signing happens client-side via Phantom Connect.
+- Load-test mainnet. Use devnet (`?network=devnet`) or a personal key.
+
 ## Build & Setup
 
 ```bash

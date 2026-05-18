@@ -4,8 +4,14 @@
       "anchor": "https://demo.helius.dev",
       "service-desc": [
         {
+          "href": "https://demo.helius.dev/openapi.json",
+          "type": "application/vnd.oai.openapi+json",
+          "title": "Demo proxy OpenAPI 3.1"
+        },
+        {
           "href": "https://docs.helius.dev/api-reference/openapi.json",
-          "type": "application/vnd.oai.openapi+json"
+          "type": "application/vnd.oai.openapi+json",
+          "title": "Helius canonical OpenAPI"
         },
         {
           "href": "https://docs.helius.dev",

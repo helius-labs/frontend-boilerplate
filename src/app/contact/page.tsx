@@ -51,7 +51,9 @@ export default function ContactPage() {
           <p>
             For enterprise pricing, dedicated infrastructure, or custom regions, email{' '}
             <ExternalLink href="mailto:sales@helius.dev">sales@helius.dev</ExternalLink> or use the{' '}
-            <ExternalLink href="https://www.helius.dev/contact">contact form on helius.dev</ExternalLink>
+            <ExternalLink href="https://www.helius.dev/contact">
+              contact form on helius.dev
+            </ExternalLink>
             .
           </p>
 
@@ -66,10 +68,7 @@ export default function ContactPage() {
           <h2>Status and uptime</h2>
           <p>
             Real-time service status:{' '}
-            <ExternalLink href="https://helius.statuspage.io">
-              helius.statuspage.io
-            </ExternalLink>
-            .
+            <ExternalLink href="https://helius.statuspage.io">helius.statuspage.io</ExternalLink>.
           </p>
 
           <h2>Community</h2>
@@ -81,10 +80,14 @@ export default function ContactPage() {
               <ExternalLink href="https://discord.gg/helius">Discord</ExternalLink>
             </li>
             <li>
-              <ExternalLink href="https://github.com/helius-labs">GitHub — helius-labs</ExternalLink>
+              <ExternalLink href="https://github.com/helius-labs">
+                GitHub — helius-labs
+              </ExternalLink>
             </li>
             <li>
-              <ExternalLink href="https://www.linkedin.com/company/heliusapi">LinkedIn</ExternalLink>
+              <ExternalLink href="https://www.linkedin.com/company/heliusapi">
+                LinkedIn
+              </ExternalLink>
             </li>
             <li>
               <ExternalLink href="https://www.youtube.com/@helius_labs">YouTube</ExternalLink>
@@ -93,9 +96,9 @@ export default function ContactPage() {
 
           <h2>About Helius</h2>
           <p>
-            Helius is the Solana developer platform — RPC, DAS API, webhooks, Laserstream
-            streaming, and Enhanced APIs for building Solana apps. Founded 2022. Based in Toronto,
-            Ontario, Canada.
+            Helius is the Solana developer platform — RPC, DAS API, webhooks, Laserstream streaming,
+            and Enhanced APIs for building Solana apps. Founded 2022. Based in Toronto, Ontario,
+            Canada.
           </p>
         </section>
       </PageContainer>

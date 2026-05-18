@@ -121,16 +121,18 @@ export default function HomePage() {
               </span>
             </div>
             <h1
-              className="text-4xl tracking-tight sm:text-5xl lg:text-6xl"
+              className="speakable text-4xl tracking-tight sm:text-5xl lg:text-6xl"
               data-speakable="true"
+              itemProp="speakable"
             >
               How to build on Solana
               <br />
               with working examples
             </h1>
             <p
-              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+              className="speakable text-lg text-muted-foreground max-w-2xl mx-auto"
               data-speakable="true"
+              itemProp="speakable"
             >
               Stop searching Stack Overflow. Every method you need for your Solana app, from
               balances to staking, with TypeScript code you can copy today.

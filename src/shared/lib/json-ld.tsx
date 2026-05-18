@@ -382,7 +382,7 @@ export function createWebPageSchema(options: WebPageOptions): WithContext<WebPag
     },
     speakable: {
       '@type': 'SpeakableSpecification',
-      cssSelector: ['h1'],
+      cssSelector: ['.speakable', 'h1', '[itemprop="speakable"]'],
     },
   };
 
@@ -456,7 +456,7 @@ export function createTechArticleSchema(options: TechArticleOptions): WithContex
     },
     speakable: {
       '@type': 'SpeakableSpecification',
-      cssSelector: ['h1'],
+      cssSelector: ['.speakable', 'h1', '[itemprop="speakable"]'],
     },
     inLanguage: 'en-US',
     proficiencyLevel: 'Beginner',

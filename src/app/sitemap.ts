@@ -34,6 +34,9 @@ const routes = [
   'contact',
   'privacy',
   'rate-limits',
+  'sandbox',
+  'integrations',
+  'webhooks',
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
