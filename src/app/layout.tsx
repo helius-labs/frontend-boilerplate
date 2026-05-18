@@ -50,6 +50,22 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: '/apple-icon.png', sizes: '180x180' }],
   },
+  openGraph: {
+    title: 'How to Build on Solana | Working Code Examples',
+    description:
+      'Copy-paste Solana code for balances, NFTs, transactions, staking. Every method you need with TypeScript examples.',
+    type: 'website',
+    siteName: 'Solana dApp Example',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'How to Build on Solana | Working Code Examples',
+    description:
+      'Copy-paste Solana code for balances, NFTs, transactions, staking. Every method you need with TypeScript examples.',
+    site: '@heliuslabs',
+    creator: '@heliuslabs',
+  },
   alternates: {
     canonical: '/',
   },

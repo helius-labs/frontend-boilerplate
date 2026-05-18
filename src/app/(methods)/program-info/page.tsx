@@ -7,6 +7,8 @@ import {
   BASE_URL,
   JsonLdMultiple,
   createBreadcrumbSchema,
+  createCodeExampleSchema,
+  createHowToSchema,
   createTechArticleSchema,
 } from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
@@ -55,9 +57,45 @@ export default function ProgramInfoPage() {
     ],
   });
 
+  const howToSchema = createHowToSchema({
+    name: 'How to Inspect a Solana Program',
+    description:
+      'Fetch program account metadata, check upgrade authority, and retrieve the Anchor IDL using Helius RPC.',
+    url: `${BASE_URL}/program-info`,
+    steps: [
+      {
+        name: 'Fetch program metadata',
+        text: 'Use getAccountInfo with jsonParsed encoding to get program details.',
+      },
+      {
+        name: 'Check upgrade authority',
+        text: 'Determine if a program is upgradeable and who controls it by fetching the ProgramData account.',
+      },
+      {
+        name: 'Retrieve Anchor IDL',
+        text: 'Fetch the on-chain IDL for Anchor programs using @coral-xyz/anchor.',
+      },
+    ],
+  });
+
+  const metadataCodeSchema = createCodeExampleSchema({
+    name: 'Fetch Solana Program Metadata',
+    description: 'TypeScript code to fetch a Solana program account with jsonParsed encoding.',
+    programmingLanguage: 'TypeScript',
+    codeText: PROGRAM_INFO_CODE_EXAMPLES.metadata.typescript,
+    url: `${BASE_URL}/program-info`,
+  });
+
   return (
     <>
-      <JsonLdMultiple schemas={[techArticleSchema, createBreadcrumbSchema(BREADCRUMB)]} />
+      <JsonLdMultiple
+        schemas={[
+          techArticleSchema,
+          howToSchema,
+          metadataCodeSchema,
+          createBreadcrumbSchema(BREADCRUMB),
+        ]}
+      />
 
       <PageContainer>
         <Breadcrumb />

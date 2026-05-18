@@ -5,6 +5,9 @@ import {
   BASE_URL,
   JsonLdMultiple,
   createBreadcrumbSchema,
+  createCodeExampleSchema,
+  createFAQSchema,
+  createHowToSchema,
   createTechArticleSchema,
 } from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
@@ -53,9 +56,50 @@ export default function ArchivalBlocksPage() {
     ],
   });
 
+  const howToSchema = createHowToSchema({
+    name: 'How to Fetch Historical Blocks on Solana',
+    description: 'Retrieve any archival Solana block by slot using the getBlock RPC method.',
+    url: `${BASE_URL}/archival-blocks`,
+    steps: [
+      {
+        name: 'Fetch any block by slot',
+        text: 'Use getBlock with a slot number to retrieve block data including transactions and rewards.',
+      },
+      {
+        name: 'Get block with full transaction details',
+        text: 'Set transactionDetails: "full" to get complete transaction data with parsed instructions.',
+      },
+    ],
+  });
+
+  const faqSchema = createFAQSchema([
+    {
+      question: 'Why is archival data rare?',
+      answer:
+        'Most Solana RPC nodes only store recent data (last few days). Archival nodes store the complete blockchain history since genesis, but they require significant storage and are expensive to run. Helius provides archival access so you can query any historical slot.',
+    },
+  ]);
+
+  const codeSchema = createCodeExampleSchema({
+    name: 'Fetch Solana Block by Slot',
+    description:
+      'TypeScript code to fetch any historical Solana block by slot number using getBlock.',
+    programmingLanguage: 'TypeScript',
+    codeText: ARCHIVAL_BLOCKS_CODE_EXAMPLES['get-block'].typescript,
+    url: `${BASE_URL}/archival-blocks`,
+  });
+
   return (
     <>
-      <JsonLdMultiple schemas={[techArticleSchema, createBreadcrumbSchema(BREADCRUMB)]} />
+      <JsonLdMultiple
+        schemas={[
+          techArticleSchema,
+          howToSchema,
+          faqSchema,
+          codeSchema,
+          createBreadcrumbSchema(BREADCRUMB),
+        ]}
+      />
       <PageContainer>
         <Breadcrumb />
 

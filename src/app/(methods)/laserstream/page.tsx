@@ -6,6 +6,8 @@ import {
   BASE_URL,
   JsonLdMultiple,
   createBreadcrumbSchema,
+  createCodeExampleSchema,
+  createHowToSchema,
   createTechArticleSchema,
 } from '@/shared/lib/json-ld';
 import { Breadcrumb } from '@/shared/ui/breadcrumb';
@@ -53,9 +55,46 @@ export default function LaserstreamPage() {
     ],
   });
 
+  const howToSchema = createHowToSchema({
+    name: 'How to Stream Solana Blocks in Real-Time with Laserstream',
+    description:
+      'Connect to the Helius Laserstream WebSocket and subscribe to real-time slot, block, and account updates.',
+    url: `${BASE_URL}/laserstream`,
+    steps: [
+      {
+        name: 'Connect to WebSocket',
+        text: 'Establish a WebSocket connection and subscribe to slot notifications.',
+      },
+      {
+        name: 'Subscribe to Blocks',
+        text: 'Get full block data including transactions as they are confirmed.',
+      },
+      {
+        name: 'Monitor Account Changes',
+        text: 'Subscribe to real-time updates for specific accounts like wallets or program accounts.',
+      },
+    ],
+  });
+
+  const connectCodeSchema = createCodeExampleSchema({
+    name: 'Connect to Laserstream WebSocket',
+    description:
+      'TypeScript code to establish a Laserstream WebSocket connection and subscribe to slot notifications.',
+    programmingLanguage: 'TypeScript',
+    codeText: LASERSTREAM_CODE_EXAMPLES['connect-websocket'].typescript,
+    url: `${BASE_URL}/laserstream`,
+  });
+
   return (
     <>
-      <JsonLdMultiple schemas={[techArticleSchema, createBreadcrumbSchema(BREADCRUMB)]} />
+      <JsonLdMultiple
+        schemas={[
+          techArticleSchema,
+          howToSchema,
+          connectCodeSchema,
+          createBreadcrumbSchema(BREADCRUMB),
+        ]}
+      />
       <PageContainer className="space-y-8">
         <Breadcrumb />
 

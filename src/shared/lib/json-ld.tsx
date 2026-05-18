@@ -3,6 +3,7 @@
 import type {
   BreadcrumbList,
   FAQPage,
+  HowTo,
   ItemList,
   Organization,
   SoftwareApplication,
@@ -16,6 +17,10 @@ import type {
 } from 'schema-dts';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerplate.vercel.app';
+
+// Site-wide content dates. Update SITE_LAST_UPDATED when shipping substantive content changes.
+const SITE_PUBLISHED = '2025-11-01';
+const SITE_LAST_UPDATED = '2026-05-18';
 
 // =============================================================================
 // Type Definitions
@@ -78,6 +83,20 @@ interface CodeExampleOptions {
   url?: string;
 }
 
+export interface HowToStepItem {
+  name: string;
+  text: string;
+  url?: string;
+}
+
+interface HowToSchemaOptions {
+  name: string;
+  description: string;
+  url: string;
+  steps: HowToStepItem[];
+  totalTime?: string;
+}
+
 // =============================================================================
 // JSON-LD Component
 // =============================================================================
@@ -132,14 +151,26 @@ export function getOrganizationJsonLd(): WithContext<Organization> {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Helius',
-    url: 'https://helius.dev',
-    logo: 'https://helius.dev/logo.png',
+    url: 'https://www.helius.dev',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://www.helius.dev/logo.svg',
+    },
     description: 'The most powerful Solana RPC and APIs for developers.',
+    foundingDate: '2022',
     sameAs: [
-      'https://twitter.com/heaborofficial',
+      'https://twitter.com/heliuslabs',
       'https://github.com/helius-labs',
       'https://discord.gg/helius',
+      'https://www.linkedin.com/company/heliusapi',
+      'https://www.youtube.com/@helius_labs',
     ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      url: 'https://www.helius.dev/contact',
+      availableLanguage: ['English'],
+    },
   };
 }
 
@@ -159,10 +190,11 @@ export function getWebSiteJsonLd(): WithContext<WebSite> {
     url: BASE_URL,
     description:
       'Interactive demos of Helius Solana RPC methods. A clonable template for building Solana dApps.',
+    inLanguage: 'en-US',
     publisher: {
       '@type': 'Organization',
       name: 'Helius',
-      url: 'https://helius.dev',
+      url: 'https://www.helius.dev',
     },
   };
 }
@@ -186,6 +218,11 @@ export function getWebApplicationJsonLd(): WithContext<WebApplication> {
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'Requires JavaScript',
+    inLanguage: 'en-US',
+    audience: {
+      '@type': 'Audience',
+      audienceType: 'Solana developers',
+    },
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -194,12 +231,12 @@ export function getWebApplicationJsonLd(): WithContext<WebApplication> {
     author: {
       '@type': 'Organization',
       name: 'Helius',
-      url: 'https://helius.dev',
+      url: 'https://www.helius.dev',
     },
     sourceOrganization: {
       '@type': 'Organization',
       name: 'Helius',
-      url: 'https://helius.dev',
+      url: 'https://www.helius.dev',
     },
   };
 }
@@ -265,10 +302,15 @@ export function createWebPageSchema(options: WebPageOptions): WithContext<WebPag
     name: options.name,
     description: options.description,
     url: options.url,
+    inLanguage: 'en-US',
     isPartOf: {
       '@type': 'WebSite',
       name: 'Solana dApp Example',
       url: BASE_URL,
+    },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1'],
     },
   };
 
@@ -307,18 +349,20 @@ export function createTechArticleSchema(options: TechArticleOptions): WithContex
     name: options.name,
     description: options.description,
     url: options.url,
+    datePublished: options.datePublished || SITE_PUBLISHED,
+    dateModified: options.dateModified || SITE_LAST_UPDATED,
     author: {
       '@type': 'Organization',
       name: 'Helius',
-      url: 'https://helius.dev',
+      url: 'https://www.helius.dev',
     },
     publisher: {
       '@type': 'Organization',
       name: 'Helius',
-      url: 'https://helius.dev',
+      url: 'https://www.helius.dev',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://helius.dev/logo.png',
+        url: 'https://www.helius.dev/logo.svg',
       },
     },
     isPartOf: {
@@ -326,20 +370,20 @@ export function createTechArticleSchema(options: TechArticleOptions): WithContex
       name: 'Solana dApp Example',
       url: BASE_URL,
     },
+    audience: {
+      '@type': 'Audience',
+      audienceType: 'Solana developers',
+    },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1'],
+    },
     inLanguage: 'en-US',
     proficiencyLevel: 'Beginner',
   };
 
   if (options.keywords && options.keywords.length > 0) {
     schema.keywords = options.keywords.join(', ');
-  }
-
-  if (options.datePublished) {
-    schema.datePublished = options.datePublished;
-  }
-
-  if (options.dateModified) {
-    schema.dateModified = options.dateModified;
   }
 
   return schema;
@@ -430,6 +474,39 @@ export function createCodeExamplesSchema(
   examples: CodeExampleOptions[]
 ): Array<WithContext<SoftwareSourceCode>> {
   return examples.map((example) => createCodeExampleSchema(example));
+}
+
+// =============================================================================
+// HowTo Schema (for pages with visible numbered steps)
+// =============================================================================
+
+/**
+ * HowTo schema for tutorials with discrete steps.
+ * Only use when the page actually renders numbered/sequential steps visibly.
+ * Per schema.org: "Instructions that explain how to achieve a result by performing
+ * a sequence of steps."
+ */
+export function createHowToSchema(options: HowToSchemaOptions): WithContext<HowTo> {
+  const schema: WithContext<HowTo> = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: options.name,
+    description: options.description,
+    inLanguage: 'en-US',
+    step: options.steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+      ...(step.url ? { url: step.url } : {}),
+    })),
+  };
+
+  if (options.totalTime) {
+    schema.totalTime = options.totalTime;
+  }
+
+  return schema;
 }
 
 // =============================================================================
