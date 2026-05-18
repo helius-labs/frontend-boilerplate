@@ -106,6 +106,7 @@ export default function ArchivalBlocksPage() {
         <PageHeader
           title="How to fetch historical blocks on Solana"
           description="Access archival data to retrieve any block from Solana history. See what the genesis block looked like and explore the earliest moments of the network."
+          path="/archival-blocks"
         />
 
         {/* Why archival matters */}

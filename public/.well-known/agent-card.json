@@ -1,0 +1,114 @@
+{
+  "$schema": "https://a2a-protocol.org/schemas/agent-card.json",
+  "protocolVersion": "0.3.0",
+  "name": "Helius Solana dApp Example",
+  "description": "A Helius RPC showcase and clonable template for Solana developers — interactive demos of core RPC methods with copy-paste TypeScript and real mainnet data.",
+  "url": "https://demo.helius.dev",
+  "version": "1.0.0",
+  "provider": {
+    "organization": "Helius",
+    "url": "https://www.helius.dev"
+  },
+  "documentationUrl": "https://demo.helius.dev/llms-full.txt",
+  "iconUrl": "https://demo.helius.dev/icon-192.png",
+  "preferredTransport": "JSONRPC",
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["text/plain", "application/json", "text/markdown"],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "stateTransitionHistory": false
+  },
+  "skills": [
+    {
+      "id": "get-wallet-balance",
+      "name": "Get wallet balance",
+      "description": "Fetch SOL balance, all token holdings, or a specific SPL token for any Solana address using Helius RPC.",
+      "tags": ["solana", "balance", "spl-token", "helius-rpc"],
+      "examples": [
+        "What is the SOL balance of address 4Nd1m...?",
+        "Show all token balances for wallet ...",
+        "How much USDC does this wallet hold?"
+      ]
+    },
+    {
+      "id": "list-wallet-assets",
+      "name": "List wallet assets",
+      "description": "Return every NFT and SPL token owned by a wallet via the Helius DAS API getAssetsByOwner method.",
+      "tags": ["solana", "das-api", "nft", "portfolio"],
+      "examples": [
+        "List all NFTs owned by this wallet",
+        "Show the full asset portfolio for address ..."
+      ]
+    },
+    {
+      "id": "get-transactions",
+      "name": "Get transaction history",
+      "description": "Fetch recent activity, filter by type, or paginate through a wallet's full transaction history.",
+      "tags": ["solana", "transactions", "history"],
+      "examples": [
+        "Show recent transactions for this wallet",
+        "Paginate the transaction history of address ..."
+      ]
+    },
+    {
+      "id": "get-nft-metadata",
+      "name": "Get NFT and token metadata",
+      "description": "Look up images, attributes, supply, and prices for NFTs, fungible tokens, and compressed NFTs via the DAS API.",
+      "tags": ["solana", "nft", "metadata", "das-api"],
+      "examples": [
+        "Get metadata for this NFT mint",
+        "Show the attributes of compressed NFT ..."
+      ]
+    },
+    {
+      "id": "inspect-program",
+      "name": "Inspect on-chain program",
+      "description": "Look up program account data, upgrade authority, IDL, and metadata for any Solana program.",
+      "tags": ["solana", "program", "anchor", "idl"],
+      "examples": [
+        "Who is the upgrade authority for this program?",
+        "Fetch the Anchor IDL for program ..."
+      ]
+    },
+    {
+      "id": "stream-blocks",
+      "name": "Stream blocks in real time",
+      "description": "Connect to the Helius Laserstream WebSocket for live slot, block, and transaction updates.",
+      "tags": ["solana", "laserstream", "streaming", "websocket"],
+      "examples": [
+        "Stream new blocks as they are produced",
+        "Subscribe to transactions for a specific program"
+      ]
+    },
+    {
+      "id": "fetch-archival-blocks",
+      "name": "Fetch archival block data",
+      "description": "Access historical block data from Solana's genesis onward using Helius archival nodes.",
+      "tags": ["solana", "archival", "history"],
+      "examples": [
+        "Fetch block 0 from Solana",
+        "Get the contents of block 12345678"
+      ]
+    },
+    {
+      "id": "phantom-connect",
+      "name": "Phantom wallet integration",
+      "description": "Integrate Phantom Connect: social login, browser extension, message signing, transactions, and staking.",
+      "tags": ["solana", "phantom", "wallet", "auth"],
+      "examples": [
+        "How do I connect a Phantom wallet with social login?",
+        "Show me how to sign a transaction with Phantom"
+      ]
+    }
+  ],
+  "securitySchemes": {
+    "heliusApiKey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "api-key",
+      "description": "Helius API key obtained from https://dashboard.helius.dev/signup. Required for production use of underlying Helius RPC endpoints."
+    }
+  },
+  "security": [{ "heliusApiKey": [] }]
+}

@@ -18,11 +18,31 @@ declare namespace NodeJS {
 
 // Helius RPC proxy request/response types
 interface RpcProxyRequest {
+  jsonrpc?: '2.0';
+  id?: string | number | null;
   method: string;
   params?: unknown[];
 }
 
+interface RpcProxyError {
+  code: number;
+  message: string;
+  data?: unknown;
+}
+
 interface RpcProxyResponse<T = unknown> {
+  jsonrpc?: '2.0';
+  id?: string | number | null;
   result?: T;
+  /**
+   * Plain-string `error` is kept for backward compatibility with existing
+   * client-side fetchers (e.g. `data.error.includes('not found')`). New
+   * code should branch on `error` truthy and read the structured `code`
+   * + `details` when needed.
+   */
   error?: string;
+  /** JSON-RPC standard error code when available (e.g. -32601, -32005). */
+  code?: number;
+  /** Auxiliary diagnostic data (allowed methods, upstream details). */
+  details?: unknown;
 }

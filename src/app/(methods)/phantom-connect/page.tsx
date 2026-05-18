@@ -46,6 +46,7 @@ export default function PhantomConnectPage() {
         <PageHeader
           title="How to setup wallet connections with Phantom Connect"
           description="Integrate Phantom Connect into your Solana app. Handle social logins, multiple wallet types, and transaction signing with the code examples below."
+          path="/phantom-connect"
         />
 
         {/* Overview section */}

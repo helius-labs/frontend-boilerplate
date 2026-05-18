@@ -30,6 +30,10 @@ const routes = [
   'program-info',
   'laserstream',
   'archival-blocks',
+  // Trust anchor and reference pages
+  'contact',
+  'privacy',
+  'rate-limits',
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

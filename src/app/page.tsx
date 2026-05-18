@@ -2,11 +2,47 @@ import { cn } from '@/lib/utils';
 import {
   BASE_URL,
   JsonLdMultiple,
+  createFAQSchema,
   createItemListSchema,
+  getServiceJsonLd,
   getWebApplicationJsonLd,
 } from '@/shared/lib/json-ld';
+import { getPageDates } from '@/shared/lib/page-dates';
 import { ExternalLink, Link } from '@/shared/ui/link';
 import { SmoothScrollLink } from '@/shared/ui/smooth-scroll-link';
+
+const HOME_FAQ_ITEMS = [
+  {
+    question: 'What is this site?',
+    answer:
+      'A Helius RPC showcase and clonable Next.js template for Solana developers. It contains interactive demos of core Solana RPC methods with copy-paste TypeScript and cURL code, all running against real mainnet data via Helius RPC.',
+  },
+  {
+    question: 'Is it free to use?',
+    answer:
+      'Yes. The demo source is MIT-licensed on GitHub. The underlying Helius RPC service has a free tier with 1,000,000 credits per month and 10 requests per second — sign up at dashboard.helius.dev/signup. No credit card is required for the free tier.',
+  },
+  {
+    question: 'Which Solana SDK does the boilerplate use?',
+    answer:
+      'It uses @solana/kit 6.x — the modern, tree-shakeable replacement for @solana/web3.js 1.x. Bundles are around 80% smaller. Do not mix the two SDKs in a single project.',
+  },
+  {
+    question: 'How do I clone the repo and run it locally?',
+    answer:
+      'Run: git clone https://github.com/helius-labs/frontend-boilerplate, then pnpm install, then copy .env.example to .env.local and set HELIUS_API_KEY, then pnpm dev. The dev server starts on http://localhost:3000.',
+  },
+  {
+    question: 'Where do I get a Helius API key?',
+    answer:
+      'Sign up at https://dashboard.helius.dev/signup. The free tier is enough for development and small production workloads. Paid plans start at $49 per month and include higher rate limits and Enhanced API access.',
+  },
+  {
+    question: 'Does this work for AI agents and automated clients?',
+    answer:
+      'Yes. The site exposes /llms.txt, /llms-full.txt, /agents.md, /pricing.md, /.well-known/agent-card.json, /.well-known/mcp/server-card.json, and an RFC 9727 link set at /.well-known/api-catalog. Agents should start with /llms.txt for context.',
+  },
+];
 
 // Method data for both rendering and JSON-LD
 const METHODS = [
@@ -63,10 +99,18 @@ export default function HomePage() {
       url: `${BASE_URL}${method.href}`,
     })),
   });
+  const dates = getPageDates('/');
 
   return (
     <>
-      <JsonLdMultiple schemas={[getWebApplicationJsonLd(), itemListSchema]} />
+      <JsonLdMultiple
+        schemas={[
+          getWebApplicationJsonLd(),
+          getServiceJsonLd(),
+          itemListSchema,
+          createFAQSchema(HOME_FAQ_ITEMS),
+        ]}
+      />
       <div className="min-h-[calc(100vh-3.5rem)] px-4 py-16 md:px-6">
         <div className="max-w-6xl mx-auto space-y-20">
           {/* Hero section */}
@@ -76,14 +120,32 @@ export default function HomePage() {
                 Copy-Paste Solana Code
               </span>
             </div>
-            <h1 className="text-4xl tracking-tight sm:text-5xl lg:text-6xl">
+            <h1
+              className="text-4xl tracking-tight sm:text-5xl lg:text-6xl"
+              data-speakable="true"
+            >
               How to build on Solana
               <br />
               with working examples
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p
+              className="text-lg text-muted-foreground max-w-2xl mx-auto"
+              data-speakable="true"
+            >
               Stop searching Stack Overflow. Every method you need for your Solana app, from
               balances to staking, with TypeScript code you can copy today.
+            </p>
+            <p className="text-xs text-muted-foreground/70">
+              Maintained by{' '}
+              <ExternalLink
+                href="https://www.helius.dev"
+                variant="unstyled"
+                className="underline-offset-2 hover:underline"
+              >
+                Helius
+              </ExternalLink>{' '}
+              · Last updated <time dateTime={dates.dateModified}>{dates.dateModified}</time> · MIT
+              licensed
             </p>
 
             {/* CTA buttons */}

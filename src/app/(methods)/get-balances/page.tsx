@@ -46,6 +46,7 @@ export default function GetBalancePage() {
         <PageHeader
           title="How to get wallet balances on Solana"
           description="Fetch SOL balance, all token holdings, or check a specific token. Copy the code snippets below to use in your own project."
+          path="/get-balances"
         />
 
         {/* Overview section */}

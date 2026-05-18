@@ -54,8 +54,63 @@ const ALLOWED_METHODS = [
   'getBlock',
 ] as const;
 
+// JSON-RPC 2.0 standard error codes + Helius-specific extensions.
+// See https://www.jsonrpc.org/specification#error_object
+const ERROR_PARSE = -32700;
+const ERROR_INVALID_REQUEST = -32600;
+const ERROR_METHOD_NOT_ALLOWED = -32005;
+const ERROR_INVALID_PARAMS = -32602;
+const ERROR_INTERNAL = -32603;
+
 function isAllowedMethod(method: string): method is AllowedMethod {
   return ALLOWED_METHODS.includes(method as AllowedMethod);
+}
+
+interface ErrorPayload {
+  id?: string | number | null;
+  code: number;
+  message: string;
+  details?: unknown;
+}
+
+/**
+ * Build a JSON-RPC shaped error response that also keeps the legacy
+ * top-level `error: string` field for backward compatibility with existing
+ * client fetchers.
+ */
+function rpcError(
+  payload: ErrorPayload,
+  status: number,
+  upstreamHeaders?: Headers
+): NextResponse<RpcProxyResponse> {
+  const body: RpcProxyResponse = {
+    jsonrpc: '2.0',
+    id: payload.id ?? null,
+    error: payload.message,
+    code: payload.code,
+    ...(payload.details === undefined ? {} : { details: payload.details }),
+  };
+  const response = NextResponse.json(body, { status });
+  forwardRateLimitHeaders(response.headers, upstreamHeaders);
+  return response;
+}
+
+const RATE_LIMIT_HEADERS = [
+  'x-ratelimit-limit',
+  'x-ratelimit-remaining',
+  'x-ratelimit-reset',
+  'retry-after',
+  'ratelimit-limit',
+  'ratelimit-remaining',
+  'ratelimit-reset',
+];
+
+function forwardRateLimitHeaders(target: Headers, source?: Headers): void {
+  if (!source) return;
+  for (const name of RATE_LIMIT_HEADERS) {
+    const value = source.get(name);
+    if (value) target.set(name, value);
+  }
 }
 
 /**
@@ -150,30 +205,65 @@ function validateMethodParams(method: string, params: unknown[]): void {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<RpcProxyResponse>> {
+  let id: string | number | null = null;
+  let body: RpcProxyRequest;
   try {
-    const body = (await request.json()) as RpcProxyRequest;
-    const { method, params = [] } = body;
+    body = (await request.json()) as RpcProxyRequest;
+  } catch {
+    return rpcError(
+      {
+        code: ERROR_PARSE,
+        message: 'Request body is not valid JSON',
+      },
+      400
+    );
+  }
 
-    // Validate method is allowed
-    if (!method || !isAllowedMethod(method)) {
-      return NextResponse.json(
-        { error: `Method "${method}" is not allowed. Allowed: ${ALLOWED_METHODS.join(', ')}` },
-        { status: 403 }
-      );
-    }
+  id = body.id ?? null;
+  const { method, params = [] } = body;
 
-    // Validate method-specific parameters
-    try {
-      validateMethodParams(method, params);
-    } catch (validationError) {
-      return NextResponse.json(
-        {
-          error: validationError instanceof Error ? validationError.message : 'Invalid parameters',
-        },
-        { status: 400 }
-      );
-    }
+  if (typeof method !== 'string' || method.length === 0) {
+    return rpcError(
+      {
+        id,
+        code: ERROR_INVALID_REQUEST,
+        message: 'Missing required field: method',
+      },
+      400
+    );
+  }
 
+  if (!isAllowedMethod(method)) {
+    return rpcError(
+      {
+        id,
+        code: ERROR_METHOD_NOT_ALLOWED,
+        message: `Method "${method}" is not allowed`,
+        details: { allowedMethods: ALLOWED_METHODS },
+      },
+      403
+    );
+  }
+
+  try {
+    validateMethodParams(method, params);
+  } catch (validationError) {
+    return rpcError(
+      {
+        id,
+        code: ERROR_INVALID_PARAMS,
+        message:
+          validationError instanceof Error
+            ? validationError.message
+            : 'Invalid parameters for method',
+      },
+      400
+    );
+  }
+
+  let upstreamHeaders: Headers | undefined;
+
+  try {
     const helius = getHeliusClient();
 
     // Route to appropriate Helius method
@@ -183,29 +273,24 @@ export async function POST(request: NextRequest): Promise<NextResponse<RpcProxyR
 
     switch (method) {
       case 'getAsset':
-        // getAsset expects { id: string, options?: {...} }
         result = await helius.getAsset(params?.[0] as Parameters<typeof helius.getAsset>[0]);
         break;
       case 'getAssetsByOwner':
-        // getAssetsByOwner expects { ownerAddress: string, ... }
         result = await helius.getAssetsByOwner(
           params?.[0] as Parameters<typeof helius.getAssetsByOwner>[0]
         );
         break;
       case 'getTokenAccounts':
-        // getTokenAccounts expects { owner: string, mint?: string, ... }
         result = await helius.getTokenAccounts(
           params?.[0] as Parameters<typeof helius.getTokenAccounts>[0]
         );
         break;
       case 'getTransactionsForAddress':
-        // getTransactionsForAddress expects [address, config?]
         result = await helius.getTransactionsForAddress(
           params as Parameters<typeof helius.getTransactionsForAddress>[0]
         );
         break;
       case 'getBlock': {
-        // getBlock needs direct JSON-RPC call (not available on helius.raw)
         const rpcUrl = `https://mainnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY}`;
         const rpcResponse = await fetch(rpcUrl, {
           method: 'POST',
@@ -217,6 +302,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<RpcProxyR
             params: params,
           }),
         });
+        upstreamHeaders = rpcResponse.headers;
         const rpcData = await rpcResponse.json();
         if (rpcData.error) {
           throw new Error(rpcData.error.message || 'getBlock failed');
@@ -235,51 +321,96 @@ export async function POST(request: NextRequest): Promise<NextResponse<RpcProxyR
       case 'getEpochInfo':
       case 'getMinimumBalanceForRentExemption':
       case 'getSignatureStatuses':
-        // Standard RPC methods go through raw.rpc
         result = await (helius.raw as Record<string, (...args: unknown[]) => Promise<unknown>>)[
           method
         ](...(params || []));
         break;
       default:
-        return NextResponse.json(
-          { error: `Method "${method}" is not implemented` },
-          { status: 501 }
+        return rpcError(
+          {
+            id,
+            code: ERROR_METHOD_NOT_ALLOWED,
+            message: `Method "${method}" is not implemented`,
+          },
+          501
         );
     }
 
-    // Serialize BigInt values to strings for JSON compatibility
-    return NextResponse.json({ result: serializeBigInts(result) });
+    const response = NextResponse.json({
+      jsonrpc: '2.0' as const,
+      id,
+      result: serializeBigInts(result),
+    });
+    forwardRateLimitHeaders(response.headers, upstreamHeaders);
+    return response;
   } catch (error) {
     console.error('RPC Proxy Error:', error);
 
-    // Extract detailed error information
     let message = 'RPC request failed';
-    let details: string | undefined;
+    let details: unknown;
 
     if (error instanceof Error) {
       message = error.message;
-      // Check for Helius SDK error response
       if ('response' in error) {
-        const response = (error as { response?: { data?: unknown } }).response;
-        if (response?.data) {
-          details = JSON.stringify(response.data);
-          console.error('Helius API Response:', response.data);
+        const upstream = (error as { response?: { data?: unknown; headers?: Headers } }).response;
+        if (upstream?.data) {
+          details = upstream.data;
+          console.error('Helius API Response:', upstream.data);
+        }
+        if (upstream?.headers) {
+          upstreamHeaders = upstream.headers;
         }
       }
-      // Check for cause
       if (error.cause) {
         console.error('Error cause:', error.cause);
       }
     }
 
-    return NextResponse.json({ error: message, details }, { status: 500 });
+    return rpcError(
+      {
+        id,
+        code: ERROR_INTERNAL,
+        message,
+        details,
+      },
+      500,
+      upstreamHeaders
+    );
   }
 }
 
-// Health check endpoint
-export async function GET(): Promise<NextResponse> {
-  return NextResponse.json({
-    status: 'ok',
-    allowedMethods: ALLOWED_METHODS,
+// Health check / discovery endpoint
+export function GET(): NextResponse {
+  return NextResponse.json(
+    {
+      status: 'ok',
+      service: 'Helius Solana dApp Example — RPC proxy',
+      jsonrpc: '2.0',
+      transport: 'HTTP POST',
+      endpoint: '/api/rpc',
+      allowedMethods: ALLOWED_METHODS,
+      documentation: 'https://docs.helius.dev/rpc',
+      rateLimits: 'https://demo.helius.dev/rate-limits',
+      authorization:
+        'Server-side only. The demo holds a shared Helius API key; clients call /api/rpc without auth.',
+    },
+    {
+      headers: {
+        'Cache-Control': 'public, max-age=60',
+        'Access-Control-Allow-Origin': '*',
+      },
+    }
+  );
+}
+
+export function OPTIONS(): NextResponse {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Accept',
+      'Access-Control-Max-Age': '3600',
+    },
   });
 }

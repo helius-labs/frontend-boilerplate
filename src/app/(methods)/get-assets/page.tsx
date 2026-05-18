@@ -46,6 +46,7 @@ export default function GetAssetPage() {
         <PageHeader
           title="How to get token and NFT metadata on Solana"
           description="Fetch images, attributes, prices, and metadata for any NFT or token. One API call works for standard NFTs, compressed NFTs, and fungible tokens."
+          path="/get-assets"
         />
 
         {/* Overview section */}

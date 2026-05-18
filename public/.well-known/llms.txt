@@ -1,0 +1,9 @@
+# Redirect
+
+The canonical llms.txt lives at:
+
+https://demo.helius.dev/llms.txt
+
+A longer reference is at:
+
+https://demo.helius.dev/llms-full.txt

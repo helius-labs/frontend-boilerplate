@@ -1,0 +1,54 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://demo.helius.dev",
+      "service-desc": [
+        {
+          "href": "https://docs.helius.dev/api-reference/openapi.json",
+          "type": "application/vnd.oai.openapi+json"
+        },
+        {
+          "href": "https://docs.helius.dev",
+          "type": "text/html",
+          "title": "Helius API Reference"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://demo.helius.dev/llms-full.txt",
+          "type": "text/plain",
+          "title": "Solana dApp Example — full reference"
+        },
+        {
+          "href": "https://demo.helius.dev/agents.md",
+          "type": "text/markdown",
+          "title": "AGENTS.md — AI agent build instructions"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://demo.helius.dev/llms.txt",
+          "type": "text/plain"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://helius.statuspage.io",
+          "type": "text/html"
+        }
+      ],
+      "terms-of-service": [
+        {
+          "href": "https://www.helius.dev/terms",
+          "type": "text/html"
+        }
+      ],
+      "license": [
+        {
+          "href": "https://opensource.org/license/mit",
+          "title": "MIT License (frontend-boilerplate source)"
+        }
+      ]
+    }
+  ]
+}

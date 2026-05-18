@@ -108,6 +108,7 @@ export default function ProgramInfoPage() {
               Copy the code below to add program inspection to your app.
             </>
           }
+          path="/program-info"
         />
 
         <PageSection title="Interactive Demo" className="mb-8">

@@ -1,0 +1,33 @@
+{
+  "name": "helius-docs",
+  "displayName": "Helius Documentation MCP",
+  "description": "Search and retrieve content from the Helius developer documentation: RPC methods, DAS API reference, Laserstream guides, and Phantom Connect integration patterns.",
+  "version": "1.0.0",
+  "serverUrl": "https://mcp.helius.dev/docs",
+  "transport": "streamable-http",
+  "instructions": "Use this MCP when answering Solana developer questions that benefit from current Helius documentation. The search_d_flow and lookupHeliusDocs tools cover RPC methods, Enhanced APIs, webhooks, Laserstream, and pricing.",
+  "provider": {
+    "name": "Helius",
+    "url": "https://www.helius.dev"
+  },
+  "tools": [
+    {
+      "name": "lookupHeliusDocs",
+      "description": "Look up Helius developer documentation by topic, method name, or feature area."
+    },
+    {
+      "name": "listHeliusDocTopics",
+      "description": "List the available top-level documentation topics on docs.helius.dev."
+    }
+  ],
+  "resources": [
+    {
+      "uri": "https://demo.helius.dev/llms-full.txt",
+      "name": "Solana dApp Example — full reference",
+      "description": "Complete reference documentation for the Helius Solana dApp Example: tech stack, architecture, API routes, code patterns.",
+      "mimeType": "text/plain"
+    }
+  ],
+  "documentationUrl": "https://docs.helius.dev",
+  "homepage": "https://demo.helius.dev"
+}

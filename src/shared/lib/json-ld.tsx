@@ -6,6 +6,7 @@ import type {
   HowTo,
   ItemList,
   Organization,
+  Service,
   SoftwareApplication,
   SoftwareSourceCode,
   TechArticle,
@@ -18,6 +19,9 @@ import type {
 import { getPageDates } from './page-dates';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerplate.vercel.app';
+
+export const CANONICAL_DESCRIPTION =
+  'A Helius RPC showcase and clonable template for Solana developers — interactive demos of core RPC methods with copy-paste TypeScript and real mainnet data.';
 
 // =============================================================================
 // Type Definitions
@@ -148,6 +152,7 @@ export function getOrganizationJsonLd(): WithContext<Organization> {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Helius',
+    legalName: 'Helius Labs Inc.',
     url: 'https://www.helius.dev',
     logo: {
       '@type': 'ImageObject',
@@ -155,19 +160,91 @@ export function getOrganizationJsonLd(): WithContext<Organization> {
     },
     description: 'The most powerful Solana RPC and APIs for developers.',
     foundingDate: '2022',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Toronto',
+      addressRegion: 'ON',
+      addressCountry: 'CA',
+    },
     sameAs: [
       'https://twitter.com/heliuslabs',
+      'https://x.com/heliuslabs',
       'https://github.com/helius-labs',
       'https://discord.gg/helius',
       'https://www.linkedin.com/company/heliusapi',
       'https://www.youtube.com/@helius_labs',
     ],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'customer support',
-      url: 'https://www.helius.dev/contact',
-      availableLanguage: ['English'],
+    contactPoint: [
+      {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: 'support@helius.dev',
+        url: 'https://www.helius.dev/contact',
+        availableLanguage: ['English'],
+      },
+      {
+        '@type': 'ContactPoint',
+        contactType: 'sales',
+        email: 'sales@helius.dev',
+        url: 'https://www.helius.dev/contact',
+        availableLanguage: ['English'],
+      },
+    ],
+  };
+}
+
+export function getServiceJsonLd(): WithContext<Service> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Helius Solana RPC',
+    serviceType: 'Solana RPC infrastructure',
+    description:
+      'Production-grade Solana RPC, DAS API, webhooks, and Laserstream real-time streaming for Solana developers.',
+    provider: {
+      '@type': 'Organization',
+      name: 'Helius',
+      url: 'https://www.helius.dev',
     },
+    areaServed: { '@type': 'Place', name: 'Worldwide' },
+    audience: {
+      '@type': 'Audience',
+      audienceType: 'Solana developers',
+    },
+    offers: [
+      {
+        '@type': 'Offer',
+        name: 'Free',
+        price: '0',
+        priceCurrency: 'USD',
+        url: 'https://dashboard.helius.dev/signup',
+        description: '1M credits/month, 10 req/sec, DAS API and webhooks included.',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Developer',
+        price: '49',
+        priceCurrency: 'USD',
+        url: 'https://www.helius.dev/pricing',
+        description: '10M credits/month, 50 req/sec.',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Business',
+        price: '499',
+        priceCurrency: 'USD',
+        url: 'https://www.helius.dev/pricing',
+        description: '200M credits/month, 200 req/sec, Enhanced APIs.',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Professional',
+        price: '999',
+        priceCurrency: 'USD',
+        url: 'https://www.helius.dev/pricing',
+        description: '500M credits/month, 500 req/sec, Laserstream streaming.',
+      },
+    ],
   };
 }
 
@@ -185,8 +262,7 @@ export function getWebSiteJsonLd(): WithContext<WebSite> {
     '@type': 'WebSite',
     name: 'Solana dApp Example',
     url: BASE_URL,
-    description:
-      'Interactive demos of Helius Solana RPC methods. A clonable template for building Solana dApps.',
+    description: CANONICAL_DESCRIPTION,
     inLanguage: 'en-US',
     publisher: {
       '@type': 'Organization',
@@ -210,8 +286,7 @@ export function getWebApplicationJsonLd(): WithContext<WebApplication> {
     '@type': 'WebApplication',
     name: 'Solana dApp Example',
     url: BASE_URL,
-    description:
-      'Copy-paste Solana code for balances, NFTs, transactions, staking. Every method you need with TypeScript examples.',
+    description: CANONICAL_DESCRIPTION,
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Any',
     browserRequirements: 'Requires JavaScript',

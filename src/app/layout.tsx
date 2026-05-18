@@ -1,23 +1,17 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Providers } from '@/providers';
-import { JsonLdMultiple, getOrganizationJsonLd, getWebSiteJsonLd } from '@/shared/lib/json-ld';
+import {
+  CANONICAL_DESCRIPTION,
+  JsonLdMultiple,
+  getOrganizationJsonLd,
+  getWebSiteJsonLd,
+} from '@/shared/lib/json-ld';
 import { LayoutShell } from '@/shared/ui/layout-shell';
 import { ThemeProvider } from '@/shared/ui/theme-provider';
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 const fontLausanne = localFont({
   src: [
@@ -41,8 +35,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://frontend-boilerpla
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: 'How to Build on Solana | Working Code Examples',
-  description:
-    'Copy-paste Solana code for balances, NFTs, transactions, staking. Every method you need with TypeScript examples. Clone the repo or copy the snippets.',
+  description: CANONICAL_DESCRIPTION,
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '48x48' },
@@ -52,8 +45,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'How to Build on Solana | Working Code Examples',
-    description:
-      'Copy-paste Solana code for balances, NFTs, transactions, staking. Every method you need with TypeScript examples.',
+    description: CANONICAL_DESCRIPTION,
     type: 'website',
     siteName: 'Solana dApp Example',
     locale: 'en_US',
@@ -61,13 +53,16 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'How to Build on Solana | Working Code Examples',
-    description:
-      'Copy-paste Solana code for balances, NFTs, transactions, staking. Every method you need with TypeScript examples.',
+    description: CANONICAL_DESCRIPTION,
     site: '@heliuslabs',
     creator: '@heliuslabs',
   },
   alternates: {
     canonical: '/',
+    types: {
+      'text/markdown': '/index.md',
+      'text/plain': '/llms.txt',
+    },
   },
 };
 
@@ -78,9 +73,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fontLausanne.variable} antialiased`}
-      >
+      <body className={`${fontLausanne.variable} antialiased`}>
         <JsonLdMultiple schemas={[getWebSiteJsonLd(), getOrganizationJsonLd()]} />
         <ThemeProvider
           attribute="class"

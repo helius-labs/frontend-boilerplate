@@ -62,6 +62,8 @@ const resourceLinks = [
   { name: 'Sign Up Free', href: 'https://dashboard.helius.dev/signup', external: true },
   { name: 'Pricing', href: 'https://www.helius.dev/pricing', external: true },
   { name: 'Status', href: 'https://helius.statuspage.io', external: true },
+  { name: 'Contact', href: '/contact', external: false },
+  { name: 'Privacy', href: '/privacy', external: false },
 ];
 
 const showcaseLinks = [
@@ -222,11 +224,32 @@ export function Footer() {
         {/* Bottom bar */}
         <div
           className={cn(
-            'mt-10 flex flex-col items-center justify-end gap-4 border-t pt-6 md:flex-row',
+            'mt-10 flex flex-col items-center justify-between gap-4 border-t pt-6 md:flex-row',
             'border-black/[0.08] dark:border-border/50'
           )}
         >
-          <p className="text-xs text-muted-foreground">&copy; 2025 Helius. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">
+            Maintained by{' '}
+            <Link
+              href="https://www.helius.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-2 hover:underline"
+            >
+              Helius
+            </Link>{' '}
+            · Source on{' '}
+            <Link
+              href="https://github.com/helius-labs/frontend-boilerplate"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-2 hover:underline"
+            >
+              GitHub
+            </Link>{' '}
+            · MIT licensed
+          </p>
+          <p className="text-xs text-muted-foreground">&copy; 2026 Helius Labs Inc.</p>
         </div>
       </div>
     </footer>

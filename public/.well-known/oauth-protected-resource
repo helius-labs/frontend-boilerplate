@@ -1,0 +1,9 @@
+{
+  "resource": "https://demo.helius.dev",
+  "authorization_servers": ["https://dashboard.helius.dev"],
+  "scopes_supported": ["rpc:read", "das:read", "laserstream:read"],
+  "bearer_methods_supported": ["header", "query"],
+  "resource_documentation": "https://docs.helius.dev",
+  "resource_signing_alg_values_supported": ["RS256"],
+  "resource_name": "Helius Solana dApp Example"
+}

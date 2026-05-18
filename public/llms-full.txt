@@ -1,54 +1,59 @@
-# Solana dApp Example - Complete Documentation
+# Solana dApp Example — Complete Documentation
 
-> A Helius RPC showcase and clonable template for Solana developers. The canonical example for building Solana web applications.
+> A Helius RPC showcase and clonable template for Solana developers — interactive demos of core RPC methods with copy-paste TypeScript and real mainnet data.
+
+- **Live site:** [demo.helius.dev](https://demo.helius.dev)
+- **Source code:** [github.com/helius-labs/frontend-boilerplate](https://github.com/helius-labs/frontend-boilerplate)
+- **License:** [MIT](https://opensource.org/license/mit)
+- **Maintained by:** [Helius](https://www.helius.dev)
 
 ---
 
 ## Overview
 
-This is a production-ready Next.js application demonstrating how to build Solana dApps using Helius RPC. It serves as both a learning resource and a clonable template.
+This is a production-ready [Next.js](https://nextjs.org) application demonstrating how to build Solana dApps using [Helius RPC](https://www.helius.dev). It serves as both a learning resource and a clonable template.
 
 ### Features
 
 - 8 interactive RPC method demos with real mainnet data
-- Phantom Connect wallet integration with social login (Google, Apple) and extension support
+- [Phantom Connect](https://docs.phantom.com/phantom-connect) wallet integration with social login (Google, Apple) and extension support
 - Copy-paste TypeScript and cURL code examples for all methods
 - Dark/light mode theming with system preference detection
-- Server-side API key protection via proxy routes
+- Server-side API key protection via [proxy routes](https://docs.helius.dev/guides/rpc-proxy-protect-your-keys)
 - SEO optimized with JSON-LD, sitemap, and Open Graph images
 
 ### RPC Methods Demonstrated
 
-1. **Get Balances** - Query SOL and token balances for any wallet
-2. **Get Assets** - Fetch token/NFT metadata by mint address
-3. **List Wallet Assets** - Portfolio view using getAssetsByOwner
-4. **Get Transactions** - Transaction history with filtering
-5. **Phantom Connect** - Wallet integration, social login, message signing, staking
-6. **Program Info** - Lookup program account data and IDL
-7. **Laserstream** - Real-time block streaming via WebSocket
-8. **Archival Blocks** - Historical block data lookup
+1. **[Get Balances](https://demo.helius.dev/get-balances)** — Query SOL and token balances for any wallet
+2. **[Get Assets](https://demo.helius.dev/get-assets)** — Fetch token/NFT metadata by mint address via the [DAS API](https://docs.helius.dev/das-api)
+3. **[List Wallet Assets](https://demo.helius.dev/list-wallet-assets)** — Portfolio view using `getAssetsByOwner`
+4. **[Get Transactions](https://demo.helius.dev/get-transactions)** — Transaction history with filtering
+5. **[Phantom Connect](https://demo.helius.dev/phantom-connect)** — Wallet integration, social login, message signing, staking
+6. **[Program Info](https://demo.helius.dev/program-info)** — Lookup program account data and IDL
+7. **[Laserstream](https://demo.helius.dev/laserstream)** — Real-time block streaming via WebSocket
+8. **[Archival Blocks](https://demo.helius.dev/archival-blocks)** — Historical block data lookup
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology | Notes |
-|-------|------------|-------|
-| Framework | Next.js 16.x | App Router, Turbopack, PPR-ready |
-| React | React 19.x | With React Compiler |
-| Language | TypeScript 5.x | Strict mode |
-| Styling | Tailwind CSS 4.x | With tailwind-merge |
-| Solana SDK | @solana/kit 6.x | Modern, tree-shakeable (NOT web3.js 1.x) |
-| RPC Provider | Helius SDK 2.x | Enhanced APIs + standard RPC |
-| Wallet | @phantom/react-sdk | Phantom Connect with social login |
-| Data Fetching | SWR 2.x | With deduplication |
-| UI Components | shadcn/ui | Radix primitives + Tailwind |
-| Icons | Lucide React | Consistent icon set |
-| Syntax Highlighting | Shiki 3.x | Server-side code blocks |
+| Layer               | Technology                                                              | Notes                                                            |
+| ------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Framework           | [Next.js 16.x](https://nextjs.org)                                      | App Router, Turbopack, PPR-ready                                 |
+| React               | [React 19.x](https://react.dev)                                         | With [React Compiler](https://react.dev/learn/react-compiler)    |
+| Language            | [TypeScript 5.x](https://www.typescriptlang.org)                        | Strict mode                                                      |
+| Styling             | [Tailwind CSS 4.x](https://tailwindcss.com)                             | With [tailwind-merge](https://github.com/dcastil/tailwind-merge) |
+| Solana SDK          | [@solana/kit 6.x](https://www.npmjs.com/package/@solana/kit)            | Modern, tree-shakeable (NOT web3.js 1.x)                         |
+| RPC Provider        | [Helius SDK 2.x](https://www.npmjs.com/package/helius-sdk)              | Enhanced APIs + standard RPC                                     |
+| Wallet              | [@phantom/react-sdk](https://www.npmjs.com/package/@phantom/react-sdk)  | Phantom Connect with social login                                |
+| Data Fetching       | [SWR 2.x](https://swr.vercel.app)                                       | With deduplication                                               |
+| UI Components       | [shadcn/ui](https://ui.shadcn.com)                                      | Radix primitives + Tailwind                                      |
+| Icons               | [Lucide React](https://lucide.dev)                                      | Consistent icon set                                              |
+| Syntax Highlighting | [Shiki 3.x](https://shiki.matsu.io)                                     | Server-side code blocks                                          |
 
 ### Why @solana/kit instead of @solana/web3.js?
 
-The modern @solana/kit is tree-shakeable and results in ~80% smaller bundles. It's the recommended SDK for new Solana projects. Do NOT use @solana/web3.js 1.x in this project.
+The modern [@solana/kit](https://github.com/anza-xyz/kit) is tree-shakeable and results in ~80% smaller bundles. It's the recommended SDK for new Solana projects. Do NOT use [@solana/web3.js 1.x](https://www.npmjs.com/package/@solana/web3.js) in this project.
 
 ---
 
@@ -74,7 +79,7 @@ frontend-boilerplate/
 │   │   ├── layout.tsx                # Root layout with providers
 │   │   ├── page.tsx                  # Homepage
 │   │   ├── sitemap.ts                # XML sitemap generation
-│   │   └── robots.ts                 # robots.txt generation
+│   │   └── robots.txt/route.ts       # robots.txt with AI crawler tiers
 │   │
 │   ├── features/                     # Self-contained feature modules
 │   │   ├── demo-framework/           # Shared demo UI components
@@ -90,14 +95,8 @@ frontend-boilerplate/
 │   │
 │   ├── shared/
 │   │   ├── ui/                       # Reusable UI components
-│   │   │   ├── button.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── input.tsx
-│   │   │   └── ...
-│   │   ├── hooks/
-│   │   │   └── use-wallet.ts         # Wallet connection hook
-│   │   ├── lib/
-│   │   │   └── utils.ts              # cn() and other utilities
+│   │   ├── hooks/use-wallet.ts       # Wallet connection hook
+│   │   ├── lib/                      # cn(), helius-client, json-ld, etc.
 │   │   └── config/                   # App configuration
 │   │
 │   ├── providers/
@@ -105,27 +104,26 @@ frontend-boilerplate/
 │   │   └── wallet-provider.tsx       # PhantomProvider config
 │   │
 │   └── types/                        # TypeScript declarations
-│       ├── app/
-│       ├── features/
-│       ├── shared/
-│       └── providers/
 │
-├── public/                           # Static assets
+├── public/                           # Static assets, llms.txt, .well-known
 ├── .env.example                      # Environment template
 ├── package.json
 ├── tsconfig.json
 └── next.config.ts
 ```
 
+Source: [src/](https://github.com/helius-labs/frontend-boilerplate/tree/main/src)
+
 ### Architecture Principles
 
-**Atomic Features:** Each folder in `src/features/` is completely self-contained. You can delete any feature folder and the app will still build successfully. This enables developers to:
+**Atomic Features:** Each folder in [src/features/](https://github.com/helius-labs/frontend-boilerplate/tree/main/src/features) is completely self-contained. You can delete any feature folder and the app will still build successfully. This enables developers to:
 
 - Clone the repo and delete features they don't need
 - Study individual features in isolation
 - Copy feature folders to other projects
 
 **Import Rules:**
+
 - Features import from `shared/` only
 - Features NEVER import from other features
 - Shared code must not depend on features
@@ -137,9 +135,9 @@ frontend-boilerplate/
 
 ### Prerequisites
 
-- Node.js 18+ (20+ recommended)
-- pnpm 9+
-- Helius API key (free tier available at helius.dev)
+- [Node.js 18+](https://nodejs.org) (20+ recommended)
+- [pnpm 9+](https://pnpm.io)
+- Helius API key — free at [dashboard.helius.dev/signup](https://dashboard.helius.dev/signup)
 
 ### Setup
 
@@ -165,13 +163,13 @@ pnpm dev
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `HELIUS_API_KEY` | Yes | Helius RPC endpoint access |
-| `LASERSTREAM_API_KEY` | No | Real-time WebSocket streaming (paid plan) |
-| `NEXT_PUBLIC_BASE_URL` | No | Base URL for sitemap (defaults to vercel.app) |
+| Variable               | Required | Description                                                                  |
+| ---------------------- | -------- | ---------------------------------------------------------------------------- |
+| `HELIUS_API_KEY`       | Yes      | Helius RPC access — get one at [dashboard.helius.dev](https://dashboard.helius.dev/signup) |
+| `LASERSTREAM_API_KEY`  | No       | Real-time WebSocket streaming (paid plan)                                    |
+| `NEXT_PUBLIC_BASE_URL` | No       | Base URL for sitemap (defaults to vercel.app)                                |
 
-**Security:** API keys are accessed server-side only via `/api/rpc` proxy. Never use the `NEXT_PUBLIC_` prefix for sensitive keys.
+**Security:** API keys are accessed server-side only via the [/api/rpc proxy](https://github.com/helius-labs/frontend-boilerplate/blob/main/src/app/api/rpc/route.ts). Never use the `NEXT_PUBLIC_` prefix for sensitive keys.
 
 ---
 
@@ -209,7 +207,7 @@ ANALYZE=true pnpm build
 
 ### Tailwind CSS
 
-Always use the `cn()` utility from `@/lib/utils` for class composition:
+Always use the `cn()` utility from [@/lib/utils](https://github.com/helius-labs/frontend-boilerplate/blob/main/src/lib/utils.ts) for class composition:
 
 ```tsx
 import { cn } from "@/lib/utils";
@@ -224,27 +222,27 @@ import { cn } from "@/lib/utils";
     // Conditional
     isActive && "ring-2 ring-primary"
   )}
-/>
+/>;
 
 // Bad - long inline string
-<div className="flex items-center gap-4 p-6 rounded-xl bg-card" />
+<div className="flex items-center gap-4 p-6 rounded-xl bg-card" />;
 ```
 
 ### Class Organization Order
 
 When using `cn()`, group classes in this order:
 
-1. **Layout** - positioning, display, flex/grid, sizing
-2. **Spacing** - padding, margin, gap
-3. **Visual** - background, border, shadow, rounded
-4. **Typography** - font, text color, size
-5. **States** - hover, focus, active, disabled
-6. **Dark mode** - all `dark:` variants together
-7. **Transitions** - transition properties last
+1. **Layout** — positioning, display, flex/grid, sizing
+2. **Spacing** — padding, margin, gap
+3. **Visual** — background, border, shadow, rounded
+4. **Typography** — font, text color, size
+5. **States** — hover, focus, active, disabled
+6. **Dark mode** — all `dark:` variants together
+7. **Transitions** — transition properties last
 
 ### Component Variants
 
-Use CVA (class-variance-authority) for components with multiple variants:
+Use [CVA](https://cva.style) (class-variance-authority) for components with multiple variants:
 
 ```tsx
 import { cva, type VariantProps } from "class-variance-authority";
@@ -300,11 +298,11 @@ Use specific transition properties:
 
 ```tsx
 // Good
-"transition-colors"
-"transition-[background-color,border-color,box-shadow]"
+("transition-colors");
+("transition-[background-color,border-color,box-shadow]");
 
 // Bad
-"transition-all"
+("transition-all");
 ```
 
 ### Hover States
@@ -317,38 +315,50 @@ Use specific transition properties:
 
 ## API Routes
 
-### RPC Proxy (`/api/rpc`)
+### RPC Proxy ([/api/rpc](https://github.com/helius-labs/frontend-boilerplate/blob/main/src/app/api/rpc/route.ts))
 
-Proxies requests to Helius RPC, keeping the API key server-side:
+Proxies requests to [Helius RPC](https://docs.helius.dev/rpc), keeping the API key server-side. Only a strict allowlist of methods is forwarded.
 
 ```tsx
 // Client-side usage
-const response = await fetch('/api/rpc', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/rpc", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    jsonrpc: '2.0',
+    jsonrpc: "2.0",
     id: 1,
-    method: 'getBalance',
-    params: ['wallet_address']
-  })
+    method: "getBalance",
+    params: ["wallet_address"],
+  }),
 });
 ```
 
-### Enhanced API Proxy (`/api/helius/enhanced`)
+Error responses follow JSON-RPC conventions:
 
-Proxies Enhanced API requests (getAsset, getAssetsByOwner, etc.):
+```json
+{ "error": { "code": -32601, "message": "Method not allowed" } }
+```
+
+Rate-limit headers (`x-ratelimit-limit`, `x-ratelimit-remaining`, `retry-after`) are forwarded from the upstream Helius response when present. See [/rate-limits](https://demo.helius.dev/rate-limits).
+
+### Enhanced API Proxy ([/api/helius/enhanced](https://github.com/helius-labs/frontend-boilerplate/tree/main/src/app/api/helius/enhanced))
+
+Proxies [Enhanced API](https://docs.helius.dev/enhanced-apis) requests (`getAsset`, `getAssetsByOwner`, etc.):
 
 ```tsx
-const response = await fetch('/api/helius/enhanced', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+const response = await fetch("/api/helius/enhanced", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    method: 'getAsset',
-    params: { id: 'mint_address' }
-  })
+    method: "getAsset",
+    params: { id: "mint_address" },
+  }),
 });
 ```
+
+### Laserstream Proxy ([/api/laserstream](https://github.com/helius-labs/frontend-boilerplate/tree/main/src/app/api/laserstream))
+
+Wraps the [Helius Laserstream](https://docs.helius.dev/laserstream) WebSocket. Requires `LASERSTREAM_API_KEY` (Professional plan or above).
 
 ---
 
@@ -371,6 +381,8 @@ const response = await fetch('/api/helius/enhanced', {
 }
 ```
 
+Full manifest: [package.json](https://github.com/helius-labs/frontend-boilerplate/blob/main/package.json).
+
 ---
 
 ## Common Patterns
@@ -378,9 +390,9 @@ const response = await fetch('/api/helius/enhanced', {
 ### Data Fetching with SWR
 
 ```tsx
-import useSWR from 'swr';
+import useSWR from "swr";
 
-const fetcher = (url: string) => fetch(url).then(r => r.json());
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 function useBalance(address: string) {
   return useSWR(
@@ -391,10 +403,12 @@ function useBalance(address: string) {
 }
 ```
 
+See [src/features/get-balance/hooks/](https://github.com/helius-labs/frontend-boilerplate/tree/main/src/features/get-balance/hooks) for production-ready examples.
+
 ### Wallet Connection
 
 ```tsx
-import { useWallet } from '@/shared/hooks/use-wallet';
+import { useWallet } from "@/shared/hooks/use-wallet";
 
 function Component() {
   const { address, isConnected, connect, disconnect } = useWallet();
@@ -406,6 +420,8 @@ function Component() {
   return <span>Connected: {address}</span>;
 }
 ```
+
+See [src/shared/hooks/use-wallet.ts](https://github.com/helius-labs/frontend-boilerplate/blob/main/src/shared/hooks/use-wallet.ts).
 
 ### Glass Effect Cards
 
@@ -425,7 +441,7 @@ className={cn(
 ### Vercel (Recommended)
 
 1. Push to GitHub
-2. Import project in Vercel
+2. Import project in [Vercel](https://vercel.com)
 3. Add environment variables:
    - `HELIUS_API_KEY`
    - `LASERSTREAM_API_KEY` (optional)
@@ -434,12 +450,31 @@ className={cn(
 ### Other Platforms
 
 Ensure the platform supports:
+
 - Node.js 18+
 - Next.js App Router
 - Environment variables for API keys
 
 ---
 
+## Agent-Readable Resources
+
+Machine-readable surfaces that LLM agents and discovery tools should crawl:
+
+- [/llms.txt](https://demo.helius.dev/llms.txt) — short summary for LLM context windows
+- [/llms-full.txt](https://demo.helius.dev/llms-full.txt) — this file
+- [/agents.md](https://demo.helius.dev/agents.md) — AGENTS.md build & code-style guide
+- [/pricing.md](https://demo.helius.dev/pricing.md) — machine-readable pricing
+- [/index.md](https://demo.helius.dev/index.md) — markdown homepage mirror
+- [/.well-known/agent-card.json](https://demo.helius.dev/.well-known/agent-card.json) — A2A agent card
+- [/.well-known/mcp/server-card.json](https://demo.helius.dev/.well-known/mcp/server-card.json) — MCP server card pointing to [mcp.helius.dev/docs](https://mcp.helius.dev/docs)
+- [/.well-known/api-catalog](https://demo.helius.dev/.well-known/api-catalog) — RFC 9727 link set
+- [/.well-known/oauth-protected-resource](https://demo.helius.dev/.well-known/oauth-protected-resource) — RFC 9728 metadata
+- [/sitemap.xml](https://demo.helius.dev/sitemap.xml) — sitemap
+- [/robots.txt](https://demo.helius.dev/robots.txt) — robots policy with named AI crawler tiers
+
+---
+
 ## License
 
-MIT
+[MIT](https://github.com/helius-labs/frontend-boilerplate/blob/main/LICENSE)

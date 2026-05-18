@@ -50,6 +50,9 @@ const PAGE_DATES: Record<string, PageDateEntry> = {
   '/program-info': { modified: '2026-05-18' },
   '/laserstream': { modified: '2026-05-18' },
   '/archival-blocks': { modified: '2026-05-18' },
+  '/contact': { modified: '2026-05-18' },
+  '/privacy': { modified: '2026-05-18' },
+  '/rate-limits': { modified: '2026-05-18' },
 };
 
 /**

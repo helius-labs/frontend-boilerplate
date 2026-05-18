@@ -51,6 +51,7 @@ export default function GetTransactionsPage() {
               through a wallet&apos;s full history.
             </>
           }
+          path="/get-transactions"
         />
 
         {/* Overview section */}

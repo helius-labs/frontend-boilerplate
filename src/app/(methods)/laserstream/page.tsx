@@ -102,6 +102,7 @@ export default function LaserstreamPage() {
           title="How to stream Solana blocks in real-time"
           description="Use Helius Laserstream to get real-time block, slot, and transaction updates with sub-50ms latency via WebSocket. Copy the code below to add streaming to your own app."
           className="mb-0"
+          path="/laserstream"
         />
 
         <WarningBanner title="Professional Plan Required">

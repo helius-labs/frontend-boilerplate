@@ -46,6 +46,7 @@ export default function GetAssetsByOwnerPage() {
         <PageHeader
           title="How to list all NFTs and tokens in a wallet"
           description="Fetch every asset owned by a Solana address in one API call. Returns NFTs, fungible tokens, and compressed NFTs with full metadata."
+          path="/list-wallet-assets"
         />
 
         {/* Overview section */}
