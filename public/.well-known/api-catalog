@@ -9,6 +9,11 @@
           "title": "Demo proxy OpenAPI 3.1"
         },
         {
+          "href": "https://demo.helius.dev/api/v1/openapi.json",
+          "type": "application/vnd.oai.openapi+json",
+          "title": "Demo proxy OpenAPI 3.1 (v1 alias)"
+        },
+        {
           "href": "https://docs.helius.dev/api-reference/openapi.json",
           "type": "application/vnd.oai.openapi+json",
           "title": "Helius canonical OpenAPI"
@@ -53,6 +58,78 @@
         {
           "href": "https://opensource.org/license/mit",
           "title": "MIT License (frontend-boilerplate source)"
+        }
+      ],
+      "item": [
+        {
+          "href": "https://demo.helius.dev/api",
+          "type": "application/json",
+          "title": "API catalog (machine-readable endpoint list)",
+          "rel-method": "GET",
+          "rel-operationId": "getApiCatalog"
+        },
+        {
+          "href": "https://demo.helius.dev/api/rpc",
+          "type": "application/json",
+          "title": "Solana JSON-RPC 2.0 proxy (single request)",
+          "rel-method": "POST",
+          "rel-operationId": "callRpc"
+        },
+        {
+          "href": "https://demo.helius.dev/api/rpc",
+          "type": "application/json",
+          "title": "Solana JSON-RPC 2.0 batch proxy (array of requests)",
+          "rel-method": "POST",
+          "rel-operationId": "callRpcBatch"
+        },
+        {
+          "href": "https://demo.helius.dev/api/v1/rpc",
+          "type": "application/json",
+          "title": "Solana JSON-RPC 2.0 proxy (v1 alias)",
+          "rel-method": "POST",
+          "rel-operationId": "callRpcV1"
+        },
+        {
+          "href": "https://demo.helius.dev/api/rpc",
+          "type": "application/json",
+          "title": "RPC proxy discovery and rate-limit headers",
+          "rel-method": "GET",
+          "rel-operationId": "getRpcDiscovery"
+        },
+        {
+          "href": "https://demo.helius.dev/api/helius/enhanced",
+          "type": "application/json",
+          "title": "Helius Enhanced Transactions (parsed swaps, transfers, NFT events)",
+          "rel-method": "POST",
+          "rel-operationId": "callEnhancedApi"
+        },
+        {
+          "href": "https://demo.helius.dev/api/laserstream",
+          "type": "text/event-stream",
+          "title": "Real-time slot updates via Server-Sent Events",
+          "rel-method": "GET",
+          "rel-operationId": "streamLaserstream"
+        },
+        {
+          "href": "https://demo.helius.dev/api/laserstream/status",
+          "type": "application/json",
+          "title": "Laserstream availability status",
+          "rel-method": "GET",
+          "rel-operationId": "getLaserstreamStatus"
+        },
+        {
+          "href": "https://demo.helius.dev/ask",
+          "type": "text/event-stream",
+          "title": "NLWeb-compatible natural-language search (POST query, SSE response)",
+          "rel-method": "POST",
+          "rel-operationId": "nlwebAsk"
+        },
+        {
+          "href": "https://demo.helius.dev/ask",
+          "type": "application/json",
+          "title": "NLWeb /ask discovery payload",
+          "rel-method": "GET",
+          "rel-operationId": "getAskDiscovery"
         }
       ]
     }

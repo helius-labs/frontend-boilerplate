@@ -133,6 +133,26 @@ function takeToken(key: string): RateLimitDecision {
   };
 }
 
+// Peek at the bucket state without consuming a token. Used by GET/OPTIONS so
+// discovery probes carry accurate rate-limit headers without being charged.
+function peekBucket(key: string): RateLimitDecision {
+  const now = Date.now() / 1000;
+  const existing = buckets.get(key);
+  const tokens = existing
+    ? Math.min(
+        RATE_LIMIT_CAPACITY,
+        existing.tokens + (now - existing.updatedAt) * RATE_LIMIT_REFILL_PER_SEC
+      )
+    : RATE_LIMIT_CAPACITY;
+  const resetSeconds = Math.ceil((RATE_LIMIT_CAPACITY - tokens) / RATE_LIMIT_REFILL_PER_SEC);
+  return {
+    allowed: tokens >= 1,
+    remaining: Math.floor(tokens),
+    limit: RATE_LIMIT_CAPACITY,
+    resetSeconds,
+  };
+}
+
 function applyRateLimitHeaders(target: Headers, decision: RateLimitDecision): void {
   target.set('x-ratelimit-limit', String(decision.limit));
   target.set('x-ratelimit-remaining', String(decision.remaining));
@@ -517,19 +537,26 @@ export async function POST(
 }
 
 // Health check / discovery endpoint
-export function GET(): NextResponse {
-  return NextResponse.json(
+export function GET(request: NextRequest): NextResponse {
+  const decision = peekBucket(getClientKey(request));
+  const response = NextResponse.json(
     {
       status: 'ok',
       service: 'Helius Solana dApp Example — RPC proxy',
       jsonrpc: '2.0',
       transport: 'HTTP POST',
       endpoint: '/api/rpc',
+      versions: { stable: '1.0.0', urlAliases: ['/api/rpc', '/api/v1/rpc'] },
       networks: ['mainnet', 'devnet'],
       networkSelector: 'Append ?network=devnet to route requests to Solana devnet.',
       batch: 'Send a JSON array of requests for batch dispatch (max 100).',
+      idempotency:
+        'Pass an Idempotency-Key header on POST to deduplicate retries. Mutating methods (sendTransaction) are deduplicated for 24h.',
+      pagination:
+        'getSignaturesForAddress and getAssetsByOwner support cursor + limit via params; see /openapi.json.',
       allowedMethods: ALLOWED_METHODS,
       openapi: '/openapi.json',
+      apiCatalog: '/.well-known/api-catalog',
       documentation: 'https://docs.helius.dev/rpc',
       rateLimits: {
         burstCapacity: RATE_LIMIT_CAPACITY,
@@ -546,6 +573,8 @@ export function GET(): NextResponse {
       },
     }
   );
+  applyRateLimitHeaders(response.headers, decision);
+  return response;
 }
 
 export function OPTIONS(): NextResponse {
@@ -554,7 +583,9 @@ export function OPTIONS(): NextResponse {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Accept',
+      'Access-Control-Allow-Headers': 'Content-Type, Accept, Idempotency-Key',
+      'Access-Control-Expose-Headers':
+        'x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset, retry-after, ratelimit-limit, ratelimit-remaining, ratelimit-reset',
       'Access-Control-Max-Age': '3600',
     },
   });

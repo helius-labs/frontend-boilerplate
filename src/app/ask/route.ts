@@ -120,6 +120,26 @@ const CORPUS: CorpusItem[] = [
     keywords: ['integration', 'claude', 'cursor', 'vscode', 'goose', 'chatgpt', 'mcp'],
   },
   {
+    type: 'TechArticle',
+    name: 'Helius vs QuickNode, Alchemy, Triton, Syndica — Solana RPC comparison',
+    url: `${BASE_URL}/compare`,
+    description:
+      'Side-by-side feature and pricing comparison of Solana RPC providers: DAS API, Laserstream, webhooks, free tier, priority fees, and when to pick which provider.',
+    keywords: [
+      'compare',
+      'comparison',
+      'alternatives',
+      'quicknode',
+      'alchemy',
+      'triton',
+      'syndica',
+      'vs',
+      'pricing',
+      'das',
+      'laserstream',
+    ],
+  },
+  {
     type: 'WebPage',
     name: 'Webhooks — Helius event delivery',
     url: `${BASE_URL}/webhooks`,

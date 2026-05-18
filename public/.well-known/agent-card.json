@@ -14,11 +14,51 @@
   "iconUrl": "https://demo.helius.dev/icon-192.png",
   "preferredTransport": "JSONRPC",
   "defaultInputModes": ["text/plain", "application/json"],
-  "defaultOutputModes": ["text/plain", "application/json", "text/markdown"],
+  "defaultOutputModes": ["text/plain", "application/json", "text/markdown", "text/event-stream"],
   "capabilities": {
-    "streaming": false,
+    "streaming": true,
     "pushNotifications": false,
     "stateTransitionHistory": false
+  },
+  "additionalInterfaces": [
+    {
+      "transport": "JSONRPC",
+      "url": "https://demo.helius.dev/api/rpc",
+      "description": "Solana JSON-RPC 2.0 proxy (single request or batch)."
+    },
+    {
+      "transport": "JSONRPC",
+      "url": "https://demo.helius.dev/api/v1/rpc",
+      "description": "Versioned alias of /api/rpc — identical behavior."
+    },
+    {
+      "transport": "REST",
+      "url": "https://demo.helius.dev/api/helius/enhanced",
+      "description": "Helius Enhanced Transactions REST API (parsed swaps, transfers, NFT events). Cursor + limit pagination."
+    },
+    {
+      "transport": "SSE",
+      "url": "https://demo.helius.dev/api/laserstream",
+      "description": "Real-time Solana slot updates via Server-Sent Events."
+    },
+    {
+      "transport": "NLWeb",
+      "url": "https://demo.helius.dev/ask",
+      "description": "NLWeb-compatible natural-language search over the demo content."
+    }
+  ],
+  "versioning": {
+    "strategy": "url-path",
+    "currentVersion": "v1",
+    "deprecationPolicy": "12 months minimum after deprecation; emits RFC 9745 Deprecation header on retired paths.",
+    "openApiByVersion": {
+      "v1": "https://demo.helius.dev/api/v1/openapi.json"
+    }
+  },
+  "idempotency": {
+    "header": "Idempotency-Key",
+    "retentionHours": 24,
+    "appliesTo": ["POST /api/rpc", "POST /api/v1/rpc", "POST /api/helius/enhanced"]
   },
   "skills": [
     {
@@ -100,6 +140,17 @@
       "examples": [
         "How do I connect a Phantom wallet with social login?",
         "Show me how to sign a transaction with Phantom"
+      ]
+    },
+    {
+      "id": "compare-providers",
+      "name": "Compare Solana RPC providers",
+      "description": "Side-by-side feature and pricing comparison of Helius vs QuickNode, Alchemy, Triton, and Syndica across DAS API, Laserstream, webhooks, free tier, and priority fees.",
+      "tags": ["solana", "rpc", "comparison", "alternatives", "pricing"],
+      "examples": [
+        "How does Helius compare to QuickNode for Solana?",
+        "Helius vs Alchemy: which is better for NFT projects?",
+        "What are the alternatives to Helius RPC?"
       ]
     }
   ],

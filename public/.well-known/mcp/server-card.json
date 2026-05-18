@@ -5,19 +5,52 @@
   "version": "1.0.0",
   "serverUrl": "https://mcp.helius.dev/docs",
   "transport": "streamable-http",
-  "instructions": "Use this MCP when answering Solana developer questions that benefit from current Helius documentation. The search_d_flow and lookupHeliusDocs tools cover RPC methods, Enhanced APIs, webhooks, Laserstream, and pricing.",
+  "instructions": "Use this MCP when answering Solana developer questions that benefit from current Helius documentation. Call lookupHeliusDocs with a topic, method name, or feature area to retrieve the canonical content from docs.helius.dev. Call listHeliusDocTopics first if the user's question is broad and you need to pick a topic. All tools are read-only and safe to call without confirmation.",
   "provider": {
     "name": "Helius",
     "url": "https://www.helius.dev"
   },
+  "icon": {
+    "src": "https://www.helius.dev/logo.svg",
+    "mimeType": "image/svg+xml"
+  },
+  "categories": ["documentation", "solana", "blockchain", "developer-tools"],
   "tools": [
     {
       "name": "lookupHeliusDocs",
-      "description": "Look up Helius developer documentation by topic, method name, or feature area."
+      "description": "Look up Helius developer documentation by topic, method name, or feature area.",
+      "annotations": {
+        "title": "Look up Helius docs",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "required": ["topic"],
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "A topic, method name, or feature area to look up (e.g. 'getAssetsByOwner', 'webhooks', 'laserstream pricing')."
+          }
+        }
+      }
     },
     {
       "name": "listHeliusDocTopics",
-      "description": "List the available top-level documentation topics on docs.helius.dev."
+      "description": "List the available top-level documentation topics on docs.helius.dev.",
+      "annotations": {
+        "title": "List Helius doc topics",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
     }
   ],
   "resources": [
@@ -26,6 +59,12 @@
       "name": "Solana dApp Example — full reference",
       "description": "Complete reference documentation for the Helius Solana dApp Example: tech stack, architecture, API routes, code patterns.",
       "mimeType": "text/plain"
+    },
+    {
+      "uri": "https://demo.helius.dev/openapi.json",
+      "name": "Demo proxy OpenAPI 3.1 spec",
+      "description": "Machine-readable description of the demo's HTTP surface (RPC proxy, Enhanced API proxy, Laserstream SSE, NLWeb /ask).",
+      "mimeType": "application/vnd.oai.openapi+json"
     }
   ],
   "documentationUrl": "https://docs.helius.dev",

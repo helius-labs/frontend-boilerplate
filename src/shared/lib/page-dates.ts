@@ -56,6 +56,7 @@ const PAGE_DATES: Record<string, PageDateEntry> = {
   '/sandbox': { modified: '2026-05-18' },
   '/integrations': { modified: '2026-05-18' },
   '/webhooks': { modified: '2026-05-18' },
+  '/compare': { modified: '2026-05-18' },
 };
 
 /**

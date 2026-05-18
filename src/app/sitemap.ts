@@ -37,6 +37,7 @@ const routes = [
   'sandbox',
   'integrations',
   'webhooks',
+  'compare',
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
